@@ -162,7 +162,7 @@
     </dependency> 
   </dependencies>
 
-  <!-- <repositories>
+  <repositories>
     <repository>
       <id>consol-labs-snapshots</id>
       <url>http://labs.consol.de/maven/snapshots-repository/</url>
@@ -172,7 +172,7 @@
       </snapshots>
     </repository>
   </repositories>
- -->
+
   <profiles>
     <profile>
       <id>jetty-embedded</id>
