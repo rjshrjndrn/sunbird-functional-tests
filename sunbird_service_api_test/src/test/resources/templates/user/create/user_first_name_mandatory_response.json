@@ -1,0 +1,15 @@
+{
+"id":"api.user.create",
+"ver":"v1",
+"ts":"@ignore@",
+"params":
+{
+"resmsgid":null,
+"msgid":"@ignore@",
+"err":"FIRST_NAME_REQUIRED_ERROR",
+"status":"FIRST_NAME_REQUIRED_ERROR",
+"errmsg":"First name is mandatory."
+}
+,"responseCode":"CLIENT_ERROR",
+"result":{}
+}
