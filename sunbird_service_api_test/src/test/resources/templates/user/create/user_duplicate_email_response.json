@@ -6,9 +6,9 @@
 {
 "resmsgid":null,
 "msgid":"@ignore@",
-"err":"EMAIL_IN_USE",
-"status":"EMAIL_IN_USE",
-"errmsg":"Email already exists."
+"err":"USERNAME_EMAIL_IN_USE",
+"status":"USERNAME_EMAIL_IN_USE",
+"errmsg":"Username or Email is already in used. Please try with a different Username or Email."
 }
 ,"responseCode":"CLIENT_ERROR",
 "result":{}

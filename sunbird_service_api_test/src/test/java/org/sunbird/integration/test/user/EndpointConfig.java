@@ -4,6 +4,8 @@
 
 package org.sunbird.integration.test.user;
 
+import java.util.UUID;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -178,4 +180,9 @@ public class EndpointConfig {
 
 	}
 
+	public static String val;
+
+	static {
+		val = UUID.randomUUID().toString();
+	}
 }
