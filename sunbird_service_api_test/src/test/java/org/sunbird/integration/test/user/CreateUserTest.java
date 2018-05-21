@@ -15,7 +15,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.response.ResponseCode;
-import org.sunbird.common.util.ConstantKeys;
+import org.sunbird.common.util.Constants;
 import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -44,7 +44,7 @@ public class CreateUserTest extends TestNGCitrusTestDesigner {
 	private static String user_auth_token = null;
 	private static String admin_token = null;
 	public static Map<String, List<String>> deletedRecordsMap = new HashMap<String, List<String>>();
-	private static final String CREATE_USER_URI = "/api/user/v1/create";
+	private static final String CREATE_USER_URI = "/v1/user/create";
 	private static volatile String USER_NAME = "userName";
 
 	/**
@@ -57,35 +57,38 @@ public class CreateUserTest extends TestNGCitrusTestDesigner {
 	@DataProvider(name = "createUserDataProvider")
 	public Object[][] createUserDataProvider() {
 		return new Object[][] {
-				new Object[] { ConstantKeys.USER_TEMPLATE_LOCATION + "user_first_name_mandatory.json",
-						ConstantKeys.USER_TEMPLATE_LOCATION + "user_first_name_mandatory_response.json",
+				new Object[] { Constants.USER_TEMPLATE_LOCATION + "user_first_name_mandatory.json",
+						Constants.USER_TEMPLATE_LOCATION + "user_first_name_mandatory_response.json",
 						"firstNameMandatoryTest" },
-				new Object[] { ConstantKeys.USER_TEMPLATE_LOCATION + "user_name_mandatory.json",
-						ConstantKeys.USER_TEMPLATE_LOCATION + "user_name_mandatory_response.json",
+				new Object[] { Constants.USER_TEMPLATE_LOCATION + "user_name_mandatory.json",
+						Constants.USER_TEMPLATE_LOCATION + "user_name_mandatory_response.json",
 						"UserNameMandatory" },
-				new Object[] { ConstantKeys.USER_TEMPLATE_LOCATION + "user_invalid_role_type.json",
-						ConstantKeys.USER_TEMPLATE_LOCATION + "user_invalid_role_type_response.json",
+				new Object[] { Constants.USER_TEMPLATE_LOCATION + "user_invalid_role_type.json",
+						Constants.USER_TEMPLATE_LOCATION + "user_invalid_role_type_response.json",
 						"invalidRoleType" },
-				new Object[] { ConstantKeys.USER_TEMPLATE_LOCATION + "user_invalid_language_type.json",
-						ConstantKeys.USER_TEMPLATE_LOCATION + "user_invalid_language_type_response.json",
+				new Object[] { Constants.USER_TEMPLATE_LOCATION + "user_invalid_language_type.json",
+						Constants.USER_TEMPLATE_LOCATION + "user_invalid_language_type_response.json",
 						"invalidLanguageType" },
-				new Object[] { ConstantKeys.USER_TEMPLATE_LOCATION + "user_invalid_dob_format.json",
-						ConstantKeys.USER_TEMPLATE_LOCATION + "user_invalid_dob_response.json", "invalidDobFormat" } };
+				new Object[] { Constants.USER_TEMPLATE_LOCATION + "user_invalid_dob_format.json",
+						Constants.USER_TEMPLATE_LOCATION + "user_invalid_dob_response.json", "invalidDobFormat" } };
 	}
 
 	@DataProvider(name = "createUserDynamicDataProvider")
 	public Object[][] createUserDynamicJsonData() {
 		return new Object[][] { new Object[] { createUserMap(), "usersuccessresponse.json", "createUser" },
 				new Object[] { createUserWithDuplicateEmail(),
-						ConstantKeys.USER_TEMPLATE_LOCATION + "user_duplicate_email_response.json",
+						Constants.USER_TEMPLATE_LOCATION + "user_duplicate_email_response.json",
 						"duplicateEmailTest" },
 				new Object[] { createUserWithDuplicateUserName(),
-						ConstantKeys.USER_TEMPLATE_LOCATION + "user_username_exist_response.json",
+						Constants.USER_TEMPLATE_LOCATION + "user_username_exist_response.json",
 						"duplicateUsernameTest" } };
 	}
 
 	@Autowired
 	private HttpClient restTestClient;
+	@Autowired
+	private HttpClient localTestClient;
+
 	@Autowired
 	private TestGlobalProperty initGlobalValues;
 	private ObjectMapper objectMapper = new ObjectMapper();
@@ -97,8 +100,8 @@ public class CreateUserTest extends TestNGCitrusTestDesigner {
 		System.out.println("Create user " + testName + " Data: " + requestJson);
 		getTestCase().setName(testName);
 		http().client(restTestClient).send().post(CREATE_USER_URI)
-				.contentType(ConstantKeys.CONTENT_TYPE_APPLICATION_JSON)
-				.header(ConstantKeys.AUTHORIZATION, ConstantKeys.BEARER + initGlobalValues.getApiKey())
+				.contentType(Constants.CONTENT_TYPE_APPLICATION_JSON)
+				.header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey())
 				.payload(requestJson);
 		if (!"usersuccessresponse.json".equals(responseJson)) {
 			http().client(restTestClient).receive().response(HttpStatus.BAD_REQUEST)
@@ -115,8 +118,8 @@ public class CreateUserTest extends TestNGCitrusTestDesigner {
 	public void testCreateUserFailure(String requestJson, String responseJson, String testName) {
 		getTestCase().setName(testName);
 		http().client(restTestClient).send().post(CREATE_USER_URI)
-				.contentType(ConstantKeys.CONTENT_TYPE_APPLICATION_JSON)
-				.header(ConstantKeys.AUTHORIZATION, ConstantKeys.BEARER + initGlobalValues.getApiKey())
+				.contentType(Constants.CONTENT_TYPE_APPLICATION_JSON)
+				.header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey())
 				.payload(new ClassPathResource(requestJson));
 		http().client(restTestClient).receive().response(HttpStatus.BAD_REQUEST)
 				.payload(new ClassPathResource(responseJson));
@@ -159,11 +162,11 @@ public class CreateUserTest extends TestNGCitrusTestDesigner {
 	 * **updateUserRequiredLoginActionTest** method.
 	 */
 	public void getAdminAuthToken() {
-		http().client(restTestClient).send().post("/auth/realms/master/protocol/openid-connect/token")
+		http().client(localTestClient).send().post("/realms/master/protocol/openid-connect/token")
 				.contentType("application/x-www-form-urlencoded")
 				.payload("client_id=admin-cli&username=" + initGlobalValues.getKeycloakAdminUser() + "&password="
 						+ initGlobalValues.getKeycloakAdminPass() + "&grant_type=password");
-		http().client(restTestClient).receive().response(HttpStatus.OK)
+		http().client(localTestClient).receive().response(HttpStatus.OK)
 				.validationCallback(new JsonMappingValidationCallback<Map>(Map.class, objectMapper) {
 					@Override
 					public void validate(Map response, Map<String, Object> headers, TestContext context) {
@@ -179,23 +182,24 @@ public class CreateUserTest extends TestNGCitrusTestDesigner {
 	/**
 	 * This method will disable user required action change password under keyCloak.
 	 * after disabling that , we can generate newly created user auth token.
+	 * after disabling that , we can generate newly created user auth token.
 	 */
 	public void updateUserRequiredLoginActionTest() {
-		http().client(restTestClient).send()
-				.put("/auth/admin/realms/" + initGlobalValues.getRelam() + "/users/" + userId)
-				.header(ConstantKeys.AUTHORIZATION, ConstantKeys.BEARER + admin_token)
-				.contentType(ConstantKeys.CONTENT_TYPE_APPLICATION_JSON).payload("{\"requiredActions\":[]}");
-		http().client(restTestClient).receive().response(HttpStatus.NO_CONTENT);
+		http().client(localTestClient).send()
+				.put("/admin/realms/" + initGlobalValues.getRelam() + "/users/" + userId)
+				.header(Constants.AUTHORIZATION, Constants.BEARER + admin_token)
+				.contentType(Constants.CONTENT_TYPE_APPLICATION_JSON).payload("{\"requiredActions\":[]}");
+		http().client(localTestClient).receive().response(HttpStatus.NO_CONTENT);
 	}
 
 	@Test(priority = 5)
 	@CitrusTest
 	public void getAuthToken() {
-		http().client(restTestClient).send()
-				.post("/auth/realms/" + initGlobalValues.getRelam() + "/protocol/openid-connect/token")
+		http().client(localTestClient).send()
+				.post("/realms/" + initGlobalValues.getRelam() + "/protocol/openid-connect/token")
 				.contentType("application/x-www-form-urlencoded").payload("client_id=" + initGlobalValues.getClientId()
 						+ "&username="+USER_NAME+"&password=password&grant_type=password");
-		http().client(restTestClient).receive().response(HttpStatus.OK)
+		http().client(localTestClient).receive().response(HttpStatus.OK)
 				.validationCallback(new JsonMappingValidationCallback<Map>(Map.class, objectMapper) {
 					@Override
 					public void validate(Map response, Map<String, Object> headers, TestContext context) {
@@ -211,11 +215,11 @@ public class CreateUserTest extends TestNGCitrusTestDesigner {
 	@CitrusTest
 	public void getUserTest() {
 		http().client(restTestClient).send()
-				.get("/api/user/v1/read/" + userId + "?Fields=completeness,missingFields,topic")
-				.accept(ConstantKeys.CONTENT_TYPE_APPLICATION_JSON)
-				.header(ConstantKeys.AUTHORIZATION, ConstantKeys.BEARER + initGlobalValues.getApiKey())
-				.contentType(ConstantKeys.CONTENT_TYPE_APPLICATION_JSON)
-				.header(ConstantKeys.X_AUTHENTICATED_USER_TOKEN, user_auth_token);
+				.get("/v1/user/read/" + userId + "?Fields=completeness,missingFields,topic")
+				.accept(Constants.CONTENT_TYPE_APPLICATION_JSON)
+				.header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey())
+				.contentType(Constants.CONTENT_TYPE_APPLICATION_JSON)
+				.header(Constants.X_AUTHENTICATED_USER_TOKEN, user_auth_token);
 		http().client(restTestClient).receive().response(HttpStatus.OK)
 				.validationCallback(new JsonMappingValidationCallback<Response>(Response.class, objectMapper) {
 					@Override
@@ -240,7 +244,7 @@ public class CreateUserTest extends TestNGCitrusTestDesigner {
 	private String createUserWithDuplicateUserName() {
 		Map<String, Object> requestMap = new HashMap<>();
 		Map<String, Object> innerMap = createUserInnerMap();
-		innerMap.put("email", ConstantKeys.USER_NAME_PREFIX + UUID.randomUUID().toString() + "@gmail.com");
+		innerMap.put("email", Constants.USER_NAME_PREFIX + UUID.randomUUID().toString() + "@gmail.com");
 		requestMap.put("request", innerMap);
 		try {
 			return objectMapper.writeValueAsString(requestMap);
@@ -253,7 +257,7 @@ public class CreateUserTest extends TestNGCitrusTestDesigner {
 	private String createUserWithDuplicateEmail() {
 		Map<String, Object> requestMap = new HashMap<>();
 		Map<String, Object> innerMap = createUserInnerMap();
-		innerMap.put("userName", ConstantKeys.USER_NAME_PREFIX + UUID.randomUUID().toString());
+		innerMap.put("userName", Constants.USER_NAME_PREFIX + UUID.randomUUID().toString());
 		requestMap.put("request", innerMap);
 		try {
 			return objectMapper.writeValueAsString(requestMap);
@@ -268,8 +272,8 @@ public class CreateUserTest extends TestNGCitrusTestDesigner {
 		innerMap.put("firstName", "ft_first_Name_pw12401");
 		innerMap.put("lastName", "ft_lastName");
 		innerMap.put("password", "password");
-		USER_NAME = ConstantKeys.USER_NAME_PREFIX + EndpointConfig.val;
-		String email = ConstantKeys.USER_NAME_PREFIX + EndpointConfig.val + "@gmail.com";
+		USER_NAME = Constants.USER_NAME_PREFIX + EndpointConfig.val;
+		String email = Constants.USER_NAME_PREFIX + EndpointConfig.val + "@gmail.com";
 		innerMap.put("userName", USER_NAME);
 		innerMap.put("email", email);
 		return innerMap;

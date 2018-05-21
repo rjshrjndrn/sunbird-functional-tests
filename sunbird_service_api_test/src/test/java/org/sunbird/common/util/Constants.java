@@ -5,7 +5,7 @@ package org.sunbird.common.util;
  * @author Manzarul
  *
  */
-public class ConstantKeys{
+public class Constants {
 
 	public static final String AUTHORIZATION = "Authorization";
 	public static final String BEARER= "Bearer ";
