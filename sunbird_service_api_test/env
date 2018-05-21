@@ -1,15 +1,16 @@
-| Key                      |  Description 
+| Key                        |  Description
 
-|sunbird_api_key           | Kong api key to make server call
-|sunbird_cassandra_host    | host of cassandra to connect . this will be used to delete data after test case executed 
-sunbird_cassandra_port     | port of cassandra
-sunbird_cassandra_username | user name 
-sunbird_cassandra_keyspace | keyspace name 
-sunbird_sso_username       | key cloak admin user name . required to remove update password operation from key cloak , after user creation 
-sunbird_sso_password       | key cloak admin user password. 
-sunbird_sso_realm          | key cloak relam name , required to generate user auth token
-sunbird_sso_client_id      | key cloak client id   , required to generate user auth token
-sunbird_es_host            | Elastic search host , required to deleted test data 
-sunbird_es_port            | Elastic search port , required to delete test data
-sunbird_es_index_type      | Need to discuss 
-sunbird_es_index           | Elastic search index name. 
+| sunbird_api_key            | Kong api key to make server call
+| sunbird_cassandra_host     | Host of cassandra to connect . this will be used to delete data after test case executed
+| sunbird_cassandra_port     | Port of cassandra
+| sunbird_cassandra_username | User name
+| sunbird_cassandra_keyspace | Keyspace name
+| sunbird_sso_url            | Keycloak server auth URL
+| sunbird_sso_username       | Keycloak admin user name . required to remove update password operation from key cloak , after user creation
+| sunbird_sso_password       | Keycloak admin user password.
+| sunbird_sso_realm          | Keycloak relam name , required to generate user auth token
+| sunbird_sso_client_id      | Keycloak client id   , required to generate user auth token
+| sunbird_es_host            | Elastic search host , required to deleted test data
+| sunbird_es_port            | Elastic search port , required to delete test data
+| sunbird_es_index_type      | Need to discuss
+| sunbird_es_index           | Elastic search index name.
