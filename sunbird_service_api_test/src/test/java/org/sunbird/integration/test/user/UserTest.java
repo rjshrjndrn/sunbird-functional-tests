@@ -35,7 +35,8 @@ import org.testng.annotations.Test;
  *
  * @author Manzarul
  */
-public class CreateUserTest extends TestNGCitrusTestDesigner {
+@Test(priority = 1)
+public class UserTest extends TestNGCitrusTestDesigner {
 
   private static String userId = null;
   private static String user_auth_token = null;
@@ -224,7 +225,7 @@ public class CreateUserTest extends TestNGCitrusTestDesigner {
    */
   public void getAdminAuthToken() {
     http()
-        .client("http://localhost:8080")
+        .client(restTestClient)
         .send()
         .post("/auth/realms/master/protocol/openid-connect/token")
         .contentType("application/x-www-form-urlencoded")
@@ -235,7 +236,7 @@ public class CreateUserTest extends TestNGCitrusTestDesigner {
                 + initGlobalValues.getKeycloakAdminPass()
                 + "&grant_type=password");
     http()
-        .client("http://localhost:8080")
+        .client(restTestClient)
         .receive()
         .response(HttpStatus.OK)
         .validationCallback(
@@ -257,20 +258,20 @@ public class CreateUserTest extends TestNGCitrusTestDesigner {
    */
   public void updateUserRequiredLoginActionTest() {
     http()
-        .client("http://localhost:8080")
+        .client(restTestClient)
         .send()
         .put("/auth/admin/realms/" + initGlobalValues.getRelam() + "/users/" + userId)
         .header(ConstantKeys.AUTHORIZATION, ConstantKeys.BEARER + admin_token)
         .contentType(ConstantKeys.CONTENT_TYPE_APPLICATION_JSON)
         .payload("{\"requiredActions\":[]}");
-    http().client("http://localhost:8080").receive().response(HttpStatus.NO_CONTENT);
+    http().client(restTestClient).receive().response(HttpStatus.NO_CONTENT);
   }
 
   @Test(priority = 5)
   @CitrusTest
   public void getAuthToken() {
     http()
-        .client("http://localhost:8080")
+        .client(restTestClient)
         .send()
         .post("/auth/realms/" + initGlobalValues.getRelam() + "/protocol/openid-connect/token")
         .contentType("application/x-www-form-urlencoded")
@@ -280,10 +281,10 @@ public class CreateUserTest extends TestNGCitrusTestDesigner {
                 + "&username="
                 + USER_NAME
                 + "@"
-                + initGlobalValues.getSunbirdDefaultchannel()
+                + initGlobalValues.getSunbirdDefaultChannel()
                 + "&password=password&grant_type=password");
     http()
-        .client("http://localhost:8080")
+        .client(restTestClient)
         .receive()
         .response(HttpStatus.OK)
         .validationCallback(
