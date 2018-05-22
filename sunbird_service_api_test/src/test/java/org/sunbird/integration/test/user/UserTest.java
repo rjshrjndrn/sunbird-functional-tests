@@ -30,8 +30,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
- * This class will have all functional test cases regarding create user, get user details , generate
- * user auth key.
+ * This class will have all functional test cases regarding create/update user, get user details ,
+ * generate user auth key.
  *
  * @author Manzarul
  */
@@ -47,6 +47,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
   private static volatile String USER_NAME = "userName";
   private static String externalId = String.valueOf(System.currentTimeMillis());
   private static String provider = String.valueOf(System.currentTimeMillis() + 10);
+
   /**
    * User can define the api request and response json structure. first index is request json
    * object, second is response json object and third is test case name.
