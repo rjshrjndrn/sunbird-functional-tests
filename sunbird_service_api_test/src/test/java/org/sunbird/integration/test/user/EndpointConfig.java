@@ -26,6 +26,11 @@ public class EndpointConfig {
 	}
 
 	@Bean
+	public HttpClient localTestClient() {
+		return CitrusEndpoints.http().client().requestUrl(System.getenv("sunbird_sso_url")).build();
+	}
+
+	@Bean
 	public TestGlobalProperty initGlobalValues() {
 		TestGlobalProperty property = new TestGlobalProperty();
 		property.setApiKey(System.getenv("sunbird_api_key"));
@@ -33,6 +38,7 @@ public class EndpointConfig {
 		property.setCassandraPort(System.getenv("sunbird_cassandra_port"));
 		property.setCassandraUserName(System.getenv("sunbird_cassandra_username"));
 		property.setKeySpace(System.getenv("sunbird_cassandra_keyspace"));
+		property.setKeycloakAuthUrl(System.getenv("sunbird_sso_url"));
 		property.setKeycloakAdminUser(System.getenv("sunbird_sso_username"));
 		property.setKeycloakAdminPass(System.getenv("sunbird_sso_password"));
 		property.setRelam(System.getenv("sunbird_sso_realm"));
@@ -41,6 +47,7 @@ public class EndpointConfig {
 		property.setEsPort(System.getenv("sunbird_es_port"));
 		property.setIndexType(System.getenv("sunbird_es_index_type"));
 		property.setIndex(System.getenv("sunbird_es_index"));
+		property.setLmsUrl(System.getenv("test_base_url"));
 		return property;
 	}
 
@@ -50,9 +57,10 @@ public class EndpointConfig {
 	 * @author Manzarul
 	 *
 	 */
-	class TestGlobalProperty {
+	public class TestGlobalProperty {
 
 		private String apiKey;
+		private String keycloakAuthUrl;
 		private String keycloakAdminUser;
 		private String keycloakAdminPass;
 		private String relam;
@@ -65,6 +73,7 @@ public class EndpointConfig {
 		private String esPort;
 		private String index;
 		private String indexType;
+		private String lmsUrl;
 
 		public String getApiKey() {
 			return apiKey;
@@ -72,6 +81,14 @@ public class EndpointConfig {
 
 		public void setApiKey(String apiKey) {
 			this.apiKey = apiKey;
+		}
+
+		public String getKeycloakAuthUrl() {
+			return keycloakAuthUrl;
+		}
+
+		public void setKeycloakAuthUrl(String keycloakAuthUrl) {
+			this.keycloakAuthUrl = keycloakAuthUrl;
 		}
 
 		public String getKeycloakAdminUser() {
@@ -168,6 +185,14 @@ public class EndpointConfig {
 
 		public void setIndexType(String indexType) {
 			this.indexType = indexType;
+		}
+
+		public String getLmsUrl() {
+			return lmsUrl;
+		}
+
+		public void setLmsUrl(String lmsUrl) {
+			this.lmsUrl = lmsUrl;
 		}
 
 		@Override
