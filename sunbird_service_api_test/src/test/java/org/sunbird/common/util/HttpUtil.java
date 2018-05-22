@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Scanner;
 
+import javax.ws.rs.core.MediaType;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -31,7 +33,7 @@ import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
  * @author Manzarul, B Vinaya Kumar
  */
 public class HttpUtil {
-	
+
 	/**
 	 * This method is written for deleting test data from elastic search.
 	 * @param url String complete url including the id of the element need to be deleted.
@@ -75,8 +77,8 @@ public class HttpUtil {
 		try (Scanner scanner = new Scanner(new File(getClass().getClassLoader().getResource(formDataFile).getFile()))) {
 
 			while (scanner.hasNext()) {
-				String[] param = scanner.nextLine().split("=");
-				if (param.length == 2) {
+				String[] param = scanner.nextLine().split(Constants.EQUAL_SIGN);
+				if (param != null && param.length == 2) {
 					formData.add(param[0], param[1]);
 				}
 			}
@@ -86,7 +88,7 @@ public class HttpUtil {
 		}
 
 		httpClientActionBuilder.send().post(url)
-				.contentType("multipart/form-data")
+				.contentType(MediaType.MULTIPART_FORM_DATA)
 				.header(Constants.AUTHORIZATION, Constants.BEARER + config.getApiKey())
 				.payload(formData);
 	}
