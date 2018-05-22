@@ -50,7 +50,7 @@ public class EndpointConfig {
 	 * @author Manzarul
 	 *
 	 */
-	class TestGlobalProperty {
+	public class TestGlobalProperty {
 
 		private String apiKey;
 		private String keycloakAdminUser;
@@ -65,6 +65,7 @@ public class EndpointConfig {
 		private String esPort;
 		private String index;
 		private String indexType;
+		private String cassandraPassword;
 
 		public String getApiKey() {
 			return apiKey;
@@ -168,6 +169,14 @@ public class EndpointConfig {
 
 		public void setIndexType(String indexType) {
 			this.indexType = indexType;
+		}
+
+		public String getCassandraPassword() {
+			return cassandraPassword;
+		}
+
+		public void setCassandraPassword(String cassandraPassword) {
+			this.cassandraPassword = cassandraPassword;
 		}
 
 		@Override

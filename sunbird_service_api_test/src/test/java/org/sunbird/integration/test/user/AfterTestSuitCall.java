@@ -101,8 +101,7 @@ public class AfterTestSuitCall extends TestRunnerAfterSuiteSupport {
 	 */
 	private boolean deleteDataFromCassandra(List<String> ids, String tableName) {
 		String query = createDeleteQuery(tableName, ids);
-		Session session = CassandraConnectionUtil.getCassandraSession(initGlobalValues.getCassandraiP(),
-				initGlobalValues.getCassandraPort(), initGlobalValues.getKeySpace());
+		Session session = CassandraConnectionUtil.getCassandraSession(initGlobalValues.getCassandraiP(), initGlobalValues.getCassandraPort(), initGlobalValues.getKeySpace(), initGlobalValues.getCassandraUserName(), initGlobalValues.getCassandraPassword());
 		ResultSet result = session.execute(query);
 		if (result.isExhausted()) {
 			return true;
@@ -120,7 +119,7 @@ public class AfterTestSuitCall extends TestRunnerAfterSuiteSupport {
 	private List<String> collectAllCreatedUserList() {
 		String query = "select id from user where firstname='ft_first_Name_pw12401' ALLOW FILTERING";
 		Session session = CassandraConnectionUtil.getCassandraSession(initGlobalValues.getCassandraiP(),
-				initGlobalValues.getCassandraPort(), initGlobalValues.getKeySpace());
+				initGlobalValues.getCassandraPort(), initGlobalValues.getKeySpace(),initGlobalValues.getCassandraUserName(), initGlobalValues.getCassandraPassword());
 		ResultSet result = session.execute(query);
 		List<Row> rowList = result.all();
 		List<String> userIds = new ArrayList<>();
