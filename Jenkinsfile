@@ -19,9 +19,11 @@ pipeline {
     stages {
         stage("build") {
             steps {
-                sh 'cd sunbird_service_api_test'
-                sh 'ls'
-                sh 'mvn clean verify'
+                sh '''
+                cd sunbird_service_api_test
+                ls
+                mvn clean verify
+                '''
             }
         }
     }
