@@ -9,7 +9,6 @@ import com.consol.citrus.testng.CitrusParameters;
 import com.consol.citrus.validation.json.JsonMappingValidationCallback;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +18,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.response.ResponseCode;
+import org.sunbird.common.util.Constant;
 import org.sunbird.common.util.ConstantKeys;
 import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 import org.testng.Assert;
@@ -31,7 +31,7 @@ import org.testng.annotations.Test;
  *
  * @author Manzarul
  */
-@Test(priority = 1)
+@Test()
 public class UserTest extends TestNGCitrusTestDesigner {
 
   private static String userId = null;
@@ -102,33 +102,33 @@ public class UserTest extends TestNGCitrusTestDesigner {
       },
       new Object[] {
         createUserWithInvalidChannel(),
-        ConstantKeys.USER_TEMPLATE_LOCATION + "invalidChannelResponse.json",
+        ConstantKeys.USER_TEMPLATE_LOCATION + "invalid_channel_response.json",
         "invalidChannelTest"
       }
     };
   }
 
-  @DataProvider(name = "updateUserDynamicDataProvider")
-  public Object[][] updateUserDynamicDataProvider() {
+  @DataProvider(name = "updateUserDataProvider")
+  public Object[][] updateUserDataProvider() {
     return new Object[][] {
-      new Object[] {updateUserMapWithId(), "update_user_success_response.json", "updateUserWithId"},
+      new Object[] {updateUserWithId(), "update_user_success_response.json", "updateUserWithId"},
       new Object[] {
-        updateUserMapWithExtIdAndProvider(),
+        updateUserWithExtIdAndProvider(),
         "update_user_success_response.json",
-        "updateUserMapWithExtIdAndProvider"
+        "updateUserWithExtIdAndProvider"
       },
       new Object[] {
-        updateUserMapWithRegOrgId(),
+        updateUserWithRegOrgId(),
         ConstantKeys.UPDATE_USER_TEMPLATE_LOCATION + "user_update_bad_request_response.json",
-        "invalidRequestDataRegOrGIdTest"
+        "invalidRequestDataRegOrgIdTest"
       },
       new Object[] {
-        updateUserMapWithRootOrgId(),
+        updateUserWithRootOrgId(),
         ConstantKeys.UPDATE_USER_TEMPLATE_LOCATION + "user_update_bad_request_response.json",
         "invalidRequestDataRootOrgIdTest"
       },
       new Object[] {
-        updateUserMapWithChannel(),
+        updateUserWithChannel(),
         ConstantKeys.UPDATE_USER_TEMPLATE_LOCATION + "user_update_bad_request_response.json",
         "invalidRequestDataChannelTest"
       }
@@ -143,7 +143,6 @@ public class UserTest extends TestNGCitrusTestDesigner {
   @CitrusParameters({"requestJson", "responseJson", "testName"})
   @CitrusTest
   public void testCreateUser(String requestJson, String responseJson, String testName) {
-    System.out.println("Create user " + testName + " Data: " + requestJson);
     getTestCase().setName(testName);
     http()
         .client(restTestClient)
@@ -201,12 +200,6 @@ public class UserTest extends TestNGCitrusTestDesigner {
                 Assert.assertNotNull(response.getResult().get("response"));
                 userId = (String) response.getResult().get("userId");
                 Assert.assertNotNull(userId);
-                List<String> list = deletedRecordsMap.get("user");
-                if (list == null) {
-                  list = new ArrayList<>();
-                }
-                list.add(userId);
-                deletedRecordsMap.put("user", list);
               }
             });
   }
@@ -242,7 +235,6 @@ public class UserTest extends TestNGCitrusTestDesigner {
               public void validate(Map response, Map<String, Object> headers, TestContext context) {
                 Assert.assertNotNull(response.get("access_token"));
                 admin_token = (String) response.get("access_token");
-                System.out.println("Admin auth token value ==" + admin_token);
               }
             });
   }
@@ -290,16 +282,14 @@ public class UserTest extends TestNGCitrusTestDesigner {
               public void validate(Map response, Map<String, Object> headers, TestContext context) {
                 Assert.assertNotNull(response.get("access_token"));
                 user_auth_token = (String) response.get("access_token");
-                System.out.println("User auth token value ==" + user_auth_token);
               }
             });
   }
 
-  @Test(dataProvider = "updateUserDynamicDataProvider", priority = 6)
+  @Test(dataProvider = "updateUserDataProvider", priority = 6)
   @CitrusParameters({"requestJson", "responseJson", "testName"})
   @CitrusTest
   public void testUpdateUser(String requestJson, String responseJson, String testName) {
-    System.out.println("Update user " + testName + " Data: " + requestJson);
     getTestCase().setName(testName);
     http()
         .client(restTestClient)
@@ -362,14 +352,14 @@ public class UserTest extends TestNGCitrusTestDesigner {
                   Response response, Map<String, Object> headers, TestContext context) {
                 Assert.assertNotNull(response.getId());
                 Assert.assertEquals(response.getResponseCode(), ResponseCode.OK);
-                Assert.assertNotNull(response.getResult().get("response"));
+                Assert.assertNotNull(response.getResult().get(Constant.RESPONSE));
               }
             });
   }
 
   private String createUserMap() {
     Map<String, Object> requestMap = new HashMap<>();
-    requestMap.put("request", createUserInnerMap());
+    requestMap.put(Constant.REQUEST, createUserInnerMap());
     try {
       return objectMapper.writeValueAsString(requestMap);
     } catch (JsonProcessingException e) {
@@ -382,9 +372,10 @@ public class UserTest extends TestNGCitrusTestDesigner {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = createUserInnerMap();
     innerMap.put(
-        "email", ConstantKeys.USER_NAME_PREFIX + UUID.randomUUID().toString() + "@gmail.com");
-    innerMap.put("userName", ConstantKeys.USER_NAME_PREFIX + UUID.randomUUID().toString());
-    requestMap.put("request", innerMap);
+        Constant.EMAIL,
+        ConstantKeys.USER_NAME_PREFIX + UUID.randomUUID().toString() + "@gmail.com");
+    innerMap.put(Constant.USER_NAME, ConstantKeys.USER_NAME_PREFIX + UUID.randomUUID().toString());
+    requestMap.put(Constant.REQUEST, innerMap);
     try {
       return objectMapper.writeValueAsString(requestMap);
     } catch (JsonProcessingException e) {
@@ -397,12 +388,13 @@ public class UserTest extends TestNGCitrusTestDesigner {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = createUserInnerMap();
     innerMap.put(
-        "email", ConstantKeys.USER_NAME_PREFIX + UUID.randomUUID().toString() + "@gmail.com");
-    innerMap.put("userName", ConstantKeys.USER_NAME_PREFIX + UUID.randomUUID().toString());
-    innerMap.put("externalId", externalId + 123);
-    innerMap.put("provider", provider + 234);
-    innerMap.put("channel", "invalidChannel123123");
-    requestMap.put("request", innerMap);
+        Constant.EMAIL,
+        ConstantKeys.USER_NAME_PREFIX + UUID.randomUUID().toString() + "@gmail.com");
+    innerMap.put(Constant.USER_NAME, ConstantKeys.USER_NAME_PREFIX + UUID.randomUUID().toString());
+    innerMap.put(Constant.EXTERNAL_ID, externalId + 123);
+    innerMap.put(Constant.PROVIDER, provider + 234);
+    innerMap.put(Constant.CHANNEL, "functionalTest#Invalid$Channel@1235123");
+    requestMap.put(Constant.REQUEST, innerMap);
     try {
       return objectMapper.writeValueAsString(requestMap);
     } catch (JsonProcessingException e) {
@@ -415,8 +407,9 @@ public class UserTest extends TestNGCitrusTestDesigner {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = createUserInnerMap();
     innerMap.put(
-        "email", ConstantKeys.USER_NAME_PREFIX + UUID.randomUUID().toString() + "@gmail.com");
-    requestMap.put("request", innerMap);
+        Constant.EMAIL,
+        ConstantKeys.USER_NAME_PREFIX + UUID.randomUUID().toString() + "@gmail.com");
+    requestMap.put(Constant.REQUEST, innerMap);
     try {
       return objectMapper.writeValueAsString(requestMap);
     } catch (JsonProcessingException e) {
@@ -428,8 +421,8 @@ public class UserTest extends TestNGCitrusTestDesigner {
   private String createUserWithDuplicateEmail() {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = createUserInnerMap();
-    innerMap.put("userName", ConstantKeys.USER_NAME_PREFIX + UUID.randomUUID().toString());
-    requestMap.put("request", innerMap);
+    innerMap.put(Constant.USER_NAME, ConstantKeys.USER_NAME_PREFIX + UUID.randomUUID().toString());
+    requestMap.put(Constant.REQUEST, innerMap);
     try {
       return objectMapper.writeValueAsString(requestMap);
     } catch (JsonProcessingException e) {
@@ -440,26 +433,26 @@ public class UserTest extends TestNGCitrusTestDesigner {
 
   private static Map<String, Object> createUserInnerMap() {
     Map<String, Object> innerMap = new HashMap<>();
-    innerMap.put("firstName", "ft_first_Name_pw12401");
-    innerMap.put("lastName", "ft_lastName");
-    innerMap.put("password", "password");
-    innerMap.put("externalId", externalId);
-    innerMap.put("provider", provider);
+    innerMap.put(Constant.FIRST_NAME, "ft_first_Name_pw12401");
+    innerMap.put(Constant.LAST_NAME, "ft_lastName");
+    innerMap.put(Constant.PASSWORD, "password");
+    innerMap.put(Constant.EXTERNAL_ID, externalId);
+    innerMap.put(Constant.PROVIDER, provider);
     USER_NAME = ConstantKeys.USER_NAME_PREFIX + EndpointConfig.val;
     String email = ConstantKeys.USER_NAME_PREFIX + EndpointConfig.val + "@gmail.com";
-    innerMap.put("userName", USER_NAME);
-    innerMap.put("email", email);
+    innerMap.put(Constant.USER_NAME, USER_NAME);
+    innerMap.put(Constant.EMAIL, email);
     return innerMap;
   }
 
-  private String updateUserMapWithId() {
+  private String updateUserWithId() {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = createUserInnerMap();
-    innerMap.put("lastName", "ft_lastName_updated");
-    innerMap.put("id", userId);
-    innerMap.put("userId", userId);
-    innerMap.remove("userName");
-    requestMap.put("request", innerMap);
+    innerMap.put(Constant.LAST_NAME, "ft_lastName_updated");
+    innerMap.put(Constant.ID, userId);
+    innerMap.put(Constant.USER_ID, userId);
+    innerMap.remove(Constant.USER_NAME);
+    requestMap.put(Constant.REQUEST, innerMap);
 
     try {
       return objectMapper.writeValueAsString(requestMap);
@@ -469,14 +462,14 @@ public class UserTest extends TestNGCitrusTestDesigner {
     return null;
   }
 
-  private String updateUserMapWithRegOrgId() {
+  private String updateUserWithRegOrgId() {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = createUserInnerMap();
-    innerMap.put("lastName", "ft_lastName_updated");
-    innerMap.put("id", userId);
-    innerMap.put("userId", userId);
-    innerMap.put("regOrgId", "regOrgId");
-    requestMap.put("request", innerMap);
+    innerMap.put(Constant.LAST_NAME, "ft_lastName_updated");
+    innerMap.put(Constant.ID, userId);
+    innerMap.put(Constant.USER_ID, userId);
+    innerMap.put(Constant.REG_ORG_ID, "regOrgId");
+    requestMap.put(Constant.REQUEST, innerMap);
 
     try {
       return objectMapper.writeValueAsString(requestMap);
@@ -486,14 +479,14 @@ public class UserTest extends TestNGCitrusTestDesigner {
     return null;
   }
 
-  private String updateUserMapWithRootOrgId() {
+  private String updateUserWithRootOrgId() {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = createUserInnerMap();
-    innerMap.put("lastName", "ft_lastName_updated");
-    innerMap.put("id", userId);
-    innerMap.put("userId", userId);
-    innerMap.put("rootOrgId", "rootOrgId");
-    requestMap.put("request", innerMap);
+    innerMap.put(Constant.LAST_NAME, "ft_lastName_updated");
+    innerMap.put(Constant.ID, userId);
+    innerMap.put(Constant.USER_ID, userId);
+    innerMap.put(Constant.ROOT_ORG_ID, "rootOrgId");
+    requestMap.put(Constant.REQUEST, innerMap);
 
     try {
       return objectMapper.writeValueAsString(requestMap);
@@ -503,14 +496,14 @@ public class UserTest extends TestNGCitrusTestDesigner {
     return null;
   }
 
-  private String updateUserMapWithChannel() {
+  private String updateUserWithChannel() {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = createUserInnerMap();
-    innerMap.put("lastName", "ft_lastName_updated");
-    innerMap.put("id", userId);
-    innerMap.put("userId", userId);
-    innerMap.put("channel", "channel");
-    requestMap.put("request", innerMap);
+    innerMap.put(Constant.LAST_NAME, "ft_lastName_updated");
+    innerMap.put(Constant.ID, userId);
+    innerMap.put(Constant.USER_ID, userId);
+    innerMap.put(Constant.CHANNEL, "channel");
+    requestMap.put(Constant.REQUEST, innerMap);
 
     try {
       return objectMapper.writeValueAsString(requestMap);
@@ -520,14 +513,14 @@ public class UserTest extends TestNGCitrusTestDesigner {
     return null;
   }
 
-  private String updateUserMapWithExtIdAndProvider() {
+  private String updateUserWithExtIdAndProvider() {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = createUserInnerMap();
-    innerMap.put("lastName", "ft_lastName_updated_without_userid");
-    innerMap.remove("userName");
-    innerMap.put("externalId", externalId);
-    innerMap.put("provider", provider);
-    requestMap.put("request", innerMap);
+    innerMap.put(Constant.LAST_NAME, "ft_lastName_updated_without_userid");
+    innerMap.remove(Constant.USER_NAME);
+    innerMap.put(Constant.EXTERNAL_ID, externalId);
+    innerMap.put(Constant.PROVIDER, provider);
+    requestMap.put(Constant.REQUEST, innerMap);
 
     try {
       return objectMapper.writeValueAsString(requestMap);
