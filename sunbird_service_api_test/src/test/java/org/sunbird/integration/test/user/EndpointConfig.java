@@ -39,7 +39,7 @@ public class EndpointConfig {
     property.setEsPort(System.getenv("sunbird_es_port"));
     property.setIndexType(System.getenv("sunbird_es_index_type"));
     property.setIndex(System.getenv("sunbird_es_index"));
-    property.setSunbirdDefaultchannel(System.getenv("sunbird_default_channel"));
+    property.setSunbirdDefaultChannel(System.getenv("sunbird_default_channel"));
     return property;
   }
 
@@ -63,7 +63,7 @@ public class EndpointConfig {
     private String esPort;
     private String index;
     private String indexType;
-    private String sunbirdDefaultchannel;
+    private String sunbirdDefaultChannel;
 
     public String getApiKey() {
       return apiKey;
@@ -169,12 +169,12 @@ public class EndpointConfig {
       this.indexType = indexType;
     }
 
-    public String getSunbirdDefaultchannel() {
-      return sunbirdDefaultchannel;
+    public String getSunbirdDefaultChannel() {
+      return sunbirdDefaultChannel;
     }
 
-    public void setSunbirdDefaultchannel(String sunbirdDefaultchannel) {
-      this.sunbirdDefaultchannel = sunbirdDefaultchannel;
+    public void setSunbirdDefaultChannel(String sunbirdDefaultChannel) {
+      this.sunbirdDefaultChannel = sunbirdDefaultChannel;
     }
 
     @Override
@@ -202,6 +202,13 @@ public class EndpointConfig {
   }
 
   public static String val;
+  public static String externalId = "";
+  public static String provider = "";
+
+  static {
+    externalId = String.valueOf(System.currentTimeMillis());
+    provider = String.valueOf(System.currentTimeMillis() + 10);
+  }
 
   static {
     val = UUID.randomUUID().toString();
