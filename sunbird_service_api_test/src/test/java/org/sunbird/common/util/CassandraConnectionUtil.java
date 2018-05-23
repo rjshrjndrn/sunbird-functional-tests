@@ -1,7 +1,9 @@
 package org.sunbird.common.util;
 
 import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Cluster.Builder;
 import com.datastax.driver.core.Session;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * This class will provide the cassandra Session object to do the
@@ -21,9 +23,17 @@ public class CassandraConnectionUtil {
    * @param keySpace String
    * @return Session
    */
-	public static Session getCassandraSession(String ip, String port, String keySpace) {
+	public static Session getCassandraSession(String ip, String port, String keySpace, String userName, String password) {
 		if (session == null) {
-			Cluster cluster = Cluster.builder().addContactPoint(ip).withPort(Integer.parseInt(port)).build();
+			Cluster cluster = null;
+			Builder builder = Cluster.builder();
+			if(StringUtils.isNotEmpty(userName) && StringUtils.isNotEmpty(password)) {
+				builder = builder.addContactPoint(ip).withPort(Integer.parseInt(port))
+						.withCredentials(userName, password);
+			}else{
+				builder = builder.addContactPoint(ip).withPort(Integer.parseInt(port));
+			}
+			cluster = builder.build();
 			session = cluster.connect(keySpace);
 		}
 		return session;

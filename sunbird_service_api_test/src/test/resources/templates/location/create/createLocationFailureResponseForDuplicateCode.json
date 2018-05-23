@@ -1,0 +1,14 @@
+{
+  "id": "api.location.create",
+  "ver": "v1",
+  "ts": "@ignore@",
+  "params": {
+    "resmsgid": null,
+    "msgid": "@ignore@",
+    "err": "ALREADY_EXISTS",
+    "status": "ALREADY_EXISTS",
+    "errmsg": "@ignore@"
+  },
+  "responseCode": "CLIENT_ERROR",
+  "result": {}
+}

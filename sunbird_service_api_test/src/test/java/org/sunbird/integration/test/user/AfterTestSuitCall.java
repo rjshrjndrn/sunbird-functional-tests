@@ -40,7 +40,7 @@ public class AfterTestSuitCall extends TestRunnerAfterSuiteSupport {
 	 */
 	@Override
 	public void afterSuite(TestRunner arg0) {
-		System.out.println("After test method called" + initGlobalValues);
+		/*System.out.println("After test method called" + initGlobalValues);
 
 		List<String> userIds = collectAllCreatedUserList();
 		System.out.println("List of user ids that need to be deleted.." + userIds);
@@ -51,28 +51,7 @@ public class AfterTestSuitCall extends TestRunnerAfterSuiteSupport {
 			boolean deleteResponse = deleteDataFromES(initGlobalValues.getEsHost(), initGlobalValues.getEsPort(),
 					initGlobalValues.getIndex(), USER, k);
 			System.out.println("User delete response from ES ==" + deleteResponse);
-		}
-
-	}
-
-	/**
-	 * This method will make a call to elastic search to collect user details based
-	 * on provided id.
-	 * 
-	 * @param host
-	 *            String
-	 * @param port
-	 *            String
-	 * @param index
-	 *            String
-	 * @param type
-	 *            String
-	 * @param id
-	 *            String
-	 * @return String
-	 */
-	private String readDataFromES(String host, String port, String index, String type, String id) {
-		return HttpUtil.doGetOperation(createURL(host, port, index, type, id) + "/_source", null);
+		}*/
 	}
 
 	/**

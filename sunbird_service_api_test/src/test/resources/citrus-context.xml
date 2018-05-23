@@ -8,5 +8,5 @@ http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.citrusframework.org/schema/testcase
 http://www.citrusframework.org/schema/testcase/citrus-testcase.xsd">
 <spring:bean id="beforeTest"  class="org.sunbird.integration.test.user.BeforeTestSuitCall"/>
-<spring:bean id="afterTest"   class="org.sunbird.integration.test.user.AfterTestSuitCall"/>
+<spring:bean id="afterTest"   class="org.sunbird.integration.test.location.AfterTestSuitCall"/>
 </spring:beans>

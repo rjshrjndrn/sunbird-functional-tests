@@ -1,0 +1,14 @@
+{
+  "id": "api.location.delete",
+  "ver": "v1",
+  "ts": "@ignore@",
+  "params": {
+    "resmsgid": "@ignore@",
+    "msgid": "@ignore@",
+    "err": "INVALID_LOCATION_DELETE_REQUEST",
+    "status": "INVALID_LOCATION_DELETE_REQUEST",
+    "errmsg": "@ignore@"
+  },
+  "responseCode": "CLIENT_ERROR",
+  "result": {}
+}
