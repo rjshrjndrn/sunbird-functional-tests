@@ -370,6 +370,9 @@ public class LocationTest extends BaseCitrusTest {
 
 
   @CleanUp
+  /**
+   * Method to perform the cleanup after test suite completion.
+   */
   public static void cleanUp(){
     ElasticSearchCleanUp elasticSearchCleanUp = ElasticSearchCleanUp.getInstance();
     CassandraCleanUp cassandraCleanUp = CassandraCleanUp.getInstance();

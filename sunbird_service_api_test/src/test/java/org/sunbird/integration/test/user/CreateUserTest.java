@@ -281,6 +281,9 @@ public class CreateUserTest extends TestNGCitrusTestDesigner {
 	}
 
 	@CleanUp
+  /**
+   * Method to perform the cleanup after test suite completion.
+   */
 	public static void cleanUp(){
 	}
 }
