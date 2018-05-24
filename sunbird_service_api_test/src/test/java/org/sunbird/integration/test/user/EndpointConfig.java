@@ -1,7 +1,3 @@
-/*
- *
- */
-
 package org.sunbird.integration.test.user;
 
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
