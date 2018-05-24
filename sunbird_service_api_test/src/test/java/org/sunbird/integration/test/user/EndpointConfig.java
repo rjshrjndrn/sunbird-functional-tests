@@ -36,6 +36,7 @@ public class EndpointConfig {
     property.setIndexType(System.getenv("sunbird_es_index_type"));
     property.setIndex(System.getenv("sunbird_es_index"));
     property.setSunbirdDefaultChannel(System.getenv("sunbird_default_channel"));
+    property.setLmsUrl(System.getenv("test_base_url"));
     return property;
   }
 
@@ -44,7 +45,7 @@ public class EndpointConfig {
    *
    * @author Manzarul
    */
-  class TestGlobalProperty {
+  public class TestGlobalProperty {
 
     private String apiKey;
     private String keycloakAdminUser;
@@ -60,6 +61,8 @@ public class EndpointConfig {
     private String index;
     private String indexType;
     private String sunbirdDefaultChannel;
+    private String lmsUrl;
+    private String cassandraPassword;
 
     public String getApiKey() {
       return apiKey;
@@ -171,6 +174,22 @@ public class EndpointConfig {
 
     public void setSunbirdDefaultChannel(String sunbirdDefaultChannel) {
       this.sunbirdDefaultChannel = sunbirdDefaultChannel;
+    }
+
+    public String getLmsUrl() {
+      return lmsUrl;
+    }
+
+    public void setLmsUrl(String lmsUrl) {
+      this.lmsUrl = lmsUrl;
+    }
+
+    public String getCassandraPassword() {
+      return cassandraPassword;
+    }
+
+    public void setCassandraPassword(String cassandraPassword) {
+      this.cassandraPassword = cassandraPassword;
     }
 
     @Override

@@ -19,7 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.response.ResponseCode;
 import org.sunbird.common.util.Constant;
-import org.sunbird.common.util.ConstantKeys;
+import org.sunbird.common.util.Constants;
 import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -54,28 +54,28 @@ public class UserTest extends TestNGCitrusTestDesigner {
   public Object[][] createUserDataProvider() {
     return new Object[][] {
       new Object[] {
-        ConstantKeys.USER_TEMPLATE_LOCATION + "user_first_name_mandatory.json",
-        ConstantKeys.USER_TEMPLATE_LOCATION + "user_first_name_mandatory_response.json",
+        Constants.USER_TEMPLATE_LOCATION + "user_first_name_mandatory.json",
+        Constants.USER_TEMPLATE_LOCATION + "user_first_name_mandatory_response.json",
         "firstNameMandatoryTest"
       },
       new Object[] {
-        ConstantKeys.USER_TEMPLATE_LOCATION + "user_name_mandatory.json",
-        ConstantKeys.USER_TEMPLATE_LOCATION + "user_name_mandatory_response.json",
+        Constants.USER_TEMPLATE_LOCATION + "user_name_mandatory.json",
+        Constants.USER_TEMPLATE_LOCATION + "user_name_mandatory_response.json",
         "UserNameMandatory"
       },
       new Object[] {
-        ConstantKeys.USER_TEMPLATE_LOCATION + "user_invalid_role_type.json",
-        ConstantKeys.USER_TEMPLATE_LOCATION + "user_invalid_role_type_response.json",
+        Constants.USER_TEMPLATE_LOCATION + "user_invalid_role_type.json",
+        Constants.USER_TEMPLATE_LOCATION + "user_invalid_role_type_response.json",
         "invalidRoleType"
       },
       new Object[] {
-        ConstantKeys.USER_TEMPLATE_LOCATION + "user_invalid_language_type.json",
-        ConstantKeys.USER_TEMPLATE_LOCATION + "user_invalid_language_type_response.json",
+        Constants.USER_TEMPLATE_LOCATION + "user_invalid_language_type.json",
+        Constants.USER_TEMPLATE_LOCATION + "user_invalid_language_type_response.json",
         "invalidLanguageType"
       },
       new Object[] {
-        ConstantKeys.USER_TEMPLATE_LOCATION + "user_invalid_dob_format.json",
-        ConstantKeys.USER_TEMPLATE_LOCATION + "user_invalid_dob_response.json",
+        Constants.USER_TEMPLATE_LOCATION + "user_invalid_dob_format.json",
+        Constants.USER_TEMPLATE_LOCATION + "user_invalid_dob_response.json",
         "invalidDobFormat"
       }
     };
@@ -87,22 +87,22 @@ public class UserTest extends TestNGCitrusTestDesigner {
       new Object[] {createUserMap(), "usersuccessresponse.json", "createUser"},
       new Object[] {
         createUserWithDuplicateEmail(),
-        ConstantKeys.USER_TEMPLATE_LOCATION + "user_duplicate_email_response.json",
+        Constants.USER_TEMPLATE_LOCATION + "user_duplicate_email_response.json",
         "duplicateEmailTest"
       },
       new Object[] {
         createUserWithDuplicateUserName(),
-        ConstantKeys.USER_TEMPLATE_LOCATION + "user_username_exist_response.json",
+        Constants.USER_TEMPLATE_LOCATION + "user_username_exist_response.json",
         "duplicateUsernameTest"
       },
       new Object[] {
         createUserWithDuplicateExtIdAndProvider(),
-        ConstantKeys.USER_TEMPLATE_LOCATION + "user_already_exist_response.json",
+        Constants.USER_TEMPLATE_LOCATION + "user_already_exist_response.json",
         "duplicateExtIdAndProviderTest"
       },
       new Object[] {
         createUserWithInvalidChannel(),
-        ConstantKeys.USER_TEMPLATE_LOCATION + "invalid_channel_response.json",
+        Constants.USER_TEMPLATE_LOCATION + "invalid_channel_response.json",
         "invalidChannelTest"
       }
     };
@@ -119,17 +119,17 @@ public class UserTest extends TestNGCitrusTestDesigner {
       },
       new Object[] {
         updateUserWithRegOrgId(),
-        ConstantKeys.UPDATE_USER_TEMPLATE_LOCATION + "user_update_bad_request_response.json",
+        Constants.UPDATE_USER_TEMPLATE_LOCATION + "user_update_bad_request_response.json",
         "invalidRequestDataRegOrgIdTest"
       },
       new Object[] {
         updateUserWithRootOrgId(),
-        ConstantKeys.UPDATE_USER_TEMPLATE_LOCATION + "user_update_bad_request_response.json",
+        Constants.UPDATE_USER_TEMPLATE_LOCATION + "user_update_bad_request_response.json",
         "invalidRequestDataRootOrgIdTest"
       },
       new Object[] {
         updateUserWithChannel(),
-        ConstantKeys.UPDATE_USER_TEMPLATE_LOCATION + "user_update_bad_request_response.json",
+        Constants.UPDATE_USER_TEMPLATE_LOCATION + "user_update_bad_request_response.json",
         "invalidRequestDataChannelTest"
       }
     };
@@ -155,8 +155,8 @@ public class UserTest extends TestNGCitrusTestDesigner {
         .client(restTestClient)
         .send()
         .post(CREATE_USER_URI)
-        .contentType(ConstantKeys.CONTENT_TYPE_APPLICATION_JSON)
-        .header(ConstantKeys.AUTHORIZATION, ConstantKeys.BEARER + initGlobalValues.getApiKey())
+        .contentType(Constants.CONTENT_TYPE_APPLICATION_JSON)
+        .header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson);
     if (!"usersuccessresponse.json".equals(responseJson)) {
       http()
@@ -186,8 +186,8 @@ public class UserTest extends TestNGCitrusTestDesigner {
         .client(restTestClient)
         .send()
         .post(CREATE_USER_URI)
-        .contentType(ConstantKeys.CONTENT_TYPE_APPLICATION_JSON)
-        .header(ConstantKeys.AUTHORIZATION, ConstantKeys.BEARER + initGlobalValues.getApiKey())
+        .contentType(Constants.CONTENT_TYPE_APPLICATION_JSON)
+        .header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey())
         .payload(new ClassPathResource(requestJson));
     http()
         .client(restTestClient)
@@ -264,8 +264,8 @@ public class UserTest extends TestNGCitrusTestDesigner {
         .client(restTestClient)
         .send()
         .put("/auth/admin/realms/" + initGlobalValues.getRelam() + "/users/" + userId)
-        .header(ConstantKeys.AUTHORIZATION, ConstantKeys.BEARER + admin_token)
-        .contentType(ConstantKeys.CONTENT_TYPE_APPLICATION_JSON)
+        .header(Constants.AUTHORIZATION, Constants.BEARER + admin_token)
+        .contentType(Constants.CONTENT_TYPE_APPLICATION_JSON)
         .payload("{\"requiredActions\":[]}");
     http().client(restTestClient).receive().response(HttpStatus.NO_CONTENT);
   }
@@ -309,10 +309,10 @@ public class UserTest extends TestNGCitrusTestDesigner {
         .client(restTestClient)
         .send()
         .patch(UPDATE_USER_URI)
-        .contentType(ConstantKeys.CONTENT_TYPE_APPLICATION_JSON)
-        .header(ConstantKeys.AUTHORIZATION, ConstantKeys.BEARER + initGlobalValues.getApiKey())
+        .contentType(Constants.CONTENT_TYPE_APPLICATION_JSON)
+        .header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson)
-        .header(ConstantKeys.X_AUTHENTICATED_USER_TOKEN, user_auth_token);
+        .header(Constants.X_AUTHENTICATED_USER_TOKEN, user_auth_token);
     if (!"update_user_success_response.json".equals(responseJson)) {
       http()
           .client(restTestClient)
@@ -332,10 +332,10 @@ public class UserTest extends TestNGCitrusTestDesigner {
         .client(restTestClient)
         .send()
         .get("/v1/user/read/" + userId + "?Fields=completeness,missingFields,topic")
-        .accept(ConstantKeys.CONTENT_TYPE_APPLICATION_JSON)
-        .header(ConstantKeys.AUTHORIZATION, ConstantKeys.BEARER + initGlobalValues.getApiKey())
-        .contentType(ConstantKeys.CONTENT_TYPE_APPLICATION_JSON)
-        .header(ConstantKeys.X_AUTHENTICATED_USER_TOKEN, user_auth_token);
+        .accept(Constants.CONTENT_TYPE_APPLICATION_JSON)
+        .header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey())
+        .contentType(Constants.CONTENT_TYPE_APPLICATION_JSON)
+        .header(Constants.X_AUTHENTICATED_USER_TOKEN, user_auth_token);
     http()
         .client(restTestClient)
         .receive()
@@ -386,9 +386,8 @@ public class UserTest extends TestNGCitrusTestDesigner {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = createUserInnerMap();
     innerMap.put(
-        Constant.EMAIL,
-        ConstantKeys.USER_NAME_PREFIX + UUID.randomUUID().toString() + "@gmail.com");
-    innerMap.put(Constant.USER_NAME, ConstantKeys.USER_NAME_PREFIX + UUID.randomUUID().toString());
+        Constant.EMAIL, Constants.USER_NAME_PREFIX + UUID.randomUUID().toString() + "@gmail.com");
+    innerMap.put(Constant.USER_NAME, Constants.USER_NAME_PREFIX + UUID.randomUUID().toString());
     requestMap.put(Constant.REQUEST, innerMap);
     try {
       return objectMapper.writeValueAsString(requestMap);
@@ -402,9 +401,8 @@ public class UserTest extends TestNGCitrusTestDesigner {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = createUserInnerMap();
     innerMap.put(
-        Constant.EMAIL,
-        ConstantKeys.USER_NAME_PREFIX + UUID.randomUUID().toString() + "@gmail.com");
-    innerMap.put(Constant.USER_NAME, ConstantKeys.USER_NAME_PREFIX + UUID.randomUUID().toString());
+        Constant.EMAIL, Constants.USER_NAME_PREFIX + UUID.randomUUID().toString() + "@gmail.com");
+    innerMap.put(Constant.USER_NAME, Constants.USER_NAME_PREFIX + UUID.randomUUID().toString());
     innerMap.put(Constant.EXTERNAL_ID, externalId + 123);
     innerMap.put(Constant.PROVIDER, provider + 234);
     innerMap.put(Constant.CHANNEL, "functionalTest#Invalid$Channel@1235123");
@@ -421,8 +419,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = createUserInnerMap();
     innerMap.put(
-        Constant.EMAIL,
-        ConstantKeys.USER_NAME_PREFIX + UUID.randomUUID().toString() + "@gmail.com");
+        Constant.EMAIL, Constants.USER_NAME_PREFIX + UUID.randomUUID().toString() + "@gmail.com");
     requestMap.put(Constant.REQUEST, innerMap);
     try {
       return objectMapper.writeValueAsString(requestMap);
@@ -435,7 +432,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
   private String createUserWithDuplicateEmail() {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = createUserInnerMap();
-    innerMap.put(Constant.USER_NAME, ConstantKeys.USER_NAME_PREFIX + UUID.randomUUID().toString());
+    innerMap.put(Constant.USER_NAME, Constants.USER_NAME_PREFIX + UUID.randomUUID().toString());
     requestMap.put(Constant.REQUEST, innerMap);
     try {
       return objectMapper.writeValueAsString(requestMap);
@@ -452,8 +449,8 @@ public class UserTest extends TestNGCitrusTestDesigner {
     innerMap.put(Constant.PASSWORD, "password");
     innerMap.put(Constant.EXTERNAL_ID, externalId);
     innerMap.put(Constant.PROVIDER, provider);
-    USER_NAME = ConstantKeys.USER_NAME_PREFIX + EndpointConfig.val;
-    String email = ConstantKeys.USER_NAME_PREFIX + EndpointConfig.val + "@gmail.com";
+    USER_NAME = Constants.USER_NAME_PREFIX + EndpointConfig.val;
+    String email = Constants.USER_NAME_PREFIX + EndpointConfig.val + "@gmail.com";
     innerMap.put(Constant.USER_NAME, USER_NAME);
     innerMap.put(Constant.EMAIL, email);
     return innerMap;
