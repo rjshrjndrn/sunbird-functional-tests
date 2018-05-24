@@ -3,7 +3,7 @@
   "ver": "v1",
   "ts": "@ignore@",
   "params": {
-    "resmsgid": null,
+    "resmsgid": "@ignore@",
     "msgid": "@ignore@",
     "err": "ALREADY_EXISTS",
     "status": "ALREADY_EXISTS",

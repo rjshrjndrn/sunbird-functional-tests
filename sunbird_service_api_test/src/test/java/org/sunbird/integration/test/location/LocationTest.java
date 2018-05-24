@@ -45,9 +45,9 @@ public class LocationTest extends BaseCitrusTest {
   private static final String LOCATION_TEMPLATE_PATH_UPDATE = "templates/location/update/";
   private static final String LOCATION_TEMPLATE_PATH_DELETE = "templates/location/delete/";
 
-  private static final String STATE_CODE= "State-02";
+  private static final String STATE_CODE= "State-02-fuzzy";
   private static final String STATE_NAME= "State-0001-name";
-  private static final String DISTRICT_CODE="District-02";
+  private static final String DISTRICT_CODE="District-02-fuzzy";
   private static final String DISTRICT_NAME="District-0001-name";
   private static Stack<String> stack = new Stack();
 
@@ -58,64 +58,64 @@ public class LocationTest extends BaseCitrusTest {
   private TestGlobalProperty initGlobalValues;
   private ObjectMapper objectMapper = new ObjectMapper();
 
-  @DataProvider(name = "createStateLocationDynamicDataProvider")
-  public Object [] [] createStateLocationDynamicDataProvider () {
+  @DataProvider(name = "createStateDataProvider")
+  public Object [] [] createStateDataProvider () {
     return new Object [] [] {
-        new Object[] { createStateLocationMap(), LOCATION_TEMPLATE_PATH +"createLocationSuccessResponse.json", "createState" },
-        new Object[] { createStateLocationMap(), LOCATION_TEMPLATE_PATH +"createLocationFailureResponseForDuplicateCode.json", "createLocationStateWithDupicateCode" },
+        new Object[] { createStateLocationMap(), LOCATION_TEMPLATE_PATH +"create_location_success_response.json", "createState" },
+        new Object[] { createStateLocationMap(), LOCATION_TEMPLATE_PATH +"create_location_failure_response_for_duplicate_code.json", "createStateWithDuplicateCode" },
     };
   }
 
-  @DataProvider(name = "updateStateLocationDynamicDataProvider")
-  public Object [] [] updateStateLocationDynamicDataProvider () {
+  @DataProvider(name = "updateStateDataProvider")
+  public Object [] [] updateStateDataProvider () {
     return new Object [] [] {
         new Object[] { updateStateLocationMap(), LOCATION_TEMPLATE_PATH_UPDATE+"update_location_name_success_response.json", "updateLocationNameForState"},
-        new Object[] { updateStateLocationTypeMap(), LOCATION_TEMPLATE_PATH_UPDATE+"update_location_type_failure_response.json", "updateLocationNameForState"},
+        new Object[] { updateStateLocationTypeMap(), LOCATION_TEMPLATE_PATH_UPDATE+"update_location_type_failure_response.json", "updateLocationTypeForState"},
 
     };
   }
 
-  @DataProvider(name = "createDistrictLocationDynamicDataProvider")
-  public Object [] [] createDistrictLocationDynamicDataProvider () {
+  @DataProvider(name = "createDistrictDataProvider")
+  public Object [] [] createDistrictDataProvider () {
     return new Object [] [] {
 
-        new Object[] { createDistrictLocationMap(), LOCATION_TEMPLATE_PATH +"createLocationSuccessResponse.json", "createLocationDistrict" },
-        new Object[] { createDistrictLocationMap(), LOCATION_TEMPLATE_PATH +"createLocationFailureResponseForDuplicateCode.json", "createLocationDistrictWithDupicateCode" },
+        new Object[] { createDistrictLocationMap(), LOCATION_TEMPLATE_PATH +"create_location_success_response.json", "createDistrict" },
+        new Object[] { createDistrictLocationMap(), LOCATION_TEMPLATE_PATH +"create_location_failure_response_for_duplicate_code.json", "createDistrictWithDuplicateCode" },
     };
   }
 
-  @DataProvider(name = "updateDitrictLocationDynamicDataProvider")
-  public Object [] [] updateDitrictLocationDynamicDataProvider () {
+  @DataProvider(name = "updateDistrictDataProvider")
+  public Object [] [] updateDistrictDataProvider () {
     return new Object [] [] {
-        new Object[] { updateDistrictNameLocationMap(), LOCATION_TEMPLATE_PATH_UPDATE+"update_location_name_success_response.json", "updateLocationNameForDistrict"},
-        new Object[] { updateDistrictLocationTypeMap(), LOCATION_TEMPLATE_PATH_UPDATE+"update_location_type_failure_response.json", "updateLocationNameForDistrict"},
+        new Object[] { updateDistrictNameLocationMap(), LOCATION_TEMPLATE_PATH_UPDATE+"update_location_name_success_response.json", "updateNameForDistrict"},
+        new Object[] { updateDistrictLocationTypeMap(), LOCATION_TEMPLATE_PATH_UPDATE+"update_location_type_failure_response.json", "updateTypeForDistrict"},
 
     };
   }
 
-  @DataProvider(name = "deleteStateLocationDynamicDataProvider")
-  public Object [] [] deleteStateLocationDynamicDataProvider () {
+  @DataProvider(name = "deleteStateDataProvider")
+  public Object [] [] deleteStateDataProvider () {
     return new Object [] [] {
         new Object[] { LOCATION_TEMPLATE_PATH_DELETE +"delete_non_leaf_location_failure_response.json", "deleteNonLeafLocation" },
 
     };
   }
 
-  @DataProvider(name = "deleteDistrictLocationDynamicDataProvider")
-  public Object [] [] deleteDistrictLocationDynamicDataProvider () {
+  @DataProvider(name = "deleteDistrictDataProvider")
+  public Object [] [] deleteDistrictDataProvider () {
     return new Object [] [] {
         new Object[] { LOCATION_TEMPLATE_PATH_DELETE +"delete_location_with_invalid_id_failure_response.json", "deleteLocationWithInvalidId" },
         new Object[] { LOCATION_TEMPLATE_PATH_DELETE +"delete_location_success_response.json", "deleteLocationSuccess" },
     };
   }
 
-  @Test(dataProvider = "createStateLocationDynamicDataProvider", priority = 1)
+  @Test(dataProvider = "createStateDataProvider", priority = 1)
   @CitrusParameters({ "requestJson", "responseJson", "testName" })
   @CitrusTest
   /**
    * Method to test the create functionality of State type (root) location .The scenario are as -
    * 1. Successful creation of State type location.
-   * 2. Try to create state type location with same location code and expect ABD_REQUEST in response..
+   * 2. Try to create state type location with same location code and expect BAD_REQUEST in response.
    */
   public void testCreateLocationState(String requestJson, String responseJson, String testName) {
     try {
@@ -139,13 +139,13 @@ public class LocationTest extends BaseCitrusTest {
     }
   }
 
-  @Test(dataProvider = "updateStateLocationDynamicDataProvider", priority = 2)
+  @Test(dataProvider = "updateStateDataProvider", priority = 2)
   @CitrusParameters({ "requestJson", "responseJson", "testName" })
   @CitrusTest
   /**
    * Method to test the update functionality of State type (root) location .The scenario are as -
    * 1. Successful update of location name.
-   * 2. Try to update the type of location and expect ABD_REQUEST in response..
+   * 2. Try to update the type of location and expect BAD_REQUEST in response.
    */
   public void testUpdateStateLocation(String requestJson, String responseJson, String testName) {
     getTestCase().setName(testName);
@@ -159,13 +159,13 @@ public class LocationTest extends BaseCitrusTest {
     }
   }
 
-  @Test(dataProvider = "createDistrictLocationDynamicDataProvider", priority = 3)
+  @Test(dataProvider = "createDistrictDataProvider", priority = 3)
   @CitrusParameters({ "requestJson", "responseJson", "testName" })
   @CitrusTest
   /**
    * Method to test the create functionality of District type (intermediate) location .The scenario are as -
    * 1. Successful creation of District type location.
-   * 2. Try to create state type location with same location code and expect ABD_REQUEST in response..
+   * 2. Try to create district type location with same location code and expect BAD_REQUEST in response.
    */
   public void testCreateLocationDistrict(String requestJson, String responseJson, String testName) {
     try {
@@ -188,13 +188,13 @@ public class LocationTest extends BaseCitrusTest {
     }
   }
 
-  @Test(dataProvider = "updateDitrictLocationDynamicDataProvider", priority = 4)
+  @Test(dataProvider = "updateDistrictDataProvider", priority = 4)
   @CitrusParameters({ "requestJson", "responseJson", "testName" })
   @CitrusTest
   /**
    * Method to test the update functionality of District type location .The scenario are as -
    * 1. Successful update of location name.
-   * 2. Try to update the type of location and expect ABD_REQUEST in response..
+   * 2. Try to update the type of location and expect BAD_REQUEST in response.
    */
   public void testUpdateDistrictLocation(String requestJson, String responseJson, String testName) {
     getTestCase().setName(testName);
@@ -208,12 +208,12 @@ public class LocationTest extends BaseCitrusTest {
     }
   }
 
-  @Test(dataProvider = "deleteStateLocationDynamicDataProvider", priority = 5)
+  @Test(dataProvider = "deleteStateDataProvider", priority = 5)
   @CitrusParameters({"responseJson", "testName" })
   @CitrusTest
   /**
-   * Method to test the delete functionality of State(root) location .The scenario are as -
-   * 1. Try to delete the location and expect ABD_REQUEST since there is child node exist for the state.
+   * Method to test the delete functionality of State(root) type location .The scenario are as -
+   * 1. Try to delete the location and expect BAD_REQUEST since there is child node exist for the state.
    */
   public void testDeleteStateLocation(String responseJson, String testName) {
     getTestCase().setName(testName);
@@ -221,12 +221,12 @@ public class LocationTest extends BaseCitrusTest {
       http().client(restTestClient).receive().response(HttpStatus.BAD_REQUEST).payload(new ClassPathResource(responseJson));
   }
 
-  @Test(dataProvider = "deleteDistrictLocationDynamicDataProvider", priority = 6)
+  @Test(dataProvider = "deleteDistrictDataProvider", priority = 6)
   @CitrusParameters({"responseJson", "testName" })
   @CitrusTest
   /**
-   * Method to test the delete functionality of District(root) location .The scenario are as -
-   * 1. Try to delete the location with invalid location id and expect ABD_REQUEST .
+   * Method to test the delete functionality of District(intermediate) location .The scenario are as -
+   * 1. Try to delete the location with invalid location id and expect BAD_REQUEST .
    * 2. Delete district type location with success response.
    */
   public void testDeleteDistrictLocation(String responseJson, String testName) {
