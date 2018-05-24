@@ -16,9 +16,12 @@ import java.util.Stack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
+import org.sunbird.common.annotation.CleanUp;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.response.ResponseCode;
+import org.sunbird.common.util.CassandraCleanUp;
 import org.sunbird.common.util.Constants;
+import org.sunbird.common.util.ElasticSearchCleanUp;
 import org.sunbird.integration.test.common.BaseCitrusTest;
 import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 import org.testng.Assert;
@@ -363,6 +366,16 @@ public class LocationTest extends BaseCitrusTest {
       e.printStackTrace();
     }
     return null;
+  }
+
+
+  @CleanUp
+  public static void cleanUp(){
+    ElasticSearchCleanUp elasticSearchCleanUp = ElasticSearchCleanUp.getInstance();
+    CassandraCleanUp cassandraCleanUp = CassandraCleanUp.getInstance();
+
+    elasticSearchCleanUp.deleteFromElasticSearch(toDeleteEsRecordsMap);
+    cassandraCleanUp.deleteFromCassandra(toDeleteCassandraRecordsMap);
   }
 
 }

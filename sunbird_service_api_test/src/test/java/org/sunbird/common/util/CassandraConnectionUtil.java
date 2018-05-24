@@ -16,12 +16,15 @@ public class CassandraConnectionUtil {
   private static Session session;	
 	
   /**
-   * This method will take cassandra ip,port and keyspace and try to make the
-   * make the connection. once connection is established it will return Session.	
-   * @param ip String
-   * @param port String
-   * @param keySpace String
-   * @return Session
+   * This method will take cassandra ip,port and keyspace . User credentials  username and
+	 * password are not mandatory , if it is there will use credentials otherwise create
+	 * connection without user credentials. Once connection is established it will return Session.
+   * @param ip Represents the cassandra server ip address.
+   * @param port Represents the port on which cassandra service associated.
+   * @param keySpace Represents the cassandra keyspace name.
+	 * @param userName Represents the user credential - username.
+	 * @param password Represents the user credential - password.
+   * @return Session Session for cassandra.
    */
 	public static Session getCassandraSession(String ip, String port, String keySpace, String userName, String password) {
 		if (session == null) {

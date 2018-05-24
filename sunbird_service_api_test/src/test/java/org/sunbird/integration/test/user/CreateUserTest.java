@@ -13,6 +13,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
+import org.sunbird.common.annotation.CleanUp;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.response.ResponseCode;
 import org.sunbird.common.util.Constants;
@@ -277,5 +278,9 @@ public class CreateUserTest extends TestNGCitrusTestDesigner {
 		innerMap.put("userName", USER_NAME);
 		innerMap.put("email", email);
 		return innerMap;
+	}
+
+	@CleanUp
+	public static void cleanUp(){
 	}
 }

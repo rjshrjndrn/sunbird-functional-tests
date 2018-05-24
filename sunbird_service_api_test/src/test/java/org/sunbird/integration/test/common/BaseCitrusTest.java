@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by arvind on 22/5/18.
+ * Class to contain the common things for all citrus  tests.
+ * @author arvind.
  */
 public class BaseCitrusTest extends TestNGCitrusTestDesigner {
 
