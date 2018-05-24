@@ -139,6 +139,13 @@ public class UserTest extends TestNGCitrusTestDesigner {
   @Autowired private TestGlobalProperty initGlobalValues;
   private ObjectMapper objectMapper = new ObjectMapper();
 
+  /**
+   * Test for create user.
+   *
+   * @param requestJson
+   * @param responseJson
+   * @param testName
+   */
   @Test(dataProvider = "createUserDynamicDataProvider", priority = 1)
   @CitrusParameters({"requestJson", "responseJson", "testName"})
   @CitrusTest
@@ -163,6 +170,13 @@ public class UserTest extends TestNGCitrusTestDesigner {
     }
   }
 
+  /**
+   * Test create user for negative scenario.
+   *
+   * @param requestJson
+   * @param responseJson
+   * @param testName
+   */
   @Test(dataProvider = "createUserDataProvider", priority = 2)
   @CitrusParameters({"requestJson", "responseJson", "testName"})
   @CitrusTest
