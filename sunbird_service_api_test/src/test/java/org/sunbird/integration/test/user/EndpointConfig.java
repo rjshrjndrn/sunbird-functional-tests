@@ -48,6 +48,7 @@ public class EndpointConfig {
 		property.setIndexType(System.getenv("sunbird_es_index_type"));
 		property.setIndex(System.getenv("sunbird_es_index"));
 		property.setLmsUrl(System.getenv("test_base_url"));
+		property.setEsRestApiPort(System.getenv("sunbird_es_rest_api_port"));
 		return property;
 	}
 
@@ -75,6 +76,7 @@ public class EndpointConfig {
 		private String indexType;
 		private String lmsUrl;
 		private String cassandraPassword;
+		private String esRestApiPort;
 
 		public String getApiKey() {
 			return apiKey;
@@ -202,6 +204,14 @@ public class EndpointConfig {
 
 		public void setCassandraPassword(String cassandraPassword) {
 			this.cassandraPassword = cassandraPassword;
+		}
+
+		public String getEsRestApiPort() {
+			return esRestApiPort;
+		}
+
+		public void setEsRestApiPort(String esRestApiPort) {
+			this.esRestApiPort = esRestApiPort;
 		}
 
 		@Override

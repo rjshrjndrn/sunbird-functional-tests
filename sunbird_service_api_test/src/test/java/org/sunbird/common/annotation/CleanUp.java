@@ -6,8 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author arvind.
  * Method level annotation to denote the method as clean up method.
+ * @author arvind.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

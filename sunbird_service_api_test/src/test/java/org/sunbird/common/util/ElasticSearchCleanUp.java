@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 
 /**
- * Created by arvind on 24/5/18.
+ * Class to perform the clean up from elastic search.
+ * @author arvind.
  */
 public class ElasticSearchCleanUp {
 
@@ -30,10 +31,9 @@ public class ElasticSearchCleanUp {
     map.forEach((k, v) -> {
       if (v != null)
         for (String value : v) {
-          boolean response = deleteDataFromES(initGlobalValues.getEsHost(), "9200",
+          boolean response = deleteDataFromES(initGlobalValues.getEsHost(), initGlobalValues.getEsRestApiPort(),
               initGlobalValues.getIndex(), k, value);
-          System.out.println("Deleted response from ES for Type and id ==" + k + " " + v + " " + response);
-        }
+           }
     });
   }
 
@@ -60,7 +60,6 @@ public class ElasticSearchCleanUp {
     StringBuilder builder = new StringBuilder("http://");
     builder.append(host);
     builder.append(":" + port + "/" + index + "/" + type + "/" + id);
-    System.out.println("Complete url is ===" + builder.toString());
     return builder.toString();
   }
 

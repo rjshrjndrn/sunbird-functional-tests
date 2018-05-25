@@ -249,8 +249,8 @@ public class LocationTest extends BaseCitrusTest {
           public void validate(Response response, Map<String, Object> headers, TestContext context) {
             Assert.assertNotNull(response.getId());
             Assert.assertEquals(response.getResponseCode(), ResponseCode.OK);
-            Assert.assertNotNull(response.getResult().get("response"));
-            String locationId = (String) response.getResult().get("id");
+            Assert.assertNotNull(response.getResult().get(Constants.RESPONSE));
+            String locationId = (String) response.getResult().get(Constants.ID);
             Assert.assertNotNull(locationId);
             if(locationType.equalsIgnoreCase("state")){
               stateLocationId = locationId;
@@ -281,12 +281,12 @@ public class LocationTest extends BaseCitrusTest {
   private String createStateLocationMap() {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = new HashMap<>();
-    innerMap.put("code", STATE_CODE);
-    innerMap.put("name", STATE_NAME);
-    innerMap.put("parentCode", null);
-    innerMap.put("type", "state");
-    innerMap.put("parentId", null);
-    requestMap.put("request", innerMap);
+    innerMap.put(Constants.CODE, STATE_CODE);
+    innerMap.put(Constants.NAME, STATE_NAME);
+    innerMap.put(Constants.PARENT_CODE, null);
+    innerMap.put(Constants.LOCATION_TYPE, "state");
+    innerMap.put(Constants.PARENT_ID, null);
+    requestMap.put(Constants.REQUEST, innerMap);
     try {
       return objectMapper.writeValueAsString(requestMap);
     } catch (JsonProcessingException e) {
@@ -299,11 +299,11 @@ public class LocationTest extends BaseCitrusTest {
 
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = new HashMap<>();
-    innerMap.put("code", DISTRICT_CODE);
-    innerMap.put("name", DISTRICT_NAME);
-    innerMap.put("type", "district");
-    innerMap.put("parentCode", STATE_CODE);
-    requestMap.put("request", innerMap);
+    innerMap.put(Constants.CODE, DISTRICT_CODE);
+    innerMap.put(Constants.NAME, DISTRICT_NAME);
+    innerMap.put(Constants.LOCATION_TYPE, "district");
+    innerMap.put(Constants.PARENT_CODE, STATE_CODE);
+    requestMap.put(Constants.REQUEST, innerMap);
     try {
       return objectMapper.writeValueAsString(requestMap);
     } catch (JsonProcessingException e) {
@@ -315,9 +315,9 @@ public class LocationTest extends BaseCitrusTest {
   private Object updateStateLocationMap() {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = new HashMap<>();
-    innerMap.put("name", STATE_NAME+01);
-    innerMap.put("id", stateLocationId);
-    requestMap.put("request", innerMap);
+    innerMap.put(Constants.NAME, STATE_NAME+01);
+    innerMap.put(Constants.ID, stateLocationId);
+    requestMap.put(Constants.REQUEST, innerMap);
     try {
       return objectMapper.writeValueAsString(requestMap);
     } catch (JsonProcessingException e) {
@@ -329,9 +329,9 @@ public class LocationTest extends BaseCitrusTest {
   private Object updateStateLocationTypeMap() {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = new HashMap<>();
-    innerMap.put("type", "district");
-    innerMap.put("id", stateLocationId);
-    requestMap.put("request", innerMap);
+    innerMap.put(Constants.LOCATION_TYPE, "district");
+    innerMap.put(Constants.ID, stateLocationId);
+    requestMap.put(Constants.REQUEST, innerMap);
     try {
       return objectMapper.writeValueAsString(requestMap);
     } catch (JsonProcessingException e) {
@@ -343,9 +343,9 @@ public class LocationTest extends BaseCitrusTest {
   private Object updateDistrictNameLocationMap() {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = new HashMap<>();
-    innerMap.put("name", DISTRICT_NAME+01);
-    innerMap.put("id", districtLocationId);
-    requestMap.put("request", innerMap);
+    innerMap.put(Constants.NAME, DISTRICT_NAME+01);
+    innerMap.put(Constants.ID, districtLocationId);
+    requestMap.put(Constants.REQUEST, innerMap);
     try {
       return objectMapper.writeValueAsString(requestMap);
     } catch (JsonProcessingException e) {
@@ -357,9 +357,9 @@ public class LocationTest extends BaseCitrusTest {
   private Object updateDistrictLocationTypeMap() {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = new HashMap<>();
-    innerMap.put("type", "state");
-    innerMap.put("id", districtLocationId);
-    requestMap.put("request", innerMap);
+    innerMap.put(Constants.LOCATION_TYPE, "state");
+    innerMap.put(Constants.ID, districtLocationId);
+    requestMap.put(Constants.REQUEST, innerMap);
     try {
       return objectMapper.writeValueAsString(requestMap);
     } catch (JsonProcessingException e) {

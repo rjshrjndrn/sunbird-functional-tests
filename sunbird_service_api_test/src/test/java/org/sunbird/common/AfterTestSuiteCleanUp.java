@@ -11,6 +11,8 @@ import org.sunbird.common.annotation.CleanUp;
 import org.sunbird.common.util.CleanUpUtil;
 
 /**
+ * Class to provide the functionality for after test suite clean
+ * by calling the clean up methods.
  * @author arvind.
  */
 public class AfterTestSuiteCleanUp  extends TestRunnerAfterSuiteSupport {
@@ -19,8 +21,13 @@ public class AfterTestSuiteCleanUp  extends TestRunnerAfterSuiteSupport {
   private final String PACKAGE_TO_SCAN_FOR_CLEANUP = "org.sunbird.integration.test";
 
   @Override
+  /**
+   * Method will scan the specified package and identify
+   * all the classes eligible for clean and perform
+   * after test suite tasks by calling the clean up method.
+   */
   public void afterSuite(TestRunner testRunner) {
-    System.out.println("AFTER TEST SUITE STARTED");
+
     List<Class> clazzList = null;
 
     try {
@@ -34,8 +41,6 @@ public class AfterTestSuiteCleanUp  extends TestRunnerAfterSuiteSupport {
       e.printStackTrace();
     }
 
-    System.out.println("AFTER CLEAN UP COMPLETED .");
-
   }
 
   private void performMethodAnnotationChecking(List<Class> clazzList) {
@@ -45,7 +50,6 @@ public class AfterTestSuiteCleanUp  extends TestRunnerAfterSuiteSupport {
       {
         if (method.isAnnotationPresent(CleanUp.class))
         {
-          System.out.println("class name : "+clazz.getName()+" method name "+method.getName());
           try {
             method.invoke(null);
           } catch (IllegalAccessException e) {

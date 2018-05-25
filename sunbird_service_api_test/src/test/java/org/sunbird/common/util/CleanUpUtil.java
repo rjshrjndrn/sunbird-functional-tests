@@ -10,7 +10,9 @@ import java.util.Enumeration;
 import java.util.List;
 
 /**
- * Created by arvind on 24/5/18.
+ * Method to provide the clean up util like scanning the classes eligible for
+ * cleanup .
+ * @author arvind.
  */
 public class CleanUpUtil {
 
