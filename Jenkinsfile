@@ -12,6 +12,7 @@ pipeline {
         sunbird_es_host = "10.10.3.7"
         sunbird_es_port = "9300"
         sunbird_es_index = "searchindex"
+        sunbird_test_base_url = "https://dev.open-sunbird.org"
     }
 
     agent { label "build-slave" }
