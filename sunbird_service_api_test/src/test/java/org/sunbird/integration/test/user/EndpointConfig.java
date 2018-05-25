@@ -16,7 +16,10 @@ public class EndpointConfig {
 
   @Bean
   public HttpClient restTestClient() {
-    return CitrusEndpoints.http().client().requestUrl(System.getenv("test_base_url")).build();
+    return CitrusEndpoints.http()
+        .client()
+        .requestUrl(System.getenv("sunbird_test_base_url"))
+        .build();
   }
 
   @Bean
