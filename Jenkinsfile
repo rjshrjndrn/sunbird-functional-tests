@@ -1,6 +1,6 @@
 pipeline {
     environment {
-        sunbird_api_key_secrets = "${sunbird_api_keys}"
+        sunbird_api_key = "${sunbird_api_keys}"
         sunbird_cassandra_host = "10.10.4.4"
         sunbird_cassandra_port = "9042"
         sunbird_cassandra_username = "cassandra"
