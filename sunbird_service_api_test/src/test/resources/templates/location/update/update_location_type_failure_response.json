@@ -1,0 +1,14 @@
+{
+  "id": "api.location.update",
+  "ver": "v1",
+  "ts": "@ignore@",
+  "params": {
+    "resmsgid": "@ignore@",
+    "msgid": "@ignore@",
+    "err": "UPDATE_NOT_ALLOWED",
+    "status": "UPDATE_NOT_ALLOWED",
+    "errmsg": "@ignore@"
+  },
+  "responseCode": "CLIENT_ERROR",
+  "result": {}
+}
