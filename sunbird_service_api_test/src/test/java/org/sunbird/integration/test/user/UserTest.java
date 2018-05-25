@@ -231,7 +231,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
     http()
         .client(restTestClient)
         .send()
-        .post("/auth/realms/master/protocol/openid-connect/token")
+        .post("/auth/realms/" + initGlobalValues.getRelam() + "/protocol/openid-connect/token")
         .contentType("application/x-www-form-urlencoded")
         .payload(
             "client_id=admin-cli&username="
