@@ -27,7 +27,7 @@ public class CreateIssuerTest extends TestNGCitrusTestDesigner {
   private String getCreateIssuerUrl() {
     return initGlobalValues.getLmsUrl().contains("localhost")
         ? "/v1/issuer/create"
-        : "/badging/v1/issuer/create";
+        : "/api/badging/v1/issuer/create";
   }
 
   private void performTest(

@@ -31,7 +31,6 @@ import org.testng.annotations.Test;
  *
  * @author Manzarul
  */
-@Test()
 public class UserTest extends TestNGCitrusTestDesigner {
 
   private static String userId = null;
@@ -146,7 +145,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
    * @param responseJson
    * @param testName
    */
-  @Test(dataProvider = "createUserDynamicDataProvider", priority = 1)
+  @Test(dataProvider = "createUserDynamicDataProvider")
   @CitrusParameters({"requestJson", "responseJson", "testName"})
   @CitrusTest
   public void testCreateUser(String requestJson, String responseJson, String testName) {
@@ -177,11 +176,12 @@ public class UserTest extends TestNGCitrusTestDesigner {
    * @param responseJson
    * @param testName
    */
-  @Test(dataProvider = "createUserDataProvider", priority = 2)
+  @Test(dataProvider = "createUserDataProvider")
   @CitrusParameters({"requestJson", "responseJson", "testName"})
   @CitrusTest
   public void testCreateUserFailure(String requestJson, String responseJson, String testName) {
     getTestCase().setName(testName);
+    System.out.println("testCreateUserFailure method called...");
     http()
         .client(restTestClient)
         .send()
@@ -218,7 +218,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
             });
   }
 
-  @Test(priority = 3)
+  @Test()
   @CitrusTest
   /**
    * Key cloak admin token generation is required , because on sunbird dev server after creating
@@ -253,7 +253,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
             });
   }
 
-  @Test(priority = 4)
+  @Test(dependsOnMethods = {"testCreateUser", "getAdminAuthToken"})
   @CitrusTest
   /**
    * This method will disable user required action change password under keyCloak. after disabling
@@ -270,7 +270,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
     http().client(restTestClient).receive().response(HttpStatus.NO_CONTENT);
   }
 
-  @Test(priority = 5)
+  @Test(dependsOnMethods = {"updateUserRequiredLoginActionTest"})
   @CitrusTest
   public void getAuthToken() {
     http()
@@ -300,7 +300,13 @@ public class UserTest extends TestNGCitrusTestDesigner {
             });
   }
 
-  @Test(dataProvider = "updateUserDataProvider", priority = 6)
+  @Test(
+    dataProvider = "updateUserDataProvider",
+    dependsOnMethods = {
+      "testCreateUser",
+      "getAuthToken",
+    }
+  )
   @CitrusParameters({"requestJson", "responseJson", "testName"})
   @CitrusTest
   public void testUpdateUser(String requestJson, String responseJson, String testName) {
@@ -325,13 +331,13 @@ public class UserTest extends TestNGCitrusTestDesigner {
     }
   }
 
-  @Test(priority = 7)
+  @Test(dependsOnMethods = {"getAuthToken"})
   @CitrusTest
   public void getUserTest() {
     http()
         .client(restTestClient)
         .send()
-        .get("/v1/user/read/" + userId + "?Fields=completeness,missingFields,topic")
+        .get("/api/user/v1/read/" + userId + "?Fields=completeness,missingFields,topic")
         .accept(Constants.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey())
         .contentType(Constants.CONTENT_TYPE_APPLICATION_JSON)
