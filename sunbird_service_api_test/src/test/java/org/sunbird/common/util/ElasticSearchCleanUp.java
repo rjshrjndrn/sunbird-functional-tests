@@ -31,7 +31,7 @@ public class ElasticSearchCleanUp {
     map.forEach((k, v) -> {
       if (v != null)
         for (String value : v) {
-          boolean response = deleteDataFromES(initGlobalValues.getEsHost(), initGlobalValues.getEsRestApiPort(),
+          boolean response = deleteDataFromES(initGlobalValues.getEsHost(), Constants.ES_REST_API_PORT,
               initGlobalValues.getIndex(), k, value);
            }
     });
