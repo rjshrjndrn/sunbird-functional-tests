@@ -16,7 +16,10 @@ public class EndpointConfig {
 
   @Bean
   public HttpClient restTestClient() {
-    return CitrusEndpoints.http().client().requestUrl("https://dev.open-sunbird.org").build();
+    return CitrusEndpoints.http()
+        .client()
+        .requestUrl(System.getenv("sunbird_test_base_url"))
+        .build();
   }
 
   @Bean
@@ -35,8 +38,9 @@ public class EndpointConfig {
     property.setEsPort(System.getenv("sunbird_es_port"));
     property.setIndexType(System.getenv("sunbird_es_index_type"));
     property.setIndex(System.getenv("sunbird_es_index"));
-    property.setSunbirdDefaultChannel(System.getenv("sunbird_default_channel"));
-    property.setLmsUrl(System.getenv("test_base_url"));
+    // System.getenv("sunbird_default_channel")
+    property.setSunbirdDefaultChannel("sunbird-dev");
+    property.setLmsUrl(System.getenv("sunbird_test_base_url"));
     return property;
   }
 
