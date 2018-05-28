@@ -6,9 +6,9 @@
 {
 "resmsgid":null,
 "msgid":"@ignore@",
-"err":"USER_ALREADY_EXIST",
-"status":"USER_ALREADY_EXIST",
-"errmsg":"user already exist."
+"err":"USER_ALREADY_EXISTS",
+"status":"USER_ALREADY_EXISTS",
+"errmsg":"@ignore@"
 }
 ,"responseCode":"CLIENT_ERROR",
 "result":{}
