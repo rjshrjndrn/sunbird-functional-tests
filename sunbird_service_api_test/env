@@ -14,3 +14,5 @@
 | sunbird_es_port            | Elastic search port , required to delete test data
 | sunbird_es_index_type      | Need to discuss
 | sunbird_es_index           | Elastic search index name.
+| sunbird_test_base_url      | https://dev.open-sunbird.org 
+| sunbird_default_channel    | sunbird-dev

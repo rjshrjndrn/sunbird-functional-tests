@@ -19,4 +19,5 @@ public class Constants {
 	public static final String REQUEST = "request";
 	public static final String RESPONSE = "response";
 	public static final String ES_REST_API_PORT = "9200";
+	public static final String MULTIPART_FILE_NAME = "file";
 }
