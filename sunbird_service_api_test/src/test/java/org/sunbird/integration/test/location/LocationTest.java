@@ -22,6 +22,7 @@ import org.sunbird.common.models.response.ResponseCode;
 import org.sunbird.common.util.CassandraCleanUp;
 import org.sunbird.common.util.Constants;
 import org.sunbird.common.util.ElasticSearchCleanUp;
+import org.sunbird.common.util.HttpUtil;
 import org.sunbird.integration.test.common.BaseCitrusTest;
 import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 import org.testng.Assert;
@@ -30,247 +31,419 @@ import org.testng.annotations.Test;
 
 /**
  * Class contains functional test cases for location APIs.
+ *
  * @author arvind.
  */
 public class LocationTest extends BaseCitrusTest {
 
-
   private static String stateLocationId = null;
 
   private static String districtLocationId = null;
-  private static final String CREATE_LOCATION_URI = "/v1/location/create";
-  private static final String UPDATE_LOCATION_URI = "/v1/location/update";
-  private static final String DELETE_LOCATION_URI = "/v1/location/delete";
+  private static final String CREATE_LOCATION_URI = "/api/data/v1/location/create";
+  private static final String UPDATE_LOCATION_URI = "/api/data/v1/location/update";
+  private static final String DELETE_LOCATION_URI = "/api/data/v1/location/delete";
+  private static final String BULK_UPLOAD_LOCATION_URI = "/api/data/v1/bulk/location/upload";
   private static final String LOCATION_TEMPLATE_PATH = "templates/location/create/";
   private static final String LOCATION_TEMPLATE_PATH_UPDATE = "templates/location/update/";
   private static final String LOCATION_TEMPLATE_PATH_DELETE = "templates/location/delete/";
+  private static final String  TEST_DIR_BULK_UPLOAD_LOCATION_SUCCESS = "templates/location/bulkupload/state/success/";
+  private static final String  TEST_DIR_BULK_UPLOAD_LOCATION_FAILURE = "templates/location/bulkupload/state/failure/";
 
-  private static final String STATE_CODE= "State-02-fuzzy";
-  private static final String STATE_NAME= "State-0001-name";
-  private static final String DISTRICT_CODE="District-02-fuzzy";
-  private static final String DISTRICT_NAME="District-0001-name";
+  public static final String REQUEST_FORM_DATA = "request.params";
+  public static final String RESPONSE_JSON = "response.json";
+
+  private static final String STATE_CODE =
+      "State-02-fuzzy-" + String.valueOf(System.currentTimeMillis());
+  private static final String STATE_NAME = "State-0001-name";
+  private static final String DISTRICT_CODE =
+      "District-02-fuzzy-" + String.valueOf(System.currentTimeMillis());
+  private static final String DISTRICT_NAME = "District-0001-name";
   private static Stack<String> stack = new Stack();
 
-
-  @Autowired
-  private HttpClient restTestClient;
-  @Autowired
-  private TestGlobalProperty initGlobalValues;
+  @Autowired private HttpClient restTestClient;
+  @Autowired private TestGlobalProperty initGlobalValues;
   private ObjectMapper objectMapper = new ObjectMapper();
 
   @DataProvider(name = "createStateDataProvider")
-  public Object [] [] createStateDataProvider () {
-    return new Object [] [] {
-        new Object[] { createStateLocationMap(), LOCATION_TEMPLATE_PATH +"create_location_success_response.json", "createState" },
-        new Object[] { createStateLocationMap(), LOCATION_TEMPLATE_PATH +"create_location_failure_response_for_duplicate_code.json", "createStateWithDuplicateCode" },
+  public Object[][] createStateDataProvider() {
+    return new Object[][] {
+      new Object[] {
+        createStateLocationMap(),
+        LOCATION_TEMPLATE_PATH + "create_location_success_response.json",
+        "createState"
+      },
+      new Object[] {
+        createStateLocationMap(),
+        LOCATION_TEMPLATE_PATH + "create_location_failure_response_for_duplicate_code.json",
+        "createStateWithDuplicateCode"
+      },
     };
   }
 
   @DataProvider(name = "updateStateDataProvider")
-  public Object [] [] updateStateDataProvider () {
-    return new Object [] [] {
-        new Object[] { updateStateLocationMap(), LOCATION_TEMPLATE_PATH_UPDATE+"update_location_name_success_response.json", "updateLocationNameForState"},
-        new Object[] { updateStateLocationTypeMap(), LOCATION_TEMPLATE_PATH_UPDATE+"update_location_type_failure_response.json", "updateLocationTypeForState"},
-
+  public Object[][] updateStateDataProvider() {
+    return new Object[][] {
+      new Object[] {
+        updateStateLocationMap(),
+        LOCATION_TEMPLATE_PATH_UPDATE + "update_location_name_success_response.json",
+        "updateLocationNameForState"
+      },
+      new Object[] {
+        updateStateLocationTypeMap(),
+        LOCATION_TEMPLATE_PATH_UPDATE + "update_location_type_failure_response.json",
+        "updateLocationTypeForState"
+      },
     };
   }
 
   @DataProvider(name = "createDistrictDataProvider")
-  public Object [] [] createDistrictDataProvider () {
-    return new Object [] [] {
-
-        new Object[] { createDistrictLocationMap(), LOCATION_TEMPLATE_PATH +"create_location_success_response.json", "createDistrict" },
-        new Object[] { createDistrictLocationMap(), LOCATION_TEMPLATE_PATH +"create_location_failure_response_for_duplicate_code.json", "createDistrictWithDuplicateCode" },
+  public Object[][] createDistrictDataProvider() {
+    return new Object[][] {
+      new Object[] {
+        createDistrictLocationMap(),
+        LOCATION_TEMPLATE_PATH + "create_location_success_response.json",
+        "createDistrict"
+      },
+      new Object[] {
+        createDistrictLocationMap(),
+        LOCATION_TEMPLATE_PATH + "create_location_failure_response_for_duplicate_code.json",
+        "createDistrictWithDuplicateCode"
+      },
     };
   }
 
   @DataProvider(name = "updateDistrictDataProvider")
-  public Object [] [] updateDistrictDataProvider () {
-    return new Object [] [] {
-        new Object[] { updateDistrictNameLocationMap(), LOCATION_TEMPLATE_PATH_UPDATE+"update_location_name_success_response.json", "updateNameForDistrict"},
-        new Object[] { updateDistrictLocationTypeMap(), LOCATION_TEMPLATE_PATH_UPDATE+"update_location_type_failure_response.json", "updateTypeForDistrict"},
-
+  public Object[][] updateDistrictDataProvider() {
+    return new Object[][] {
+      new Object[] {
+        updateDistrictNameLocationMap(),
+        LOCATION_TEMPLATE_PATH_UPDATE + "update_location_name_success_response.json",
+        "updateNameForDistrict"
+      },
+      new Object[] {
+        updateDistrictLocationTypeMap(),
+        LOCATION_TEMPLATE_PATH_UPDATE + "update_location_type_failure_response.json",
+        "updateTypeForDistrict"
+      },
     };
   }
 
   @DataProvider(name = "deleteStateDataProvider")
-  public Object [] [] deleteStateDataProvider () {
-    return new Object [] [] {
-        new Object[] { LOCATION_TEMPLATE_PATH_DELETE +"delete_non_leaf_location_failure_response.json", "deleteNonLeafLocation" },
-
+  public Object[][] deleteStateDataProvider() {
+    return new Object[][] {
+      new Object[] {
+        LOCATION_TEMPLATE_PATH_DELETE + "delete_non_leaf_location_failure_response.json",
+        "deleteNonLeafLocation"
+      },
     };
   }
 
   @DataProvider(name = "deleteDistrictDataProvider")
-  public Object [] [] deleteDistrictDataProvider () {
-    return new Object [] [] {
-        new Object[] { LOCATION_TEMPLATE_PATH_DELETE +"delete_location_with_invalid_id_failure_response.json", "deleteLocationWithInvalidId" },
-        new Object[] { LOCATION_TEMPLATE_PATH_DELETE +"delete_location_success_response.json", "deleteLocationSuccess" },
+  public Object[][] deleteDistrictDataProvider() {
+    return new Object[][] {
+      new Object[] {
+        LOCATION_TEMPLATE_PATH_DELETE + "delete_location_with_invalid_id_failure_response.json",
+        "deleteLocationWithInvalidId"
+      },
+      new Object[] {
+        LOCATION_TEMPLATE_PATH_DELETE + "delete_location_success_response.json",
+        "deleteLocationSuccess"
+      },
     };
   }
 
-  @Test(dataProvider = "createStateDataProvider", priority = 1)
-  @CitrusParameters({ "requestJson", "responseJson", "testName" })
+  @DataProvider(name = "stateBulkUploadDataProvider")
+  public Object[][] stateBulkUploadDataProvider() {
+    return new Object[][] {
+        new Object[]{
+            TEST_DIR_BULK_UPLOAD_LOCATION_SUCCESS + REQUEST_FORM_DATA,
+            TEST_DIR_BULK_UPLOAD_LOCATION_SUCCESS + RESPONSE_JSON,
+            "stateBulkUploadSuccess"
+        },
+        new Object[]{
+            TEST_DIR_BULK_UPLOAD_LOCATION_FAILURE + REQUEST_FORM_DATA,
+            TEST_DIR_BULK_UPLOAD_LOCATION_FAILURE + RESPONSE_JSON,
+            "stateBulkUploadWithoutMandatoryParams"
+        }
+    };
+  }
+
+  @Test(dataProvider = "createStateDataProvider")
+  @CitrusParameters({"requestJson", "responseJson", "testName"})
   @CitrusTest
   /**
-   * Method to test the create functionality of State type (root) location .The scenario are as -
-   * 1. Successful creation of State type location.
-   * 2. Try to create state type location with same location code and expect BAD_REQUEST in response.
+   * Method to test the create functionality of State type (root) location .The scenario are as - 1.
+   * Successful creation of State type location. 2. Try to create state type location with same
+   * location code and expect BAD_REQUEST in response.
    */
   public void testCreateLocationState(String requestJson, String responseJson, String testName) {
     try {
       Thread.sleep(3000);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
+    } catch (Exception e) {
+      // TODO: handle exception
     }
     getTestCase().setName(testName);
-    http().client(restTestClient).send().post(CREATE_LOCATION_URI).contentType(Constants.CONTENT_TYPE_APPLICATION_JSON)
+    http()
+        .client(restTestClient)
+        .send()
+        .post(CREATE_LOCATION_URI)
+        .contentType(Constants.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson);
-    if((LOCATION_TEMPLATE_PATH +"createLocationSuccessResponse.json").equals(responseJson)){
+    if ((LOCATION_TEMPLATE_PATH + "create_location_success_response.json").equals(responseJson)) {
       HttpClientReceiveActionBuilder response = http().client(restTestClient).receive();
       stack.push("state");
       handleUserCreationResponse(response);
-      System.out.println("State location id is "+stateLocationId);
+      System.out.println("State location id is " + stateLocationId);
     }
-    if (!(LOCATION_TEMPLATE_PATH +"createLocationSuccessResponse.json").equals(responseJson)) {
-      http().client(restTestClient).receive().response(HttpStatus.BAD_REQUEST)
+    if (!(LOCATION_TEMPLATE_PATH + "create_location_success_response.json").equals(responseJson)) {
+      http()
+          .client(restTestClient)
+          .receive()
+          .response(HttpStatus.BAD_REQUEST)
           .payload(new ClassPathResource(responseJson));
     }
   }
 
-  @Test(dataProvider = "updateStateDataProvider", priority = 2)
-  @CitrusParameters({ "requestJson", "responseJson", "testName" })
+  @Test(
+    dataProvider = "updateStateDataProvider",
+    dependsOnMethods = {"testCreateLocationState"}
+  )
+  @CitrusParameters({"requestJson", "responseJson", "testName"})
   @CitrusTest
   /**
-   * Method to test the update functionality of State type (root) location .The scenario are as -
-   * 1. Successful update of location name.
-   * 2. Try to update the type of location and expect BAD_REQUEST in response.
+   * Method to test the update functionality of State type (root) location .The scenario are as - 1.
+   * Successful update of location name. 2. Try to update the type of location and expect
+   * BAD_REQUEST in response.
    */
   public void testUpdateStateLocation(String requestJson, String responseJson, String testName) {
     getTestCase().setName(testName);
-    http().client(restTestClient).send().patch(UPDATE_LOCATION_URI).contentType(Constants.CONTENT_TYPE_APPLICATION_JSON)
+    http()
+        .client(restTestClient)
+        .send()
+        .patch(UPDATE_LOCATION_URI)
+        .contentType(Constants.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson);
-    if((LOCATION_TEMPLATE_PATH_UPDATE+"update_location_name_success_response.json").equals(responseJson)){
-      http().client(restTestClient).receive().response(HttpStatus.OK).payload(new ClassPathResource(responseJson));
-    }else{
-      http().client(restTestClient).receive().response(HttpStatus.BAD_REQUEST).payload(new ClassPathResource(responseJson));
+    if ((LOCATION_TEMPLATE_PATH_UPDATE + "update_location_name_success_response.json")
+        .equals(responseJson)) {
+      http()
+          .client(restTestClient)
+          .receive()
+          .response(HttpStatus.OK)
+          .payload(new ClassPathResource(responseJson));
+    } else {
+      http()
+          .client(restTestClient)
+          .receive()
+          .response(HttpStatus.BAD_REQUEST)
+          .payload(new ClassPathResource(responseJson));
     }
   }
 
-  @Test(dataProvider = "createDistrictDataProvider", priority = 3)
-  @CitrusParameters({ "requestJson", "responseJson", "testName" })
+  @Test(
+    dataProvider = "createDistrictDataProvider",
+    dependsOnMethods = {"testCreateLocationState"}
+  )
+  @CitrusParameters({"requestJson", "responseJson", "testName"})
   @CitrusTest
   /**
-   * Method to test the create functionality of District type (intermediate) location .The scenario are as -
-   * 1. Successful creation of District type location.
-   * 2. Try to create district type location with same location code and expect BAD_REQUEST in response.
+   * Method to test the create functionality of District type (intermediate) location .The scenario
+   * are as - 1. Successful creation of District type location. 2. Try to create district type
+   * location with same location code and expect BAD_REQUEST in response.
    */
   public void testCreateLocationDistrict(String requestJson, String responseJson, String testName) {
     try {
       Thread.sleep(3000);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
+    } catch (Exception e) {
+      // TODO: handle exception
     }
     getTestCase().setName(testName);
-    http().client(restTestClient).send().post(CREATE_LOCATION_URI).contentType(Constants.CONTENT_TYPE_APPLICATION_JSON)
+    http()
+        .client(restTestClient)
+        .send()
+        .post(CREATE_LOCATION_URI)
+        .contentType(Constants.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson);
-    if((LOCATION_TEMPLATE_PATH +"createLocationSuccessResponse.json").equals(responseJson)){
+    if ((LOCATION_TEMPLATE_PATH + "create_location_success_response.json").equals(responseJson)) {
       HttpClientReceiveActionBuilder response = http().client(restTestClient).receive();
       stack.push("district");
       handleUserCreationResponse(response);
     }
-    if (!(LOCATION_TEMPLATE_PATH +"createLocationSuccessResponse.json").equals(responseJson)) {
-      http().client(restTestClient).receive().response(HttpStatus.BAD_REQUEST)
+    if (!(LOCATION_TEMPLATE_PATH + "create_location_success_response.json").equals(responseJson)) {
+      http()
+          .client(restTestClient)
+          .receive()
+          .response(HttpStatus.BAD_REQUEST)
           .payload(new ClassPathResource(responseJson));
     }
   }
 
-  @Test(dataProvider = "updateDistrictDataProvider", priority = 4)
-  @CitrusParameters({ "requestJson", "responseJson", "testName" })
+  @Test(
+    dataProvider = "updateDistrictDataProvider",
+    dependsOnMethods = {"testCreateLocationState"}
+  )
+  @CitrusParameters({"requestJson", "responseJson", "testName"})
   @CitrusTest
   /**
-   * Method to test the update functionality of District type location .The scenario are as -
-   * 1. Successful update of location name.
-   * 2. Try to update the type of location and expect BAD_REQUEST in response.
+   * Method to test the update functionality of District type location .The scenario are as - 1.
+   * Successful update of location name. 2. Try to update the type of location and expect
+   * BAD_REQUEST in response.
    */
   public void testUpdateDistrictLocation(String requestJson, String responseJson, String testName) {
     getTestCase().setName(testName);
-    http().client(restTestClient).send().patch(UPDATE_LOCATION_URI).contentType(Constants.CONTENT_TYPE_APPLICATION_JSON)
+    http()
+        .client(restTestClient)
+        .send()
+        .patch(UPDATE_LOCATION_URI)
+        .contentType(Constants.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson);
-    if((LOCATION_TEMPLATE_PATH_UPDATE+"update_location_name_success_response.json").equals(responseJson)){
-      http().client(restTestClient).receive().response(HttpStatus.OK).payload(new ClassPathResource(responseJson));
-    }else{
-      http().client(restTestClient).receive().response(HttpStatus.BAD_REQUEST).payload(new ClassPathResource(responseJson));
+    if ((LOCATION_TEMPLATE_PATH_UPDATE + "update_location_name_success_response.json")
+        .equals(responseJson)) {
+      http()
+          .client(restTestClient)
+          .receive()
+          .response(HttpStatus.OK)
+          .payload(new ClassPathResource(responseJson));
+    } else {
+      http()
+          .client(restTestClient)
+          .receive()
+          .response(HttpStatus.BAD_REQUEST)
+          .payload(new ClassPathResource(responseJson));
     }
   }
 
-  @Test(dataProvider = "deleteStateDataProvider", priority = 5)
-  @CitrusParameters({"responseJson", "testName" })
-  @CitrusTest
+  // @Test(dataProvider = "deleteStateDataProvider", priority = 5)
+  // @CitrusParameters({"responseJson", "testName" })
+  // @CitrusTest
+  // These api's are not on-board yet.
   /**
-   * Method to test the delete functionality of State(root) type location .The scenario are as -
-   * 1. Try to delete the location and expect BAD_REQUEST since there is child node exist for the state.
+   * Method to test the delete functionality of State(root) type location .The scenario are as - 1.
+   * Try to delete the location and expect BAD_REQUEST since there is child node exist for the
+   * state.
    */
   public void testDeleteStateLocation(String responseJson, String testName) {
     getTestCase().setName(testName);
-    http().client(restTestClient).send().delete(DELETE_LOCATION_URI+"/"+stateLocationId).header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey());
-      http().client(restTestClient).receive().response(HttpStatus.BAD_REQUEST).payload(new ClassPathResource(responseJson));
+    http()
+        .client(restTestClient)
+        .send()
+        .delete(DELETE_LOCATION_URI + "/" + stateLocationId)
+        .header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey());
+    http()
+        .client(restTestClient)
+        .receive()
+        .response(HttpStatus.BAD_REQUEST)
+        .payload(new ClassPathResource(responseJson));
   }
 
-  @Test(dataProvider = "deleteDistrictDataProvider", priority = 6)
-  @CitrusParameters({"responseJson", "testName" })
-  @CitrusTest
+  // @Test(dataProvider = "deleteDistrictDataProvider", priority = 6)
+  // @CitrusParameters({"responseJson", "testName" })
+  // @CitrusTest
+  // These api's are not on-board yet.
   /**
-   * Method to test the delete functionality of District(intermediate) location .The scenario are as -
-   * 1. Try to delete the location with invalid location id and expect BAD_REQUEST .
-   * 2. Delete district type location with success response.
+   * Method to test the delete functionality of District(intermediate) location .The scenario are as
+   * - 1. Try to delete the location with invalid location id and expect BAD_REQUEST . 2. Delete
+   * district type location with success response.
    */
   public void testDeleteDistrictLocation(String responseJson, String testName) {
     getTestCase().setName(testName);
-    if((LOCATION_TEMPLATE_PATH_DELETE +"delete_location_success_response.json").equals(responseJson)){
-      http().client(restTestClient).send().delete(DELETE_LOCATION_URI+"/"+districtLocationId).header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey());
-      http().client(restTestClient).receive().response(HttpStatus.OK).payload(new ClassPathResource(responseJson));
-    }else{
-      http().client(restTestClient).send().delete(DELETE_LOCATION_URI+"/"+districtLocationId+"invalid").header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey());
-      http().client(restTestClient).receive().response(HttpStatus.BAD_REQUEST).payload(new ClassPathResource(responseJson));
+    if ((LOCATION_TEMPLATE_PATH_DELETE + "delete_location_success_response.json")
+        .equals(responseJson)) {
+      http()
+          .client(restTestClient)
+          .send()
+          .delete(DELETE_LOCATION_URI + "/" + districtLocationId)
+          .header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey());
+      http()
+          .client(restTestClient)
+          .receive()
+          .response(HttpStatus.OK)
+          .payload(new ClassPathResource(responseJson));
+    } else {
+      http()
+          .client(restTestClient)
+          .send()
+          .delete(DELETE_LOCATION_URI + "/" + districtLocationId + "invalid")
+          .header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey());
+      http()
+          .client(restTestClient)
+          .receive()
+          .response(HttpStatus.BAD_REQUEST)
+          .payload(new ClassPathResource(responseJson));
     }
   }
 
-  private void handleUserCreationResponse(HttpClientReceiveActionBuilder response){
+  @Test(
+      dataProvider = "stateBulkUploadDataProvider"
+  )
+  @CitrusParameters({"requestJson", "responseJson", "testName"})
+  @CitrusTest
+  /**
+   * Method to validate the functional test cases for the state type location bulk upload. It include scenarios -
+   * 1. Bulk upload file consists of valid data means all mandatory fields are available and we expecting success response.
+   * 2.Upload file without mandatory fields and expecting BAD_REQUEST in response with error message as mandatory parameter are missing.
+   */
+  public void testStateBulkUpload(String requestFormData, String responseJson, String testName){
+    getTestCase().setName(testName);
+    if ((TEST_DIR_BULK_UPLOAD_LOCATION_SUCCESS + RESPONSE_JSON)
+        .equals(responseJson)) {
+      String testFolderPath = TEST_DIR_BULK_UPLOAD_LOCATION_SUCCESS;
+      new HttpUtil().multipartPost(http().client(restTestClient), initGlobalValues, BULK_UPLOAD_LOCATION_URI, requestFormData, testFolderPath);
+
+      http()
+          .client(restTestClient)
+          .receive()
+          .response(HttpStatus.OK)
+          .payload(new ClassPathResource(responseJson));
+    } else {
+      String testFolderPath = TEST_DIR_BULK_UPLOAD_LOCATION_FAILURE;
+      new HttpUtil().multipartPost(http().client(restTestClient), initGlobalValues, BULK_UPLOAD_LOCATION_URI, requestFormData, testFolderPath);
+
+      http()
+          .client(restTestClient)
+          .receive()
+          .response(HttpStatus.BAD_REQUEST)
+          .payload(new ClassPathResource(responseJson));
+    }
+  }
+
+  private void handleUserCreationResponse(HttpClientReceiveActionBuilder response) {
 
     final String locationType = stack.pop();
-    response.response()
-        .validationCallback(new JsonMappingValidationCallback<Response>(Response.class, objectMapper) {
-          @Override
-          public void validate(Response response, Map<String, Object> headers, TestContext context) {
-            Assert.assertNotNull(response.getId());
-            Assert.assertEquals(response.getResponseCode(), ResponseCode.OK);
-            Assert.assertNotNull(response.getResult().get(Constants.RESPONSE));
-            String locationId = (String) response.getResult().get(Constants.ID);
-            Assert.assertNotNull(locationId);
-            if(locationType.equalsIgnoreCase("state")){
-              stateLocationId = locationId;
-            }else if(locationType.equalsIgnoreCase("district")){
-              districtLocationId = locationId;
-            }
-            List<String> cassandraList = toDeleteCassandraRecordsMap.get("location");
-            if (cassandraList == null) {
-              cassandraList = new ArrayList<>();
-            }
-            cassandraList.add(locationId);
-            toDeleteCassandraRecordsMap.put("location", cassandraList);
-            List<String> esList = toDeleteEsRecordsMap.get("location");
-            if (esList == null) {
-              esList = new ArrayList<>();
-            }
-            esList.add(locationId);
-            toDeleteEsRecordsMap.put("location", esList);
-          }
-        });
+    response
+        .response()
+        .validationCallback(
+            new JsonMappingValidationCallback<Response>(Response.class, objectMapper) {
+              @Override
+              public void validate(
+                  Response response, Map<String, Object> headers, TestContext context) {
+                Assert.assertNotNull(response.getId());
+                Assert.assertEquals(response.getResponseCode(), ResponseCode.OK);
+                Assert.assertNotNull(response.getResult().get(Constants.RESPONSE));
+                String locationId = (String) response.getResult().get(Constants.ID);
+                Assert.assertNotNull(locationId);
+                if (locationType.equalsIgnoreCase("state")) {
+                  stateLocationId = locationId;
+                } else if (locationType.equalsIgnoreCase("district")) {
+                  districtLocationId = locationId;
+                }
+                List<String> cassandraList = toDeleteCassandraRecordsMap.get("location");
+                if (cassandraList == null) {
+                  cassandraList = new ArrayList<>();
+                }
+                cassandraList.add(locationId);
+                toDeleteCassandraRecordsMap.put("location", cassandraList);
+                List<String> esList = toDeleteEsRecordsMap.get("location");
+                if (esList == null) {
+                  esList = new ArrayList<>();
+                }
+                esList.add(locationId);
+                toDeleteEsRecordsMap.put("location", esList);
+              }
+            });
     try {
       Thread.sleep(3000);
     } catch (InterruptedException e) {
@@ -315,7 +488,7 @@ public class LocationTest extends BaseCitrusTest {
   private Object updateStateLocationMap() {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = new HashMap<>();
-    innerMap.put(Constants.NAME, STATE_NAME+01);
+    innerMap.put(Constants.NAME, STATE_NAME + 01);
     innerMap.put(Constants.ID, stateLocationId);
     requestMap.put(Constants.REQUEST, innerMap);
     try {
@@ -343,7 +516,7 @@ public class LocationTest extends BaseCitrusTest {
   private Object updateDistrictNameLocationMap() {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = new HashMap<>();
-    innerMap.put(Constants.NAME, DISTRICT_NAME+01);
+    innerMap.put(Constants.NAME, DISTRICT_NAME + 01);
     innerMap.put(Constants.ID, districtLocationId);
     requestMap.put(Constants.REQUEST, innerMap);
     try {
@@ -368,17 +541,13 @@ public class LocationTest extends BaseCitrusTest {
     return null;
   }
 
-
   @CleanUp
-  /**
-   * Method to perform the cleanup after test suite completion.
-   */
-  public static void cleanUp(){
+  /** Method to perform the cleanup after test suite completion. */
+  public static void cleanUp() {
     ElasticSearchCleanUp elasticSearchCleanUp = ElasticSearchCleanUp.getInstance();
     CassandraCleanUp cassandraCleanUp = CassandraCleanUp.getInstance();
 
     elasticSearchCleanUp.deleteFromElasticSearch(toDeleteEsRecordsMap);
     cassandraCleanUp.deleteFromCassandra(toDeleteCassandraRecordsMap);
   }
-
 }
