@@ -22,7 +22,6 @@ import org.sunbird.common.models.response.ResponseCode;
 import org.sunbird.common.util.CassandraCleanUp;
 import org.sunbird.common.util.Constants;
 import org.sunbird.common.util.ElasticSearchCleanUp;
-import org.sunbird.common.util.HttpUtil;
 import org.sunbird.integration.test.common.BaseCitrusTest;
 import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 import org.testng.Assert;
@@ -42,15 +41,9 @@ public class LocationTest extends BaseCitrusTest {
   private static final String CREATE_LOCATION_URI = "/api/data/v1/location/create";
   private static final String UPDATE_LOCATION_URI = "/api/data/v1/location/update";
   private static final String DELETE_LOCATION_URI = "/api/data/v1/location/delete";
-  private static final String BULK_UPLOAD_LOCATION_URI = "/api/data/v1/bulk/location/upload";
   private static final String LOCATION_TEMPLATE_PATH = "templates/location/create/";
   private static final String LOCATION_TEMPLATE_PATH_UPDATE = "templates/location/update/";
   private static final String LOCATION_TEMPLATE_PATH_DELETE = "templates/location/delete/";
-  private static final String  TEST_DIR_BULK_UPLOAD_LOCATION_SUCCESS = "templates/location/bulkupload/state/success/";
-  private static final String  TEST_DIR_BULK_UPLOAD_LOCATION_FAILURE = "templates/location/bulkupload/state/failure/";
-
-  public static final String REQUEST_FORM_DATA = "request.params";
-  public static final String RESPONSE_JSON = "response.json";
 
   private static final String STATE_CODE =
       "State-02-fuzzy-" + String.valueOf(System.currentTimeMillis());
@@ -149,22 +142,6 @@ public class LocationTest extends BaseCitrusTest {
         LOCATION_TEMPLATE_PATH_DELETE + "delete_location_success_response.json",
         "deleteLocationSuccess"
       },
-    };
-  }
-
-  @DataProvider(name = "stateBulkUploadDataProvider")
-  public Object[][] stateBulkUploadDataProvider() {
-    return new Object[][] {
-        new Object[]{
-            TEST_DIR_BULK_UPLOAD_LOCATION_SUCCESS + REQUEST_FORM_DATA,
-            TEST_DIR_BULK_UPLOAD_LOCATION_SUCCESS + RESPONSE_JSON,
-            "stateBulkUploadSuccess"
-        },
-        new Object[]{
-            TEST_DIR_BULK_UPLOAD_LOCATION_FAILURE + REQUEST_FORM_DATA,
-            TEST_DIR_BULK_UPLOAD_LOCATION_FAILURE + RESPONSE_JSON,
-            "stateBulkUploadWithoutMandatoryParams"
-        }
     };
   }
 
@@ -368,40 +345,6 @@ public class LocationTest extends BaseCitrusTest {
           .send()
           .delete(DELETE_LOCATION_URI + "/" + districtLocationId + "invalid")
           .header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey());
-      http()
-          .client(restTestClient)
-          .receive()
-          .response(HttpStatus.BAD_REQUEST)
-          .payload(new ClassPathResource(responseJson));
-    }
-  }
-
-  @Test(
-      dataProvider = "stateBulkUploadDataProvider"
-  )
-  @CitrusParameters({"requestJson", "responseJson", "testName"})
-  @CitrusTest
-  /**
-   * Method to validate the functional test cases for the state type location bulk upload. It include scenarios -
-   * 1. Bulk upload file consists of valid data means all mandatory fields are available and we expecting success response.
-   * 2.Upload file without mandatory fields and expecting BAD_REQUEST in response with error message as mandatory parameter are missing.
-   */
-  public void testStateBulkUpload(String requestFormData, String responseJson, String testName){
-    getTestCase().setName(testName);
-    if ((TEST_DIR_BULK_UPLOAD_LOCATION_SUCCESS + RESPONSE_JSON)
-        .equals(responseJson)) {
-      String testFolderPath = TEST_DIR_BULK_UPLOAD_LOCATION_SUCCESS;
-      new HttpUtil().multipartPost(http().client(restTestClient), initGlobalValues, BULK_UPLOAD_LOCATION_URI, requestFormData, testFolderPath);
-
-      http()
-          .client(restTestClient)
-          .receive()
-          .response(HttpStatus.OK)
-          .payload(new ClassPathResource(responseJson));
-    } else {
-      String testFolderPath = TEST_DIR_BULK_UPLOAD_LOCATION_FAILURE;
-      new HttpUtil().multipartPost(http().client(restTestClient), initGlobalValues, BULK_UPLOAD_LOCATION_URI, requestFormData, testFolderPath);
-
       http()
           .client(restTestClient)
           .receive()
