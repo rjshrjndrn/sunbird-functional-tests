@@ -51,7 +51,7 @@ public class LocationBulkUploadTest extends BaseCitrusTest {
   @Test(
       dataProvider = "stateBulkUploadDataProvider"
   )
-  @CitrusParameters({"requestJson", "responseJson", "testName"})
+  @CitrusParameters({"requestFormData", "responseJson", "testName"})
   @CitrusTest
   /**
    * Method to validate the functional test cases for the state type location bulk upload. It include scenarios -
@@ -60,9 +60,10 @@ public class LocationBulkUploadTest extends BaseCitrusTest {
    */
   public void testStateBulkUpload(String requestFormData, String responseJson, String testName){
     getTestCase().setName(testName);
+    String testFolderPath ;
     if ((TEST_DIR_BULK_UPLOAD_LOCATION_SUCCESS + RESPONSE_JSON)
         .equals(responseJson)) {
-      String testFolderPath = TEST_DIR_BULK_UPLOAD_LOCATION_SUCCESS;
+      testFolderPath= TEST_DIR_BULK_UPLOAD_LOCATION_SUCCESS;
       new HttpUtil().multipartPost(http().client(restTestClient), initGlobalValues, BULK_UPLOAD_LOCATION_URI, requestFormData, testFolderPath);
 
       http()
@@ -71,7 +72,7 @@ public class LocationBulkUploadTest extends BaseCitrusTest {
           .response(HttpStatus.OK)
           .payload(new ClassPathResource(responseJson));
     } else {
-      String testFolderPath = TEST_DIR_BULK_UPLOAD_LOCATION_FAILURE;
+      testFolderPath = TEST_DIR_BULK_UPLOAD_LOCATION_FAILURE;
       new HttpUtil().multipartPost(http().client(restTestClient), initGlobalValues, BULK_UPLOAD_LOCATION_URI, requestFormData, testFolderPath);
 
       http()
