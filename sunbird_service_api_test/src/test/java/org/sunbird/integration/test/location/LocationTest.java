@@ -20,7 +20,7 @@ import org.sunbird.common.annotation.CleanUp;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.response.ResponseCode;
 import org.sunbird.common.util.CassandraCleanUp;
-import org.sunbird.common.util.Constants;
+import org.sunbird.common.util.Constant;
 import org.sunbird.common.util.ElasticSearchCleanUp;
 import org.sunbird.integration.test.common.BaseCitrusTest;
 import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
@@ -164,8 +164,8 @@ public class LocationTest extends BaseCitrusTest {
         .client(restTestClient)
         .send()
         .post(CREATE_LOCATION_URI)
-        .contentType(Constants.CONTENT_TYPE_APPLICATION_JSON)
-        .header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey())
+        .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
+        .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson);
     if ((LOCATION_TEMPLATE_PATH + "create_location_success_response.json").equals(responseJson)) {
       HttpClientReceiveActionBuilder response = http().client(restTestClient).receive();
@@ -199,8 +199,8 @@ public class LocationTest extends BaseCitrusTest {
         .client(restTestClient)
         .send()
         .patch(UPDATE_LOCATION_URI)
-        .contentType(Constants.CONTENT_TYPE_APPLICATION_JSON)
-        .header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey())
+        .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
+        .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson);
     if ((LOCATION_TEMPLATE_PATH_UPDATE + "update_location_name_success_response.json")
         .equals(responseJson)) {
@@ -240,8 +240,8 @@ public class LocationTest extends BaseCitrusTest {
         .client(restTestClient)
         .send()
         .post(CREATE_LOCATION_URI)
-        .contentType(Constants.CONTENT_TYPE_APPLICATION_JSON)
-        .header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey())
+        .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
+        .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson);
     if ((LOCATION_TEMPLATE_PATH + "create_location_success_response.json").equals(responseJson)) {
       HttpClientReceiveActionBuilder response = http().client(restTestClient).receive();
@@ -274,8 +274,8 @@ public class LocationTest extends BaseCitrusTest {
         .client(restTestClient)
         .send()
         .patch(UPDATE_LOCATION_URI)
-        .contentType(Constants.CONTENT_TYPE_APPLICATION_JSON)
-        .header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey())
+        .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
+        .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson);
     if ((LOCATION_TEMPLATE_PATH_UPDATE + "update_location_name_success_response.json")
         .equals(responseJson)) {
@@ -308,7 +308,7 @@ public class LocationTest extends BaseCitrusTest {
         .client(restTestClient)
         .send()
         .delete(DELETE_LOCATION_URI + "/" + stateLocationId)
-        .header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey());
+        .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey());
     http()
         .client(restTestClient)
         .receive()
@@ -333,7 +333,7 @@ public class LocationTest extends BaseCitrusTest {
           .client(restTestClient)
           .send()
           .delete(DELETE_LOCATION_URI + "/" + districtLocationId)
-          .header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey());
+          .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey());
       http()
           .client(restTestClient)
           .receive()
@@ -344,7 +344,7 @@ public class LocationTest extends BaseCitrusTest {
           .client(restTestClient)
           .send()
           .delete(DELETE_LOCATION_URI + "/" + districtLocationId + "invalid")
-          .header(Constants.AUTHORIZATION, Constants.BEARER + initGlobalValues.getApiKey());
+          .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey());
       http()
           .client(restTestClient)
           .receive()
@@ -365,8 +365,8 @@ public class LocationTest extends BaseCitrusTest {
                   Response response, Map<String, Object> headers, TestContext context) {
                 Assert.assertNotNull(response.getId());
                 Assert.assertEquals(response.getResponseCode(), ResponseCode.OK);
-                Assert.assertNotNull(response.getResult().get(Constants.RESPONSE));
-                String locationId = (String) response.getResult().get(Constants.ID);
+                Assert.assertNotNull(response.getResult().get(Constant.RESPONSE));
+                String locationId = (String) response.getResult().get(Constant.ID);
                 Assert.assertNotNull(locationId);
                 if (locationType.equalsIgnoreCase("state")) {
                   stateLocationId = locationId;
@@ -397,12 +397,12 @@ public class LocationTest extends BaseCitrusTest {
   private String createStateLocationMap() {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = new HashMap<>();
-    innerMap.put(Constants.CODE, STATE_CODE);
-    innerMap.put(Constants.NAME, STATE_NAME);
-    innerMap.put(Constants.PARENT_CODE, null);
-    innerMap.put(Constants.LOCATION_TYPE, "state");
-    innerMap.put(Constants.PARENT_ID, null);
-    requestMap.put(Constants.REQUEST, innerMap);
+    innerMap.put(Constant.CODE, STATE_CODE);
+    innerMap.put(Constant.NAME, STATE_NAME);
+    innerMap.put(Constant.PARENT_CODE, null);
+    innerMap.put(Constant.LOCATION_TYPE, "state");
+    innerMap.put(Constant.PARENT_ID, null);
+    requestMap.put(Constant.REQUEST, innerMap);
     try {
       return objectMapper.writeValueAsString(requestMap);
     } catch (JsonProcessingException e) {
@@ -415,11 +415,11 @@ public class LocationTest extends BaseCitrusTest {
 
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = new HashMap<>();
-    innerMap.put(Constants.CODE, DISTRICT_CODE);
-    innerMap.put(Constants.NAME, DISTRICT_NAME);
-    innerMap.put(Constants.LOCATION_TYPE, "district");
-    innerMap.put(Constants.PARENT_CODE, STATE_CODE);
-    requestMap.put(Constants.REQUEST, innerMap);
+    innerMap.put(Constant.CODE, DISTRICT_CODE);
+    innerMap.put(Constant.NAME, DISTRICT_NAME);
+    innerMap.put(Constant.LOCATION_TYPE, "district");
+    innerMap.put(Constant.PARENT_CODE, STATE_CODE);
+    requestMap.put(Constant.REQUEST, innerMap);
     try {
       return objectMapper.writeValueAsString(requestMap);
     } catch (JsonProcessingException e) {
@@ -431,9 +431,9 @@ public class LocationTest extends BaseCitrusTest {
   private Object updateStateLocationMap() {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = new HashMap<>();
-    innerMap.put(Constants.NAME, STATE_NAME + 01);
-    innerMap.put(Constants.ID, stateLocationId);
-    requestMap.put(Constants.REQUEST, innerMap);
+    innerMap.put(Constant.NAME, STATE_NAME + 01);
+    innerMap.put(Constant.ID, stateLocationId);
+    requestMap.put(Constant.REQUEST, innerMap);
     try {
       return objectMapper.writeValueAsString(requestMap);
     } catch (JsonProcessingException e) {
@@ -445,9 +445,9 @@ public class LocationTest extends BaseCitrusTest {
   private Object updateStateLocationTypeMap() {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = new HashMap<>();
-    innerMap.put(Constants.LOCATION_TYPE, "district");
-    innerMap.put(Constants.ID, stateLocationId);
-    requestMap.put(Constants.REQUEST, innerMap);
+    innerMap.put(Constant.LOCATION_TYPE, "district");
+    innerMap.put(Constant.ID, stateLocationId);
+    requestMap.put(Constant.REQUEST, innerMap);
     try {
       return objectMapper.writeValueAsString(requestMap);
     } catch (JsonProcessingException e) {
@@ -459,9 +459,9 @@ public class LocationTest extends BaseCitrusTest {
   private Object updateDistrictNameLocationMap() {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = new HashMap<>();
-    innerMap.put(Constants.NAME, DISTRICT_NAME + 01);
-    innerMap.put(Constants.ID, districtLocationId);
-    requestMap.put(Constants.REQUEST, innerMap);
+    innerMap.put(Constant.NAME, DISTRICT_NAME + 01);
+    innerMap.put(Constant.ID, districtLocationId);
+    requestMap.put(Constant.REQUEST, innerMap);
     try {
       return objectMapper.writeValueAsString(requestMap);
     } catch (JsonProcessingException e) {
@@ -473,9 +473,9 @@ public class LocationTest extends BaseCitrusTest {
   private Object updateDistrictLocationTypeMap() {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = new HashMap<>();
-    innerMap.put(Constants.LOCATION_TYPE, "state");
-    innerMap.put(Constants.ID, districtLocationId);
-    requestMap.put(Constants.REQUEST, innerMap);
+    innerMap.put(Constant.LOCATION_TYPE, "state");
+    innerMap.put(Constant.ID, districtLocationId);
+    requestMap.put(Constant.REQUEST, innerMap);
     try {
       return objectMapper.writeValueAsString(requestMap);
     } catch (JsonProcessingException e) {

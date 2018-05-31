@@ -77,10 +77,12 @@ public class HttpUtil {
         new Scanner(new File(getClass().getClassLoader().getResource(formDataFile).getFile()))) {
 
       while (scanner.hasNext()) {
-        String[] param = scanner.nextLine().split(Constants.EQUAL_SIGN);
+        String[] param = scanner.nextLine().split(Constant.EQUAL_SIGN);
         if (param != null && param.length == 2) {
-          if (param[0].equalsIgnoreCase(Constants.MULTIPART_FILE_NAME)) {
-            formData.add(Constants.MULTIPART_FILE_NAME, new ClassPathResource(formDataFileFolderPath + "/" + param[1]));
+          if (param[0].equalsIgnoreCase(Constant.MULTIPART_FILE_NAME)) {
+            formData.add(
+                Constant.MULTIPART_FILE_NAME,
+                new ClassPathResource(formDataFileFolderPath + "/" + param[1]));
           } else {
             formData.add(param[0], param[1]);
           }
@@ -95,7 +97,7 @@ public class HttpUtil {
         .send()
         .post(url)
         .contentType(MediaType.MULTIPART_FORM_DATA)
-        .header(Constants.AUTHORIZATION, Constants.BEARER + config.getApiKey())
+        .header(Constant.AUTHORIZATION, Constant.BEARER + config.getApiKey())
         .payload(formData);
   }
 }
