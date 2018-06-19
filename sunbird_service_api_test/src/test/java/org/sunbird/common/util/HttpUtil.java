@@ -12,6 +12,7 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
@@ -62,21 +63,29 @@ public class HttpUtil {
    * @param url HTTP URL to use in the request
    * @param formDataFile File path containing each form parameter in a new line in format
    *     (key=value)
+   * @param formDataFileFolderPath Folder path containing multipart file resource
    */
   public void multipartPost(
       HttpClientActionBuilder httpClientActionBuilder,
       TestGlobalProperty config,
       String url,
-      String formDataFile) {
+      String formDataFile,
+      String formDataFileFolderPath) {
     MultiValueMap<String, Object> formData = new LinkedMultiValueMap<>();
 
     try (Scanner scanner =
         new Scanner(new File(getClass().getClassLoader().getResource(formDataFile).getFile()))) {
 
       while (scanner.hasNext()) {
-        String[] param = scanner.nextLine().split(Constants.EQUAL_SIGN);
+        String[] param = scanner.nextLine().split(Constant.EQUAL_SIGN);
         if (param != null && param.length == 2) {
-          formData.add(param[0], param[1]);
+          if (param[0].equalsIgnoreCase(Constant.MULTIPART_FILE_NAME)) {
+            formData.add(
+                Constant.MULTIPART_FILE_NAME,
+                new ClassPathResource(formDataFileFolderPath + "/" + param[1]));
+          } else {
+            formData.add(param[0], param[1]);
+          }
         }
       }
 
@@ -88,7 +97,7 @@ public class HttpUtil {
         .send()
         .post(url)
         .contentType(MediaType.MULTIPART_FORM_DATA)
-        .header(Constants.AUTHORIZATION, Constants.BEARER + config.getApiKey())
+        .header(Constant.AUTHORIZATION, Constant.BEARER + config.getApiKey())
         .payload(formData);
   }
 }
