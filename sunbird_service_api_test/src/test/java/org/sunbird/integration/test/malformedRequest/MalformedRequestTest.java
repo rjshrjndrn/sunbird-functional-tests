@@ -45,7 +45,7 @@ public class MalformedRequestTest extends TestNGCitrusTestDesigner {
 						"/api/org/v1/create" },
 				new Object[] { emptyPayLoad,
 						Constant.MALFORMED_TEMPLATE_LOCATION + "content_type_mandatory_response.json", "createCourse",
-						"/api/course/v1/create" },
+						"/api/course/v1/batch/create" },
 				new Object[] { emptyPayLoad,
 						Constant.MALFORMED_TEMPLATE_LOCATION + "content_type_mandatory_response.json", "createPage",
 						"/api/data/v1/page/create" },
