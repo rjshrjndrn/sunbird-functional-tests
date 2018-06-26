@@ -19,8 +19,10 @@ public class Constant {
   public static final String AUTHORIZATION = "Authorization";
   public static final String BEARER = "Bearer ";
   public static final String CONTENT_TYPE_APPLICATION_JSON = "application/json";
+  public static final String CONTENT_TYPE_APPLICATION_JSON_LD = "application/json-ld";
   public static final String EQUAL_SIGN = "=";
   public static final String USER_TEMPLATE_LOCATION = "templates/user/create/";
+  public static final String RESPONSE_TEMPLATE_LOCATION = "templates/responses/";
   public static final String USER_NAME_PREFIX = "ft_testinstance";
   public static final String X_AUTHENTICATED_USER_TOKEN = "x-authenticated-user-token";
   public static final String PARENT_CODE = "parentCode";
