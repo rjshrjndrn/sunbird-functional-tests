@@ -19,6 +19,11 @@ import com.consol.citrus.testng.CitrusParameters;
 import com.consol.citrus.validation.json.JsonMappingValidationCallback;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * This class will have all functional test cases regarding testing malformed request input for all common APIs
+ *
+ * @author Karthik
+ */
 public class MalformedRequestTest extends TestNGCitrusTestDesigner {
 
 	@Autowired
@@ -33,35 +38,35 @@ public class MalformedRequestTest extends TestNGCitrusTestDesigner {
 		String emptyPayLoad = "{\"request\":{}}";
 		return new Object[][] {
 				new Object[] { emptyPayLoad,
-						Constant.RESPONSE_TEMPLATE_LOCATION + "content_type_mandatory_response.json", "createUser",
+						Constant.MALFORMED_TEMPLATE_LOCATION + "content_type_mandatory_response.json", "createUser",
 						"/api/user/v1/create" },
 				new Object[] { emptyPayLoad,
-						Constant.RESPONSE_TEMPLATE_LOCATION + "content_type_mandatory_response.json", "createOrg",
+						Constant.MALFORMED_TEMPLATE_LOCATION + "content_type_mandatory_response.json", "createOrg",
 						"/api/org/v1/create" },
 				new Object[] { emptyPayLoad,
-						Constant.RESPONSE_TEMPLATE_LOCATION + "content_type_mandatory_response.json", "createCourse",
+						Constant.MALFORMED_TEMPLATE_LOCATION + "content_type_mandatory_response.json", "createCourse",
 						"/api/course/v1/create" },
 				new Object[] { emptyPayLoad,
-						Constant.RESPONSE_TEMPLATE_LOCATION + "content_type_mandatory_response.json", "createPage",
+						Constant.MALFORMED_TEMPLATE_LOCATION + "content_type_mandatory_response.json", "createPage",
 						"/api/page/v1/create" },
 				new Object[] { emptyPayLoad,
-						Constant.RESPONSE_TEMPLATE_LOCATION + "content_type_mandatory_response.json", "createNote",
+						Constant.MALFORMED_TEMPLATE_LOCATION + "content_type_mandatory_response.json", "createNote",
 						"/api/note/v1/create" } };
 	}
 
 	/**
 	 * Test for create request without content-type header.
 	 *
-	 * @param requestJson
-	 * @param responseJson
-	 * @param testName
+	 * @param requestJson - request input json
+	 * @param responseJson - response output json
+	 * @param testName - name of the name
+	 * @param url - url of API
 	 */
-	@Test(dataProvider = "createRequestDataProvider", dependsOnMethods = { "getAdminAuthToken", })
+	@Test(dataProvider = "createRequestDataProvider", dependsOnMethods = { "getAdminAuthToken" })
 	@CitrusParameters({ "requestJson", "responseJson", "testName", "url" })
 	@CitrusTest
-	public void createWithoutContentType(String requestJson, String responseJson, String testName, String url) {
+	public void testRequestWithoutContentType(String requestJson, String responseJson, String testName, String url) {
 		getTestCase().setName(testName);
-		System.out.println("request: == " + requestJson);
 		http().client(restTestClient).send().post(url)
 				.header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
 				.header(Constant.X_AUTHENTICATED_USER_TOKEN, admin_token).payload(requestJson);
@@ -72,16 +77,17 @@ public class MalformedRequestTest extends TestNGCitrusTestDesigner {
 	}
 
 	/**
-	 * Test for create request with invalid(json-ld) content-type header.
+	 * Test for create request with invalid(example json-ld) content-type header.
 	 *
-	 * @param requestJson
-	 * @param responseJson
-	 * @param testName
+	 * @param requestJson - request input json
+	 * @param responseJson - response output json
+	 * @param testName - name of the name
+	 * @param url - url of API
 	 */
-	@Test(dataProvider = "createRequestDataProvider", dependsOnMethods = { "getAdminAuthToken", })
+	@Test(dataProvider = "createRequestDataProvider", dependsOnMethods = { "getAdminAuthToken" })
 	@CitrusParameters({ "requestJson", "responseJson", "testName", "url" })
 	@CitrusTest
-	public void createWithInvalidContentType(String requestJson, String responseJson, String testName, String url) {
+	public void testRequestWithInvalidContentType(String requestJson, String responseJson, String testName, String url) {
 		getTestCase().setName(testName);
 		http().client(restTestClient).send().post(url).contentType(Constant.CONTENT_TYPE_APPLICATION_JSON_LD)
 				.header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
@@ -95,12 +101,8 @@ public class MalformedRequestTest extends TestNGCitrusTestDesigner {
 	@Test()
 	@CitrusTest
 	/**
-	 * Key cloak admin token generation is required , because on sunbird dev server
-	 * after creating user , user have to login first then only his/her account will
-	 * be active. so we need to disable that option for created user only. That
-	 * option can be disable using keycloak admin auth token. So this method will
-	 * generate auth token and that token will be used in
-	 * **updateUserRequiredLoginActionTest** method.
+	 * Key cloak admin token generation is required for some API to get authenticated
+	 * 
 	 */
 	public void getAdminAuthToken() {
 		http().client(restTestClient).send()
