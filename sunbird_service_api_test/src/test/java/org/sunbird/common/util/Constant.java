@@ -35,4 +35,11 @@ public class Constant {
   public static final String RESPONSE = "response";
   public static final String ES_REST_API_PORT = "9200";
   public static final String MULTIPART_FILE_NAME = "file";
+  
+  //Organisation Constants
+  public static final String ORG_NAME = "orgName";
+  public static final String ORG_CODE = "orgCode";
+  public static final String IS_ROOT_ORG = "isRootOrg";
+  public static final String ORGANISATION_ID = "organisationId";
+  
 }

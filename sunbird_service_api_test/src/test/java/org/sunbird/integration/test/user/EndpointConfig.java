@@ -16,6 +16,7 @@ public class EndpointConfig {
 
   @Bean
   public HttpClient restTestClient() {
+	  System.out.println("Sunbird Test Client  " + System.getenv("sunbird_test_base_url"));
     return CitrusEndpoints.http()
         .client()
         .requestUrl(System.getenv("sunbird_test_base_url"))
@@ -29,6 +30,7 @@ public class EndpointConfig {
     property.setCassandraiP(System.getenv("sunbird_cassandra_host"));
     property.setCassandraPort(System.getenv("sunbird_cassandra_port"));
     property.setCassandraUserName(System.getenv("sunbird_cassandra_username"));
+    property.setCassandraPassword(System.getenv("sunbird_cassandra_password"));
     property.setKeySpace(System.getenv("sunbird_cassandra_keyspace"));
     property.setKeycloakAdminUser(System.getenv("sunbird_sso_username"));
     property.setKeycloakAdminPass(System.getenv("sunbird_sso_password"));

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.sunbird.integration.test.user.EndpointConfig;
 import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 
 /**
@@ -27,8 +28,8 @@ public class CassandraCleanUp {
     return cassandraCleanUp;
   }
 
-  @Autowired
-  private TestGlobalProperty initGlobalValues;
+ // @Autowired
+  private TestGlobalProperty initGlobalValues = new EndpointConfig().initGlobalValues();
 
   /**
    * Method to delete the entries from cassandra.
@@ -39,6 +40,7 @@ public class CassandraCleanUp {
     map.forEach((k, v) -> {
       if (v != null)
         for (String value : v) {
+        	System.out.println(" Cassandra Value ::::::::" + value);
           deleteDataFromCassandra(value, k);
           }
     });
@@ -54,6 +56,8 @@ public class CassandraCleanUp {
    */
   private boolean deleteDataFromCassandra(String id, String tableName) {
     String query = "DELETE FROM " + tableName + " WHERE id=" + "'" + id + "'";
+    System.out.println(" SQL ::::::::" + query);
+    System.out.println(" Cassandra ::: " + initGlobalValues.getCassandraiP());
     Session session = CassandraConnectionUtil.getCassandraSession(initGlobalValues.getCassandraiP(), initGlobalValues.getCassandraPort(), initGlobalValues.getKeySpace(), initGlobalValues.getCassandraUserName(), initGlobalValues.getCassandraPassword());
     ResultSet result = session.execute(query);
     if (result.isExhausted()) {
