@@ -136,7 +136,7 @@ public class OrganisationTest extends BaseCitrusTest {
 			dataProvider[i] = testCaseData;
 
 		}
-		System.out.println(" Print the full array :::::::" + Arrays.deepToString(dataProvider));
+		
 		return dataProvider;
 	}
 
@@ -193,7 +193,7 @@ public class OrganisationTest extends BaseCitrusTest {
 							esList = new ArrayList<>();
 						}
 						esList.add(orgId);
-						esList.forEach(System.out::println);
+						
 						toDeleteEsRecordsMap.put("organisation", esList);
 
 
@@ -213,7 +213,7 @@ public class OrganisationTest extends BaseCitrusTest {
 	 */
 	public void testCreateOrganisationFailure(String requestJson,int count) {
 
-		System.out.println(" Sunbird Rest Clinet ::::::::: " + restTestClient.toString());
+		
 		String testName = orgCreateFailureTestNames.get(count);
 		try {
 			Thread.sleep(3000);
@@ -370,7 +370,7 @@ public class OrganisationTest extends BaseCitrusTest {
 		
 		ElasticSearchCleanUp elasticSearchCleanUp = ElasticSearchCleanUp.getInstance();
 		CassandraCleanUp cassandraCleanUp = CassandraCleanUp.getInstance();
-		System.out.println("Cassandra Map :::::::: " + toDeleteCassandraRecordsMap);
+		
 		elasticSearchCleanUp.deleteFromElasticSearch(toDeleteEsRecordsMap);
 		cassandraCleanUp.deleteFromCassandra(toDeleteCassandraRecordsMap);
 
