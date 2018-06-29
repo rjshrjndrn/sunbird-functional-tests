@@ -1,0 +1,17 @@
+{
+    "id": "api.course.batch.create",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": null,
+        "status": "success",
+        "errmsg": null
+    },
+    "responseCode": "OK",
+    "result": {
+        "response": "SUCCESS",
+        "batchId": "@ignore@"
+    }
+}

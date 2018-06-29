@@ -22,6 +22,7 @@ public class Constant {
   public static final String CONTENT_TYPE_APPLICATION_JSON_LD = "application/json-ld";
   public static final String EQUAL_SIGN = "=";
   public static final String USER_TEMPLATE_LOCATION = "templates/user/create/";
+  public static final String BATCH_TEMPLATE_LOCATION = "templates/course/batch/create";
   public static final String MALFORMED_TEMPLATE_LOCATION = "templates/malformed/";
   public static final String USER_NAME_PREFIX = "ft_testinstance";
   public static final String X_AUTHENTICATED_USER_TOKEN = "x-authenticated-user-token";
@@ -35,4 +36,11 @@ public class Constant {
   public static final String RESPONSE = "response";
   public static final String ES_REST_API_PORT = "9200";
   public static final String MULTIPART_FILE_NAME = "file";
+  public static final String IS_ROOT_ORG = "isRootOrg";
+  public static final String FILTERS = "filters";
+  public static final String LIMIT = "limit";
+  public static final String DESCRIPTION = "description";
+  public static final String ENROLLMENT_TYPE = "enrollmentType";
+  public static final String COURSE_ID ="courseId";
+  public static final String CREATEDFOR = "createdFor";
 }
