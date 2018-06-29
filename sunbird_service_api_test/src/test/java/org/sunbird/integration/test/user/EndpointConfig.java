@@ -16,7 +16,7 @@ public class EndpointConfig {
 
   @Bean
   public HttpClient restTestClient() {
-	  System.out.println("Sunbird Test Client  " + System.getenv("sunbird_test_base_url"));
+	
     return CitrusEndpoints.http()
         .client()
         .requestUrl(System.getenv("sunbird_test_base_url"))
@@ -32,6 +32,7 @@ public class EndpointConfig {
     property.setCassandraUserName(System.getenv("sunbird_cassandra_username"));
     property.setCassandraPassword(System.getenv("sunbird_cassandra_password"));
     property.setKeySpace(System.getenv("sunbird_cassandra_keyspace"));
+    property.setKeycloakUrl(System.getenv("keycloak_base_url"));
     property.setKeycloakAdminUser(System.getenv("sunbird_sso_username"));
     property.setKeycloakAdminPass(System.getenv("sunbird_sso_password"));
     property.setRelam(System.getenv("sunbird_sso_realm"));
@@ -54,6 +55,7 @@ public class EndpointConfig {
   public class TestGlobalProperty {
 
     private String apiKey;
+    private String keycloakUrl;
     private String keycloakAdminUser;
     private String keycloakAdminPass;
     private String relam;
@@ -78,6 +80,15 @@ public class EndpointConfig {
       this.apiKey = apiKey;
     }
 
+
+	public String getKeycloakUrl() {
+		return keycloakUrl;
+	}
+
+	public void setKeycloakUrl(String keycloakUrl) {
+		this.keycloakUrl = keycloakUrl;
+	}
+	
     public String getKeycloakAdminUser() {
       return keycloakAdminUser;
     }
@@ -220,6 +231,7 @@ public class EndpointConfig {
           + clientId
           + "]";
     }
+
   }
 
   public static String val;

@@ -41,5 +41,6 @@ public class Constant {
   public static final String ORG_CODE = "orgCode";
   public static final String IS_ROOT_ORG = "isRootOrg";
   public static final String ORGANISATION_ID = "organisationId";
+  public static final String LOCATION_ID = "locationId";
   
 }

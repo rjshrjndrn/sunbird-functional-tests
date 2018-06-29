@@ -4,15 +4,12 @@
 package org.sunbird.integration.test.org;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-import org.apache.bcel.classfile.ConstantDouble;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.sunbird.common.annotation.CleanUp;
 import org.sunbird.common.models.response.Response;
@@ -28,7 +25,7 @@ import org.testng.annotations.Test;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.context.TestContext;
-import com.consol.citrus.dsl.builder.HttpClientActionBuilder.HttpClientReceiveActionBuilder;
+import com.consol.citrus.dsl.builder.HttpClientRequestActionBuilder;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.testng.CitrusParameters;
 import com.consol.citrus.validation.json.JsonMappingValidationCallback;
@@ -45,8 +42,9 @@ public class OrganisationTest extends BaseCitrusTest {
 	 * @param args
 	 */
 	private static final String CREATE_ORGANISATION_URI = "/v1/org/create";
-	private static final String UPDATE_ORGANISATION_URI = "/api/data/v1/location/update";
-	private static final String SEARCH_ORGANISATION_URI = "/api/data/v1/location/delete";
+	private static final String CREATE_ORGANISATION_TYPE_URI = "/v1/org/type/create";
+	private static final String SEARCH_ORGANISATION_URI = "/v1/location/delete";
+
 
 	private static final String ORGANISATION_TEMPLATE_PATH = "templates/organisation/create/";
 	private static final String ORGANISATION_TEMPLATE_PATH_UPDATE = "templates/organisation/update/";
@@ -57,6 +55,11 @@ public class OrganisationTest extends BaseCitrusTest {
 
 	private static String PROVIDER = "Provider-" + String.valueOf(System.currentTimeMillis());
 	private static String EXTERNAL_ID = "ExtId-" + String.valueOf(System.currentTimeMillis());
+	private static String LOCATION_ID = "LocId-" + String.valueOf(System.currentTimeMillis());
+
+	private static String CHANNEL_FOR_EXIST_CHECK;
+	private static String EXTERNAL_ID_FOR_EXIST_CHECK;
+	private static String PROVIDER_FOR_EXIST_CHECK;
 
 	private static Stack<String> stack = new Stack();
 	private static String admin_token = null;
@@ -67,7 +70,7 @@ public class OrganisationTest extends BaseCitrusTest {
 		add("Test with only Organisation Name");
 		add("Organisation name with Channel");		
 		add("Organisation name with Channel, Provider & External Id");
-
+		//add("Create an Organisation for futher testing ");
 	}};
 
 	ArrayList<String> orgCreateFailureTestNames = new ArrayList<String>() {{
@@ -76,6 +79,11 @@ public class OrganisationTest extends BaseCitrusTest {
 		add("Test Organisation Name and code , rootOrg=true with provider");
 		add("Test Organisation Name and code , rootOrg=true with channel, provider");
 		add("Organisation name with Provider & External id");
+		add("Organisation name with Location id");
+		add("Organisation create without Access Token");
+		add("Organisation with the existing Channel");
+		add("Organisation with the existing Provider & External id");
+
 	}};
 
 	List<String> cassandraList = toDeleteCassandraRecordsMap.get("organisation");
@@ -88,12 +96,13 @@ public class OrganisationTest extends BaseCitrusTest {
 	 * 
 	 */
 	public void getAdminAuthToken() {
-		http().client("http://localhost:8080").send()
+		
+		http().client(initGlobalValues.getKeycloakUrl()).send()
 		.post("/auth/realms/" + initGlobalValues.getRelam() + "/protocol/openid-connect/token")
 		.contentType("application/x-www-form-urlencoded")
 		.payload("client_id=admin-cli&username=" + initGlobalValues.getKeycloakAdminUser() + "&password="
 				+ initGlobalValues.getKeycloakAdminPass() + "&grant_type=password");
-		http().client("http://localhost:8080").receive().response(HttpStatus.OK)
+		http().client(initGlobalValues.getKeycloakUrl()).receive().response(HttpStatus.OK)
 		.validationCallback(new JsonMappingValidationCallback<Map>(Map.class, objectMapper) {
 			@Override
 			public void validate(Map response, Map<String, Object> headers, TestContext context) {
@@ -107,7 +116,7 @@ public class OrganisationTest extends BaseCitrusTest {
 	@DataProvider(name = "createSuccessOrgDataProvider")
 	public Object[][] createSuccessOrgDataProvider() {
 
-	
+
 		Object[][] dataProvider = new Object[10][];
 
 		for (int i = 0; i<=2 ; i++ ) {
@@ -126,17 +135,17 @@ public class OrganisationTest extends BaseCitrusTest {
 	@DataProvider(name = "createFailureOrgDataProvider")
 	public Object[][] createFailureOrgDataProvider() {
 
-	
+
 		Object[][] dataProvider = new Object[10][];
 
-		for (int i = 0; i<= 4 ; i++ ) {
+		for (int i = 0; i<= 8 ; i++ ) {
 
 			Object[] testCaseData = { createFailureOrganisationMap(i), i};
 
 			dataProvider[i] = testCaseData;
 
 		}
-		
+
 		return dataProvider;
 	}
 
@@ -174,14 +183,17 @@ public class OrganisationTest extends BaseCitrusTest {
 				new JsonMappingValidationCallback<Response>(Response.class, objectMapper) {
 					@Override
 					public void validate(
+
 							Response response, Map<String, Object> headers, TestContext context) {
-						//After success if need to validate anything
+
 						Assert.assertNotNull(response.getResult().get(Constant.RESPONSE));
 						Assert.assertEquals(response.getResponseCode(), ResponseCode.OK);
 
 						String orgId = (String) response.getResult().get(Constant.ORGANISATION_ID);
 						Assert.assertNotNull(orgId);
 
+
+						/* Remove Cassandra & Elastic search data which inserted during Testing */
 
 						if (cassandraList == null) {
 							cassandraList = new ArrayList<>();
@@ -193,7 +205,7 @@ public class OrganisationTest extends BaseCitrusTest {
 							esList = new ArrayList<>();
 						}
 						esList.add(orgId);
-						
+
 						toDeleteEsRecordsMap.put("organisation", esList);
 
 
@@ -213,7 +225,7 @@ public class OrganisationTest extends BaseCitrusTest {
 	 */
 	public void testCreateOrganisationFailure(String requestJson,int count) {
 
-		
+
 		String testName = orgCreateFailureTestNames.get(count);
 		try {
 			Thread.sleep(3000);
@@ -221,14 +233,18 @@ public class OrganisationTest extends BaseCitrusTest {
 			// TODO: handle exception
 		}
 		getTestCase().setName(testName);
-		http()
-		.client(restTestClient)
-		.send()
-		.post(CREATE_ORGANISATION_URI)
-		.contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
-		.header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
-		.header(Constant.X_AUTHENTICATED_USER_TOKEN, admin_token)
-		.payload(requestJson);
+		HttpClientRequestActionBuilder httpRequest = http()
+				.client(restTestClient)
+				.send()
+				.post(CREATE_ORGANISATION_URI)
+				.contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)		
+				//.header(Constant.X_AUTHENTICATED_USER_TOKEN, admin_token)
+				.payload(requestJson);
+
+		if (count != 6 ) {
+			httpRequest.header(Constant.X_AUTHENTICATED_USER_TOKEN, admin_token);
+		}
+
 
 		http()
 		.client(restTestClient)
@@ -247,11 +263,13 @@ public class OrganisationTest extends BaseCitrusTest {
 	}
 
 	private String createFailureOrganisationMap(int count) {
+
 		ORG_NAME = "Org-" + String.valueOf(System.currentTimeMillis()+count);
 		ORG_CODE = "Org-code-" + String.valueOf(System.currentTimeMillis()+count);
 		CHANNEL = "Channel-" + String.valueOf(System.currentTimeMillis()+count);
 		PROVIDER = "Provider-" + String.valueOf(System.currentTimeMillis()+count);
 		EXTERNAL_ID = "ExtId-" + String.valueOf(System.currentTimeMillis()+count);
+		LOCATION_ID = "LocId-" + String.valueOf(System.currentTimeMillis());
 
 		Map<String, Object> requestMap = new HashMap<>();
 		Map<String, Object> innerMap = new HashMap<>();
@@ -262,7 +280,7 @@ public class OrganisationTest extends BaseCitrusTest {
 
 			break;
 		case 1:
-			/* Organisation name, Org code, and Rootorg as true without (channel || (Provider & External Id)*/
+			/* Organisation name, Org code, and Rootorg as true without (channel && (Provider & External Id)*/
 			innerMap.put(Constant.ORG_NAME, ORG_NAME);
 			innerMap.put(Constant.ORG_CODE, ORG_CODE);	
 			innerMap.put(Constant.IS_ROOT_ORG, true);
@@ -282,7 +300,7 @@ public class OrganisationTest extends BaseCitrusTest {
 			innerMap.put(Constant.ORG_CODE, ORG_CODE);	
 			innerMap.put(Constant.IS_ROOT_ORG, true);
 			innerMap.put(Constant.CHANNEL, CHANNEL);
-			innerMap.put(Constant.PROVIDER, PROVIDER);
+			innerMap.put(Constant.PROVIDER, PROVIDER);		
 
 			break;
 		case 4:
@@ -292,15 +310,42 @@ public class OrganisationTest extends BaseCitrusTest {
 			innerMap.put(Constant.IS_ROOT_ORG, true);
 			innerMap.put(Constant.PROVIDER, PROVIDER);
 			innerMap.put(Constant.EXTERNAL_ID, EXTERNAL_ID);
+
 		case 5:
-			/* With out authentication */
+			/* orgname , location id which is not existing */
+			innerMap.put(Constant.ORG_NAME, ORG_NAME);
+			innerMap.put(Constant.LOCATION_ID, LOCATION_ID);	
+			break;
+		case 6:
+			/* With out authentication -  */
+			innerMap.put(Constant.ORG_NAME, ORG_NAME);
+
+			break;
+		case 7:
+			/* Test case if the channel is already exists */
+
+			innerMap.put(Constant.ORG_NAME, ORG_NAME);
+			innerMap.put(Constant.ORG_CODE, ORG_CODE);	
+			innerMap.put(Constant.IS_ROOT_ORG, true);
+			innerMap.put(Constant.CHANNEL, CHANNEL_FOR_EXIST_CHECK);
+			break;
+		case 8:
+
+			/* Test case if the ( Provider & External ID ) is already exists */			
+			innerMap.put(Constant.ORG_NAME, ORG_NAME);
+			innerMap.put(Constant.ORG_CODE, ORG_CODE);	
+			innerMap.put(Constant.IS_ROOT_ORG, true);
+			innerMap.put(Constant.CHANNEL, CHANNEL);
+			innerMap.put(Constant.PROVIDER, PROVIDER_FOR_EXIST_CHECK);
+			innerMap.put(Constant.EXTERNAL_ID, EXTERNAL_ID_FOR_EXIST_CHECK);
+
+			break;
+		case 9:
 
 			break;
 
+
 		}
-
-
-
 		requestMap.put(Constant.REQUEST, innerMap);
 		try {
 			return objectMapper.writeValueAsString(requestMap);
@@ -313,6 +358,7 @@ public class OrganisationTest extends BaseCitrusTest {
 
 	/* Success Case */
 	private String createSuccessOrganisationMap(int count) {
+
 		ORG_NAME = "Org-" + String.valueOf(System.currentTimeMillis()+count);
 		ORG_CODE = "Org-code-" + String.valueOf(System.currentTimeMillis()+count);
 		CHANNEL = "Channel-" + String.valueOf(System.currentTimeMillis()+count);
@@ -342,8 +388,17 @@ public class OrganisationTest extends BaseCitrusTest {
 			innerMap.put(Constant.CHANNEL, CHANNEL);
 			innerMap.put(Constant.PROVIDER, PROVIDER);
 			innerMap.put(Constant.EXTERNAL_ID, EXTERNAL_ID);
+
+			/* To use for the 7th Failure Use case */			
+			CHANNEL_FOR_EXIST_CHECK = ORG_NAME;
+			EXTERNAL_ID_FOR_EXIST_CHECK = EXTERNAL_ID;
+			PROVIDER_FOR_EXIST_CHECK = PROVIDER;
+			/* To use for the 7th Failure Use case */
+
 			break;
 		case 3:
+			/* Create with the Existing Location */
+
 
 			break;
 		case 4:
@@ -351,8 +406,6 @@ public class OrganisationTest extends BaseCitrusTest {
 			break;
 
 		}
-
-
 
 		requestMap.put(Constant.REQUEST, innerMap);
 		try {
@@ -367,10 +420,10 @@ public class OrganisationTest extends BaseCitrusTest {
 	@CleanUp
 	/** Method to perform the cleanup after test suite completion. */
 	public static void cleanUp() {
-		
+
 		ElasticSearchCleanUp elasticSearchCleanUp = ElasticSearchCleanUp.getInstance();
 		CassandraCleanUp cassandraCleanUp = CassandraCleanUp.getInstance();
-		
+
 		elasticSearchCleanUp.deleteFromElasticSearch(toDeleteEsRecordsMap);
 		cassandraCleanUp.deleteFromCassandra(toDeleteCassandraRecordsMap);
 

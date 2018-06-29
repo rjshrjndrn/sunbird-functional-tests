@@ -40,9 +40,10 @@ public class CassandraCleanUp {
     map.forEach((k, v) -> {
       if (v != null)
         for (String value : v) {
-        	System.out.println(" Cassandra Value ::::::::" + value);
+        
           deleteDataFromCassandra(value, k);
-          }
+         
+        }
     });
   }
 
@@ -56,8 +57,7 @@ public class CassandraCleanUp {
    */
   private boolean deleteDataFromCassandra(String id, String tableName) {
     String query = "DELETE FROM " + tableName + " WHERE id=" + "'" + id + "'";
-    System.out.println(" SQL ::::::::" + query);
-    System.out.println(" Cassandra ::: " + initGlobalValues.getCassandraiP());
+   
     Session session = CassandraConnectionUtil.getCassandraSession(initGlobalValues.getCassandraiP(), initGlobalValues.getCassandraPort(), initGlobalValues.getKeySpace(), initGlobalValues.getCassandraUserName(), initGlobalValues.getCassandraPassword());
     ResultSet result = session.execute(query);
     if (result.isExhausted()) {
