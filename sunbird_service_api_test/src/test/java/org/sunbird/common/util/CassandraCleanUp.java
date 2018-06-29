@@ -15,55 +15,56 @@ import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
  */
 public class CassandraCleanUp {
 
-  private CassandraCleanUp(){
+	private CassandraCleanUp(){
 
-  }
+	}
 
-  private static CassandraCleanUp cassandraCleanUp = null;
+	private static CassandraCleanUp cassandraCleanUp = null;
 
-  public static CassandraCleanUp getInstance(){
-    if(null == cassandraCleanUp){
-      cassandraCleanUp = new CassandraCleanUp();
-    }
-    return cassandraCleanUp;
-  }
+	public static CassandraCleanUp getInstance(){
+		if(null == cassandraCleanUp){
+			cassandraCleanUp = new CassandraCleanUp();
+		}
+		return cassandraCleanUp;
+	}
 
- // @Autowired
-  private TestGlobalProperty initGlobalValues = new EndpointConfig().initGlobalValues();
+	// @Autowired
+	private TestGlobalProperty initGlobalValues = new EndpointConfig().initGlobalValues();
 
-  /**
-   * Method to delete the entries from cassandra.
-   * @param map contains Table name as key and list of ids to be delete from
-   * cassandra as list of String.
-   */
-  public void deleteFromCassandra(Map<String, List<String>> map){
-    map.forEach((k, v) -> {
-      if (v != null)
-        for (String value : v) {
-        
-          deleteDataFromCassandra(value, k);
-         
-        }
-    });
-  }
+	/**
+	 * Method to delete the entries from cassandra.
+	 * @param map contains Table name as key and list of ids to be delete from
+	 * cassandra as list of String.
+	 */
+	public void deleteFromCassandra(Map<String, List<String>> map){
+		map.forEach((k, v) -> {
+			if (v != null)
+				for (String value : v) {
 
-  /**
-   * This method will delete created data from cassandra.
-   *
-   * @param id
-   *            String identifier of table.
-   * @param tableName
-   *            String name of table.
-   */
-  private boolean deleteDataFromCassandra(String id, String tableName) {
-    String query = "DELETE FROM " + tableName + " WHERE id=" + "'" + id + "'";
-   
-    Session session = CassandraConnectionUtil.getCassandraSession(initGlobalValues.getCassandraiP(), initGlobalValues.getCassandraPort(), initGlobalValues.getKeySpace(), initGlobalValues.getCassandraUserName(), initGlobalValues.getCassandraPassword());
-    ResultSet result = session.execute(query);
-    if (result.isExhausted()) {
-      return true;
-    }
-    return false;
-  }
+					deleteDataFromCassandra(value, k);
+
+				}
+		});
+	}
+
+	/**
+	 * This method will delete created data from cassandra.
+	 *
+	 * @param id
+	 *            String identifier of table.
+	 * @param tableName
+	 *            String name of table.
+	 */
+	private boolean deleteDataFromCassandra(String id, String tableName) {
+		
+		String query = "DELETE FROM " + tableName + " WHERE id=" + "'" + id + "'";
+		
+		Session session = CassandraConnectionUtil.getCassandraSession(initGlobalValues.getCassandraiP(), initGlobalValues.getCassandraPort(), initGlobalValues.getKeySpace(), initGlobalValues.getCassandraUserName(), initGlobalValues.getCassandraPassword());
+		ResultSet result = session.execute(query);
+		if (result.isExhausted()) {
+			return true;
+		}
+		return false;
+	}
 
 }
