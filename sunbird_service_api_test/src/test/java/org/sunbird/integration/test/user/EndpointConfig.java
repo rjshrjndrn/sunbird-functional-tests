@@ -38,8 +38,7 @@ public class EndpointConfig {
     property.setEsPort(System.getenv("sunbird_es_port"));
     property.setIndexType(System.getenv("sunbird_es_index_type"));
     property.setIndex(System.getenv("sunbird_es_index"));
-    // System.getenv("sunbird_default_channel")
-    property.setSunbirdDefaultChannel("sunbird-dev");
+    property.setSunbirdDefaultChannel(System.getenv("sunbird_default_channel"));
     property.setLmsUrl(System.getenv("sunbird_test_base_url"));
     return property;
   }
