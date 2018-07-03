@@ -28,7 +28,7 @@ public class CassandraCleanUp {
 		return cassandraCleanUp;
 	}
 
-	// @Autowired
+	@Autowired
 	private TestGlobalProperty initGlobalValues = new EndpointConfig().initGlobalValues();
 
 	/**

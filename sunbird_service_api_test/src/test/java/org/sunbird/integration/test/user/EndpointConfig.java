@@ -5,6 +5,7 @@ import com.consol.citrus.http.client.HttpClient;
 import java.util.UUID;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.ContextConfiguration;
 
 /**
  * This class will do the initialization of all global variable.
@@ -52,6 +53,7 @@ public class EndpointConfig {
    *
    * @author Manzarul
    */
+ 
   public class TestGlobalProperty {
 
     private String apiKey;

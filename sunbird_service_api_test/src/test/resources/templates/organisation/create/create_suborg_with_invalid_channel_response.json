@@ -1,0 +1,14 @@
+{
+    "id": "api.org.create",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "INVALID_CHANNEL",
+        "status": "INVALID_CHANNEL",
+        "errmsg": "Channel value is invalid."
+    },
+    "responseCode": "CLIENT_ERROR",
+    "result": {}
+}
