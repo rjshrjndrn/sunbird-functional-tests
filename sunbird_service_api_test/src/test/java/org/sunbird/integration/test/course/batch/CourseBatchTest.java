@@ -40,6 +40,14 @@ public class CourseBatchTest extends TestNGCitrusTestDesigner {
 	@Autowired
 	protected EndpointConfig.TestGlobalProperty initGlobalValues;
 
+	private static final String CREATE_USER = "api/user/v1/create";
+	private static final String SEARCH_ORG = "/api/org/v1/search";
+	private static final String CREATE_COURSE_BATCH = "/api/course/v1/batch/create";
+	private static final String ADD_USER_TO_COURSE_BATCH = "/api/course/v1/batch/user/add/";
+	private static final String ENROLL_USER_TO_OPEN_BATCH = "/api/course/v1/enrol";
+	private static final String UPDATE_CONTENT_STATE = "/api/course/v1/content/state/update";
+	private static final String GET_CONTENT_STATE = "/api/course/v1/content/state/read";
+
 	protected ObjectMapper objectMapper = new ObjectMapper();
 	protected static String admin_token = null;
 	protected static String userId = null;
@@ -52,14 +60,6 @@ public class CourseBatchTest extends TestNGCitrusTestDesigner {
 	private static Map<String, List<String>> batchIDContentIdsConcurrentMap = new ConcurrentHashMap<>();
 	private static Map<String, List<String>> batchIDContentIdsActualMap = new HashMap<>();
 
-	private static final String CREATE_USER = "api/user/v1/create";
-	private static final String SEARCH_ORG = "/api/org/v1/search";
-	private static final String CREATE_COURSE_BATCH = "/api/course/v1/batch/create";
-	private static final String ADD_USER_TO_COURSE_BATCH = "/api/course/v1/batch/user/add/";
-	private static final String ENROLL_USER_TO_OPEN_BATCH = "/api/course/v1/enrol";
-	private static final String UPDATE_CONTENT_STATE = "/api/course/v1/content/state/update";
-	private static final String GET_CONTENT_STATE = "/api/course/v1/content/state/read";
-	
 	@Test()
 	@CitrusTest
 	public void testCreateUser() {
