@@ -48,6 +48,7 @@ public class CourseBatchTest extends TestNGCitrusTestDesigner {
 	private static final String UPDATE_CONTENT_STATE = "/api/course/v1/content/state/update";
 	private static final String GET_CONTENT_STATE = "/api/course/v1/content/state/read";
 
+	
 	protected ObjectMapper objectMapper = new ObjectMapper();
 	protected static String admin_token = null;
 	protected static String userId = null;
