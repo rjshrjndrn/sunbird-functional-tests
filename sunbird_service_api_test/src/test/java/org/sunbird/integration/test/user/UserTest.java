@@ -41,6 +41,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
   private static volatile String USER_NAME = "userName";
   private static String externalId = String.valueOf(System.currentTimeMillis());
   private static String provider = String.valueOf(System.currentTimeMillis() + 10);
+  private static TestGlobalProperty testGlobalProperty = new EndpointConfig().initGlobalValues();
 
   /**
    * User can define the api request and response json structure. first index is request json
@@ -94,11 +95,6 @@ public class UserTest extends TestNGCitrusTestDesigner {
         "duplicateUsernameTest"
       },
       new Object[] {
-        createUserWithDuplicateExtIdAndProvider(),
-        Constant.USER_TEMPLATE_LOCATION + "user_already_exist_response.json",
-        "duplicateExtIdAndProviderTest"
-      },
-      new Object[] {
         createUserWithInvalidChannel(),
         Constant.USER_TEMPLATE_LOCATION + "invalid_channel_response.json",
         "invalidChannelTest"
@@ -110,11 +106,6 @@ public class UserTest extends TestNGCitrusTestDesigner {
   public Object[][] updateUserDataProvider() {
     return new Object[][] {
       new Object[] {updateUserWithId(), "update_user_success_response.json", "updateUserWithId"},
-      new Object[] {
-        updateUserWithExtIdAndProvider(),
-        "update_user_success_response.json",
-        "updateUserWithExtIdAndProvider"
-      },
       new Object[] {
         updateUserWithRegOrgId(),
         Constant.UPDATE_USER_TEMPLATE_LOCATION + "user_update_bad_request_response.json",
@@ -408,8 +399,6 @@ public class UserTest extends TestNGCitrusTestDesigner {
     innerMap.put(
         Constant.EMAIL, Constant.USER_NAME_PREFIX + UUID.randomUUID().toString() + "@gmail.com");
     innerMap.put(Constant.USER_NAME, Constant.USER_NAME_PREFIX + UUID.randomUUID().toString());
-    innerMap.put(Constant.EXTERNAL_ID, externalId + 123);
-    innerMap.put(Constant.PROVIDER, provider + 234);
     innerMap.put(Constant.CHANNEL, "functionalTest#Invalid$Channel@1235123");
     requestMap.put(Constant.REQUEST, innerMap);
     try {
@@ -452,8 +441,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
     innerMap.put(Constant.FIRST_NAME, "ft_first_Name_pw12401");
     innerMap.put(Constant.LAST_NAME, "ft_lastName");
     innerMap.put(Constant.PASSWORD, "password");
-    innerMap.put(Constant.EXTERNAL_ID, externalId);
-    innerMap.put(Constant.PROVIDER, provider);
+    innerMap.put(Constant.CHANNEL,testGlobalProperty.getSunbirdDefaultChannel());
     USER_NAME = Constant.USER_NAME_PREFIX + EndpointConfig.val;
     String email = Constant.USER_NAME_PREFIX + EndpointConfig.val + "@gmail.com";
     innerMap.put(Constant.USER_NAME, USER_NAME);
@@ -468,6 +456,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
     innerMap.put(Constant.ID, userId);
     innerMap.put(Constant.USER_ID, userId);
     innerMap.remove(Constant.USER_NAME);
+    innerMap.remove(Constant.CHANNEL);
     requestMap.put(Constant.REQUEST, innerMap);
 
     try {
