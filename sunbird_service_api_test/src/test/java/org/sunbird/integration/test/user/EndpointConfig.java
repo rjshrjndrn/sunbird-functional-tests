@@ -5,6 +5,7 @@ import com.consol.citrus.http.client.HttpClient;
 import java.util.UUID;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.ContextConfiguration;
 
 /**
  * This class will do the initialization of all global variable.
@@ -16,6 +17,7 @@ public class EndpointConfig {
 
   @Bean
   public HttpClient restTestClient() {
+	
     return CitrusEndpoints.http()
         .client()
         .requestUrl(System.getenv("sunbird_test_base_url"))
@@ -29,7 +31,9 @@ public class EndpointConfig {
     property.setCassandraiP(System.getenv("sunbird_cassandra_host"));
     property.setCassandraPort(System.getenv("sunbird_cassandra_port"));
     property.setCassandraUserName(System.getenv("sunbird_cassandra_username"));
+    property.setCassandraPassword(System.getenv("sunbird_cassandra_password"));
     property.setKeySpace(System.getenv("sunbird_cassandra_keyspace"));
+    property.setKeycloakUrl(System.getenv("keycloak_base_url"));
     property.setKeycloakAdminUser(System.getenv("sunbird_sso_username"));
     property.setKeycloakAdminPass(System.getenv("sunbird_sso_password"));
     property.setRelam(System.getenv("sunbird_sso_realm"));
@@ -48,9 +52,11 @@ public class EndpointConfig {
    *
    * @author Manzarul
    */
+ 
   public class TestGlobalProperty {
 
     private String apiKey;
+    private String keycloakUrl;
     private String keycloakAdminUser;
     private String keycloakAdminPass;
     private String relam;
@@ -75,6 +81,15 @@ public class EndpointConfig {
       this.apiKey = apiKey;
     }
 
+
+	public String getKeycloakUrl() {
+		return keycloakUrl;
+	}
+
+	public void setKeycloakUrl(String keycloakUrl) {
+		this.keycloakUrl = keycloakUrl;
+	}
+	
     public String getKeycloakAdminUser() {
       return keycloakAdminUser;
     }
@@ -217,6 +232,7 @@ public class EndpointConfig {
           + clientId
           + "]";
     }
+
   }
 
   public static String val;

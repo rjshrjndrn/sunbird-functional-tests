@@ -3,6 +3,7 @@ package org.sunbird.common.util;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.sunbird.integration.test.user.EndpointConfig;
 import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 
 /**
@@ -12,7 +13,8 @@ import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
  */
 public class ElasticSearchCleanUp {
 
-  @Autowired private TestGlobalProperty initGlobalValues;
+  //@Autowired 
+  private TestGlobalProperty initGlobalValues =  new EndpointConfig().initGlobalValues();
 
   private static ElasticSearchCleanUp elasticSearchcleanUp;
 
@@ -59,6 +61,7 @@ public class ElasticSearchCleanUp {
     StringBuilder builder = new StringBuilder("http://");
     builder.append(host);
     builder.append(":" + port + "/" + index + "/" + type + "/" + id);
+    
     return builder.toString();
   }
 }

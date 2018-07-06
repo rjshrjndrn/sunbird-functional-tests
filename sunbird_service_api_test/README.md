@@ -95,6 +95,8 @@ Execute all Citrus tests by calling
 You can also pick a single test by calling
 
      mvn verify -Dit.test=<testname>
+     			 (OR)
+     mvn clean verify -Dtest=<testname>
 
 You should see Citrus performing several tests with lots of debugging output in both terminals (sample application server
 and Citrus test client). And of course green tests at the very end of the build.
