@@ -1,0 +1,14 @@
+{
+  "id": "api.issuer.create",
+  "ver": "v1",
+  "ts": "@ignore@",
+  "params": {
+    "resmsgid": null,
+    "msgid": "@ignore@",
+    "err": "MANDATORY_PARAMETER_MISSING",
+    "status": "MANDATORY_PARAMETER_MISSING",
+    "errmsg": "Mandatory parameter email is missing."
+  },
+  "responseCode": "CLIENT_ERROR",
+  "result": {}
+}
