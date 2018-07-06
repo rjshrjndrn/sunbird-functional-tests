@@ -1,0 +1,14 @@
+{
+  "id": "api.issuer.create",
+  "ver": "v1",
+  "ts": "@ignore@",
+  "params": {
+    "resmsgid": null,
+    "msgid": "@ignore@",
+    "err": "URL_FORMAT_ERROR",
+    "status": "URL_FORMAT_ERROR",
+    "errmsg": "URL is invalid."
+  },
+  "responseCode": "CLIENT_ERROR",
+  "result": {}
+}
