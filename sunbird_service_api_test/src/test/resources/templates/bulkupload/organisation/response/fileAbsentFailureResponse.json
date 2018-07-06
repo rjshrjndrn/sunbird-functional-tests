@@ -1,0 +1,14 @@
+{
+  "id": "api.org.upload",
+  "ver": "v1",
+  "ts": "@ignore@",
+  "params": {
+    "resmsgid": null,
+    "msgid": "@ignore@",
+    "err": "INTERNAL_ERROR",
+    "status": "INTERNAL_ERROR",
+    "errmsg": "@ignore@"
+  },
+  "responseCode": "SERVER_ERROR",
+  "result": {}
+}

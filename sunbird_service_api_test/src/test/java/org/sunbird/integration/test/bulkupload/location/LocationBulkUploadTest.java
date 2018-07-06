@@ -20,7 +20,6 @@ import org.testng.annotations.Test;
  */
 public class LocationBulkUploadTest extends BaseCitrusTest {
 
-  private static final String BULK_UPLOAD_LOCATION_URI = "/api/data/v1/bulk/location/upload";
   private static final String  TEST_DIR_BULK_UPLOAD_LOCATION_SUCCESS = "templates/location/bulkupload/state/success/";
   private static final String  TEST_DIR_BULK_UPLOAD_LOCATION_FAILURE = "templates/location/bulkupload/state/failure/";
 
@@ -64,7 +63,7 @@ public class LocationBulkUploadTest extends BaseCitrusTest {
     if ((TEST_DIR_BULK_UPLOAD_LOCATION_SUCCESS + RESPONSE_JSON)
         .equals(responseJson)) {
       testFolderPath= TEST_DIR_BULK_UPLOAD_LOCATION_SUCCESS;
-      new HttpUtil().multipartPost(http().client(restTestClient), initGlobalValues, BULK_UPLOAD_LOCATION_URI, requestFormData, testFolderPath);
+      new HttpUtil().multipartPost(http().client(restTestClient), initGlobalValues, getLocationBulkUploadUrl(), requestFormData, testFolderPath);
 
       http()
           .client(restTestClient)
@@ -73,7 +72,7 @@ public class LocationBulkUploadTest extends BaseCitrusTest {
           .payload(new ClassPathResource(responseJson));
     } else {
       testFolderPath = TEST_DIR_BULK_UPLOAD_LOCATION_FAILURE;
-      new HttpUtil().multipartPost(http().client(restTestClient), initGlobalValues, BULK_UPLOAD_LOCATION_URI, requestFormData, testFolderPath);
+      new HttpUtil().multipartPost(http().client(restTestClient), initGlobalValues, getLocationBulkUploadUrl(), requestFormData, testFolderPath);
 
       http()
           .client(restTestClient)
@@ -81,6 +80,12 @@ public class LocationBulkUploadTest extends BaseCitrusTest {
           .response(HttpStatus.BAD_REQUEST)
           .payload(new ClassPathResource(responseJson));
     }
+  }
+
+  private String getLocationBulkUploadUrl() {
+    return initGlobalValues.getLmsUrl().contains("localhost")
+        ? "/v1/bulk/location/upload"
+        : "/api/data/v1/bulk/location/upload";
   }
 
   @CleanUp

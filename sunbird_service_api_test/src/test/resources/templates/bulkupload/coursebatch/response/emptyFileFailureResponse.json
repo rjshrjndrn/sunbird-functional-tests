@@ -1,0 +1,14 @@
+{
+  "id": "api.batch.bulk.enrollment",
+  "ver": "v1",
+  "ts": "@ignore@",
+  "params": {
+    "resmsgid": null,
+    "msgid": "@ignore@",
+    "err": "INVALID_CSV_FILE",
+    "status": "INVALID_CSV_FILE",
+    "errmsg": "@ignore@"
+  },
+  "responseCode": "CLIENT_ERROR",
+  "result": {}
+}

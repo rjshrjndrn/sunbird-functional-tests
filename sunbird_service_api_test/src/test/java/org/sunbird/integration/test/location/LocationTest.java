@@ -38,9 +38,6 @@ public class LocationTest extends BaseCitrusTest {
   private static String stateLocationId = null;
 
   private static String districtLocationId = null;
-  private static final String CREATE_LOCATION_URI = "/api/data/v1/location/create";
-  private static final String UPDATE_LOCATION_URI = "/api/data/v1/location/update";
-  private static final String DELETE_LOCATION_URI = "/api/data/v1/location/delete";
   private static final String LOCATION_TEMPLATE_PATH = "templates/location/create/";
   private static final String LOCATION_TEMPLATE_PATH_UPDATE = "templates/location/update/";
   private static final String LOCATION_TEMPLATE_PATH_DELETE = "templates/location/delete/";
@@ -163,7 +160,7 @@ public class LocationTest extends BaseCitrusTest {
     http()
         .client(restTestClient)
         .send()
-        .post(CREATE_LOCATION_URI)
+        .post(getCreateLocationUrl())
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson);
@@ -198,7 +195,7 @@ public class LocationTest extends BaseCitrusTest {
     http()
         .client(restTestClient)
         .send()
-        .patch(UPDATE_LOCATION_URI)
+        .patch(getUpdateLocationUrl())
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson);
@@ -239,7 +236,7 @@ public class LocationTest extends BaseCitrusTest {
     http()
         .client(restTestClient)
         .send()
-        .post(CREATE_LOCATION_URI)
+        .post(getCreateLocationUrl())
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson);
@@ -273,7 +270,7 @@ public class LocationTest extends BaseCitrusTest {
     http()
         .client(restTestClient)
         .send()
-        .patch(UPDATE_LOCATION_URI)
+        .patch(getUpdateLocationUrl())
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson);
@@ -307,7 +304,7 @@ public class LocationTest extends BaseCitrusTest {
     http()
         .client(restTestClient)
         .send()
-        .delete(DELETE_LOCATION_URI + "/" + stateLocationId)
+        .delete(getDeleteLocationUrl() + "/" + stateLocationId)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey());
     http()
         .client(restTestClient)
@@ -332,7 +329,7 @@ public class LocationTest extends BaseCitrusTest {
       http()
           .client(restTestClient)
           .send()
-          .delete(DELETE_LOCATION_URI + "/" + districtLocationId)
+          .delete(getDeleteLocationUrl() + "/" + districtLocationId)
           .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey());
       http()
           .client(restTestClient)
@@ -343,7 +340,7 @@ public class LocationTest extends BaseCitrusTest {
       http()
           .client(restTestClient)
           .send()
-          .delete(DELETE_LOCATION_URI + "/" + districtLocationId + "invalid")
+          .delete(getDeleteLocationUrl() + "/" + districtLocationId + "invalid")
           .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey());
       http()
           .client(restTestClient)
@@ -492,5 +489,23 @@ public class LocationTest extends BaseCitrusTest {
 
     elasticSearchCleanUp.deleteFromElasticSearch(toDeleteEsRecordsMap);
     cassandraCleanUp.deleteFromCassandra(toDeleteCassandraRecordsMap);
+  }
+
+  private String getCreateLocationUrl() {
+    return initGlobalValues.getLmsUrl().contains("localhost")
+        ? "/v1/location/create"
+        : "/api/data/v1/location/create";
+  }
+
+  private String getUpdateLocationUrl() {
+    return initGlobalValues.getLmsUrl().contains("localhost")
+        ? "/v1/location/update"
+        : "/api/data/v1/location/update";
+  }
+
+  private String getDeleteLocationUrl() {
+    return initGlobalValues.getLmsUrl().contains("localhost")
+        ? "/v1/location/delete"
+        : "/api/data/v1/location/delete";
   }
 }

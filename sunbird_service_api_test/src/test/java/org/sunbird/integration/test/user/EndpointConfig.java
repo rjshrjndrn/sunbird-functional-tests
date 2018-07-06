@@ -1,10 +1,23 @@
 package org.sunbird.integration.test.user;
 
+import com.consol.citrus.context.TestContext;
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
+import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
+import com.consol.citrus.validation.json.JsonMappingValidationCallback;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.sunbird.common.util.HttpUtil;
+import org.testng.Assert;
 
 /**
  * This class will do the initialization of all global variable.
@@ -13,6 +26,8 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class EndpointConfig {
+
+  public static String admin_token = null;
 
   @Bean
   public HttpClient restTestClient() {
@@ -40,7 +55,41 @@ public class EndpointConfig {
     property.setIndex(System.getenv("sunbird_es_index"));
     property.setSunbirdDefaultChannel(System.getenv("sunbird_default_channel"));
     property.setLmsUrl(System.getenv("sunbird_test_base_url"));
+    setAdminAuthToken(property);
     return property;
+  }
+
+  public void setAdminAuthToken(TestGlobalProperty property) {
+    if(StringUtils.isBlank(admin_token)) {
+      synchronized (EndpointConfig.class) {
+        if(StringUtils.isBlank(admin_token)) {
+          ObjectMapper objectMapper = new ObjectMapper();
+          String baseUrl = System.getenv("sunbird_test_base_url");
+          String url =
+              baseUrl + "/auth/realms/" + property.getRelam() + "/protocol/openid-connect/token";
+
+          Map<String, String> headers = new HashMap<>();
+          headers.put("Content-Type", "application/x-www-form-urlencoded");
+
+          Map<String, String> params = new HashMap<>();
+          params.put("client_id", "admin-cli");
+          params.put("username", property.getKeycloakAdminUser());
+          params.put("password", property.getKeycloakAdminPass());
+          params.put("grant_type", "password");
+          String response = "";
+          try {
+            response = HttpUtil.sendPostRequest(url, params, headers);
+            Map<String, Object> responseMap = new HashMap<>();
+            responseMap = objectMapper
+                .readValue(response, new TypeReference<Map<String, Object>>() {
+                });
+            admin_token = (String) responseMap.get("access_token");
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
+      }
+    }
   }
 
   /**

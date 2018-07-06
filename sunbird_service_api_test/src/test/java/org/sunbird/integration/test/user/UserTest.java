@@ -34,10 +34,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
 
   private static String userId = null;
   private static String user_auth_token = null;
-  private static String admin_token = null;
   public static Map<String, List<String>> deletedRecordsMap = new HashMap<String, List<String>>();
-  private static final String CREATE_USER_URI = "/api/user/v1/create";
-  private static final String UPDATE_USER_URI = "/api/user/v1/update";
   private static volatile String USER_NAME = "userName";
   private static String externalId = String.valueOf(System.currentTimeMillis());
   private static String provider = String.valueOf(System.currentTimeMillis() + 10);
@@ -143,7 +140,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
     http()
         .client(restTestClient)
         .send()
-        .post(CREATE_USER_URI)
+        .post(getCreateUserUrl())
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson);
@@ -175,7 +172,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
     http()
         .client(restTestClient)
         .send()
-        .post(CREATE_USER_URI)
+        .post(getCreateUserUrl())
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(new ClassPathResource(requestJson));
@@ -208,42 +205,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
             });
   }
 
-  @Test()
-  @CitrusTest
-  /**
-   * Key cloak admin token generation is required , because on sunbird dev server after creating
-   * user , user have to login first then only his/her account will be active. so we need to disable
-   * that option for created user only. That option can be disable using keycloak admin auth token.
-   * So this method will generate auth token and that token will be used in
-   * **updateUserRequiredLoginActionTest** method.
-   */
-  public void getAdminAuthToken() {
-    http()
-        .client(restTestClient)
-        .send()
-        .post("/auth/realms/" + initGlobalValues.getRelam() + "/protocol/openid-connect/token")
-        .contentType("application/x-www-form-urlencoded")
-        .payload(
-            "client_id=admin-cli&username="
-                + initGlobalValues.getKeycloakAdminUser()
-                + "&password="
-                + initGlobalValues.getKeycloakAdminPass()
-                + "&grant_type=password");
-    http()
-        .client(restTestClient)
-        .receive()
-        .response(HttpStatus.OK)
-        .validationCallback(
-            new JsonMappingValidationCallback<Map>(Map.class, objectMapper) {
-              @Override
-              public void validate(Map response, Map<String, Object> headers, TestContext context) {
-                Assert.assertNotNull(response.get("access_token"));
-                admin_token = (String) response.get("access_token");
-              }
-            });
-  }
-
-  @Test(dependsOnMethods = {"testCreateUser", "getAdminAuthToken"})
+  @Test(dependsOnMethods = {"testCreateUser"})
   @CitrusTest
   /**
    * This method will disable user required action change password under keyCloak. after disabling
@@ -254,7 +216,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
         .client(restTestClient)
         .send()
         .put("/auth/admin/realms/" + initGlobalValues.getRelam() + "/users/" + userId)
-        .header(Constant.AUTHORIZATION, Constant.BEARER + admin_token)
+        .header(Constant.AUTHORIZATION, Constant.BEARER + EndpointConfig.admin_token)
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .payload("{\"requiredActions\":[]}");
     http().client(restTestClient).receive().response(HttpStatus.NO_CONTENT);
@@ -304,7 +266,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
     http()
         .client(restTestClient)
         .send()
-        .patch(UPDATE_USER_URI)
+        .patch(getUpdateUserUrl())
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson)
@@ -533,5 +495,17 @@ public class UserTest extends TestNGCitrusTestDesigner {
       e.printStackTrace();
     }
     return null;
+  }
+
+  private String getCreateUserUrl() {
+    return initGlobalValues.getLmsUrl().contains("localhost")
+        ? "/v1/user/create"
+        : "/api/user/v1/create";
+  }
+
+  private String getUpdateUserUrl() {
+    return initGlobalValues.getLmsUrl().contains("localhost")
+        ? "/v1/user/update"
+        : "/api/user/v1/update";
   }
 }
