@@ -1,6 +1,6 @@
 #!/bin/sh
 
-FILES_TO_SKIP="^(src-gen|third-party|(test/.*\/testdata\/)).*\.java$"
+FILES_TO_SKIP="^(src-gen|third-party).*\.java$"
 
 JAR_PATH=$1
 FILE_PATH=$2
