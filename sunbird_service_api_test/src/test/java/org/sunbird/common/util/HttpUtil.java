@@ -88,35 +88,7 @@ public class HttpUtil {
       String url,
       String formDataFile,
       String formDataFileFolderPath) {
-    MultiValueMap<String, Object> formData = new LinkedMultiValueMap<>();
-
-    try (Scanner scanner =
-        new Scanner(new File(getClass().getClassLoader().getResource(formDataFile).getFile()))) {
-
-      while (scanner.hasNext()) {
-        String[] param = scanner.nextLine().split(Constant.EQUAL_SIGN);
-        if (param != null && param.length == 2) {
-          if (param[0].equalsIgnoreCase(Constant.MULTIPART_FILE_NAME)) {
-            formData.add(
-                Constant.MULTIPART_FILE_NAME,
-                new ClassPathResource(formDataFileFolderPath + "/" + param[1]));
-          } else {
-            formData.add(param[0], param[1]);
-          }
-        }
-      }
-
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
-    httpClientActionBuilder
-        .send()
-        .post(url)
-        .contentType(MediaType.MULTIPART_FORM_DATA)
-        .header(Constant.AUTHORIZATION, Constant.BEARER + config.getApiKey())
-        .header(Constant.X_AUTHENTICATED_USER_TOKEN, EndpointConfig.admin_token)
-        .payload(formData);
+    multipartPost(httpClientActionBuilder, config, url, formDataFile, formDataFileFolderPath, null );
   }
 
   public void multipartPost(
@@ -153,15 +125,10 @@ public class HttpUtil {
         .contentType(MediaType.MULTIPART_FORM_DATA)
         .header(Constant.AUTHORIZATION, Constant.BEARER + config.getApiKey());
 
-    actionBuilder = addHeaders(actionBuilder , headers);
+    if(null != headers) {
+      actionBuilder = addHeaders(actionBuilder, headers);
+    }
     actionBuilder.payload(formData);
-    /*httpClientActionBuilder
-        .send()
-        .post(url)
-        .contentType(MediaType.MULTIPART_FORM_DATA)
-        .header(Constant.AUTHORIZATION, Constant.BEARER + config.getApiKey())
-        .header(Constant.X_AUTHENTICATED_USER_TOKEN, EndpointConfig.admin_token)
-        .payload(formData);*/
   }
 
   private HttpClientRequestActionBuilder addHeaders(HttpClientRequestActionBuilder actionBuilder, Map<String, Object> headers) {
