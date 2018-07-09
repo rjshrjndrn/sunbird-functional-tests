@@ -6,8 +6,8 @@
 {
 "resmsgid":null,
 "msgid":"@ignore@",
-"err":"USER_ALREADY_EXISTS",
-"status":"USER_ALREADY_EXISTS",
+"err":"USERNAME_EMAIL_IN_USE",
+"status":"USERNAME_EMAIL_IN_USE",
 "errmsg":"@ignore@"
 }
 ,"responseCode":"CLIENT_ERROR",
