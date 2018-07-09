@@ -4,13 +4,12 @@ import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.testng.CitrusParameters;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
+import org.sunbird.common.util.AuthProviderTest;
 import org.sunbird.common.util.Constant;
 import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
-import org.sunbird.integration.test.user.UserTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -24,8 +23,6 @@ public class MalformedRequestTest extends TestNGCitrusTestDesigner {
 
   @Autowired private HttpClient restTestClient;
   @Autowired private TestGlobalProperty initGlobalValues;
-  private ObjectMapper objectMapper = new ObjectMapper();
-  private static String admin_token = null;
 
   @DataProvider(name = "createRequestDataProvider")
   public Object[][] createRequestDataProvider() {
@@ -74,20 +71,20 @@ public class MalformedRequestTest extends TestNGCitrusTestDesigner {
    */
   @Test(
     dataProvider = "createRequestDataProvider",
-    dependsOnGroups = {"userAuthToken"}
+    dependsOnGroups = {"authToken"}
   )
   @CitrusParameters({"requestJson", "responseJson", "testName", "url"})
   @CitrusTest
   public void testRequestWithoutContentType(
       String requestJson, String responseJson, String testName, String url) {
     getTestCase().setName(testName);
-    System.out.println("Getting admin token==" + UserTest.user_auth_token);
+    System.out.println("Getting admin token==" + AuthProviderTest.user_auth_token);
     http()
         .client(restTestClient)
         .send()
         .post(url)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
-        .header(Constant.X_AUTHENTICATED_USER_TOKEN, UserTest.user_auth_token)
+        .header(Constant.X_AUTHENTICATED_USER_TOKEN, AuthProviderTest.user_auth_token)
         .payload(requestJson);
 
     http()
@@ -107,7 +104,7 @@ public class MalformedRequestTest extends TestNGCitrusTestDesigner {
    */
   @Test(
     dataProvider = "createRequestDataProvider",
-    dependsOnGroups = {"userAuthToken"}
+    dependsOnGroups = {"authToken"}
   )
   @CitrusParameters({"requestJson", "responseJson", "testName", "url"})
   @CitrusTest
@@ -115,14 +112,15 @@ public class MalformedRequestTest extends TestNGCitrusTestDesigner {
       String requestJson, String responseJson, String testName, String url) {
     getTestCase().setName(testName);
     System.out.println(
-        "testRequestWithInvalidContentType Getting admin token==" + UserTest.user_auth_token);
+        "testRequestWithInvalidContentType Getting admin token=="
+            + AuthProviderTest.user_auth_token);
     http()
         .client(restTestClient)
         .send()
         .post(url)
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON_LD)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
-        .header(Constant.X_AUTHENTICATED_USER_TOKEN, UserTest.user_auth_token)
+        .header(Constant.X_AUTHENTICATED_USER_TOKEN, AuthProviderTest.user_auth_token)
         .payload(requestJson);
 
     http()

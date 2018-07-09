@@ -46,12 +46,17 @@ public class LocationTest extends BaseCitrusTest {
   private static final String LOCATION_TEMPLATE_PATH_DELETE = "templates/location/delete/";
 
   private static final String STATE_CODE =
-      "State-02-fuzzy-" + String.valueOf(System.currentTimeMillis());
-  private static final String STATE_NAME = "State-0001-name";
+      Constant.FUNCTIONAL_TEST_DATA_PREFIX
+          + "State-02-fuzzy-"
+          + String.valueOf(System.currentTimeMillis());
+  private static final String STATE_NAME = Constant.FUNCTIONAL_TEST_DATA_PREFIX + "State-0001-name";
   private static final String DISTRICT_CODE =
-      "District-02-fuzzy-" + String.valueOf(System.currentTimeMillis());
-  private static final String DISTRICT_NAME = "District-0001-name";
-  private static Stack<String> stack = new Stack();
+      Constant.FUNCTIONAL_TEST_DATA_PREFIX
+          + "District-02-fuzzy-"
+          + String.valueOf(System.currentTimeMillis());
+  private static final String DISTRICT_NAME =
+      Constant.FUNCTIONAL_TEST_DATA_PREFIX + "District-0001-name";
+  private static Stack<String> stack = new Stack<>();
 
   @Autowired private HttpClient restTestClient;
   @Autowired private TestGlobalProperty initGlobalValues;

@@ -23,7 +23,7 @@ public class Constant {
   public static final String EQUAL_SIGN = "=";
   public static final String USER_TEMPLATE_LOCATION = "templates/user/create/";
   public static final String MALFORMED_TEMPLATE_LOCATION = "templates/malformed/";
-  public static final String USER_NAME_PREFIX = "ft_testinstance";
+  public static final String USER_NAME_PREFIX = "FT_Testinstance";
   public static final String X_AUTHENTICATED_USER_TOKEN = "x-authenticated-user-token";
   public static final String PARENT_CODE = "parentCode";
   public static final String CODE = "code";
@@ -35,4 +35,5 @@ public class Constant {
   public static final String RESPONSE = "response";
   public static final String ES_REST_API_PORT = "9200";
   public static final String MULTIPART_FILE_NAME = "file";
+  public static final String FUNCTIONAL_TEST_DATA_PREFIX = "FT_";
 }

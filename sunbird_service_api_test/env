@@ -16,3 +16,5 @@
 | sunbird_es_index           | Elastic search index name.
 | sunbird_test_base_url      | https://dev.open-sunbird.org 
 | sunbird_default_channel    | sunbird-dev
+| sunbird_username           | already created user, used for api authorization. create user like ft_sunbird_test_admin_user
+| sunbird_user_password      | password of sunbird_username user, used to generate keycloak token.   

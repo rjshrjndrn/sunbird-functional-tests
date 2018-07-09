@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.response.ResponseCode;
 import org.sunbird.common.util.Constant;
+import org.sunbird.common.util.Util;
 import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -31,7 +32,6 @@ import org.testng.annotations.Test;
  *
  * @author Manzarul
  */
-@Test(priority = 1)
 public class UserTest extends TestNGCitrusTestDesigner {
 
   private static String userId = null;
@@ -184,6 +184,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
 
   @Autowired private HttpClient restTestClient;
   @Autowired private TestGlobalProperty initGlobalValues;
+  @Autowired private Util util;
   private ObjectMapper objectMapper = new ObjectMapper();
 
   /**
@@ -202,7 +203,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
     http()
         .client(restTestClient)
         .send()
-        .post(getUserUri(CREATE_USER_URI, CREATE_USER_LOCAL_URI))
+        .post(util.getUriBasedOnHost(CREATE_USER_URI, CREATE_USER_LOCAL_URI))
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson);
@@ -233,7 +234,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
     http()
         .client(restTestClient)
         .send()
-        .post(getUserUri(CREATE_USER_URI, CREATE_USER_LOCAL_URI))
+        .post(util.getUriBasedOnHost(CREATE_USER_URI, CREATE_USER_LOCAL_URI))
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(new ClassPathResource(requestJson));
@@ -260,7 +261,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
     http()
         .client(restTestClient)
         .send()
-        .post(getUserUri(GET_USER_BY_LOGINID_URI, GET_USER_BY_LOGINID_LOCAL_URI))
+        .post(util.getUriBasedOnHost(GET_USER_BY_LOGINID_URI, GET_USER_BY_LOGINID_LOCAL_URI))
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(new ClassPathResource(requestJson));
@@ -296,7 +297,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
     http()
         .client(restTestClient)
         .send()
-        .post(getUserUri(GET_USER_BY_LOGINID_URI, GET_USER_BY_LOGINID_LOCAL_URI))
+        .post(util.getUriBasedOnHost(GET_USER_BY_LOGINID_URI, GET_USER_BY_LOGINID_LOCAL_URI))
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(new ClassPathResource(requestJson));
@@ -377,10 +378,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
     http().client(restTestClient).receive().response(HttpStatus.NO_CONTENT);
   }
 
-  @Test(
-    dependsOnMethods = {"updateUserRequiredLoginActionTest"},
-    groups = {"userAuthToken"}
-  )
+  @Test(dependsOnMethods = {"updateUserRequiredLoginActionTest"})
   @CitrusTest
   public void getAuthToken() {
     if (StringUtils.isEmpty(user_auth_token)) {
@@ -424,7 +422,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
     http()
         .client(restTestClient)
         .send()
-        .patch(getUserUri(UPDATE_USER_URI, UPDATE_USER_LOCAL_URI))
+        .patch(util.getUriBasedOnHost(UPDATE_USER_URI, UPDATE_USER_LOCAL_URI))
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson)
@@ -448,7 +446,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
         .client(restTestClient)
         .send()
         .get(
-            getUserUri(GET_USER_BY_ID_URI, GET_USER_BY_ID_LOCAL_URI)
+            util.getUriBasedOnHost(GET_USER_BY_ID_URI, GET_USER_BY_ID_LOCAL_URI)
                 + userId
                 + "?Fields=completeness,missingFields,topic")
         .accept(Constant.CONTENT_TYPE_APPLICATION_JSON)
@@ -561,8 +559,8 @@ public class UserTest extends TestNGCitrusTestDesigner {
 
   private static Map<String, Object> createUserInnerMap() {
     Map<String, Object> innerMap = new HashMap<>();
-    innerMap.put(Constant.FIRST_NAME, "ft_first_Name_pw12401");
-    innerMap.put(Constant.LAST_NAME, "ft_lastName");
+    innerMap.put(Constant.FIRST_NAME, Constant.FUNCTIONAL_TEST_DATA_PREFIX + "first_Name_pw12401");
+    innerMap.put(Constant.LAST_NAME, Constant.FUNCTIONAL_TEST_DATA_PREFIX + "lastName");
     innerMap.put(Constant.PASSWORD, "password");
     innerMap.put(Constant.CHANNEL, testGlobalProperty.getSunbirdDefaultChannel());
     USER_NAME = Constant.USER_NAME_PREFIX + EndpointConfig.val;
@@ -575,7 +573,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
   private String updateUserWithId() {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = createUserInnerMap();
-    innerMap.put(Constant.LAST_NAME, "ft_lastName_updated");
+    innerMap.put(Constant.LAST_NAME, Constant.FUNCTIONAL_TEST_DATA_PREFIX + "lastName_updated");
     innerMap.put(Constant.ID, userId);
     innerMap.put(Constant.USER_ID, userId);
     innerMap.remove(Constant.USER_NAME);
@@ -593,7 +591,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
   private String updateUserWithRegOrgId() {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = createUserInnerMap();
-    innerMap.put(Constant.LAST_NAME, "ft_lastName_updated");
+    innerMap.put(Constant.LAST_NAME, Constant.FUNCTIONAL_TEST_DATA_PREFIX + "lastName_updated");
     innerMap.put(Constant.ID, userId);
     innerMap.put(Constant.USER_ID, userId);
     innerMap.put(Constant.REG_ORG_ID, "regOrgId");
@@ -610,7 +608,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
   private String updateUserWithRootOrgId() {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = createUserInnerMap();
-    innerMap.put(Constant.LAST_NAME, "ft_lastName_updated");
+    innerMap.put(Constant.LAST_NAME, Constant.FUNCTIONAL_TEST_DATA_PREFIX + "lastName_updated");
     innerMap.put(Constant.ID, userId);
     innerMap.put(Constant.USER_ID, userId);
     innerMap.put(Constant.ROOT_ORG_ID, "rootOrgId");
@@ -627,7 +625,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
   private String updateUserWithChannel() {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = createUserInnerMap();
-    innerMap.put(Constant.LAST_NAME, "ft_lastName_updated");
+    innerMap.put(Constant.LAST_NAME, Constant.FUNCTIONAL_TEST_DATA_PREFIX + "lastName_updated");
     innerMap.put(Constant.ID, userId);
     innerMap.put(Constant.USER_ID, userId);
     innerMap.put(Constant.CHANNEL, "channel");
@@ -644,7 +642,9 @@ public class UserTest extends TestNGCitrusTestDesigner {
   private String updateUserWithExtIdAndProvider() {
     Map<String, Object> requestMap = new HashMap<>();
     Map<String, Object> innerMap = createUserInnerMap();
-    innerMap.put(Constant.LAST_NAME, "ft_lastName_updated_without_userid");
+    innerMap.put(
+        Constant.LAST_NAME,
+        Constant.FUNCTIONAL_TEST_DATA_PREFIX + "lastName_updated_without_userid");
     innerMap.remove(Constant.USER_NAME);
     innerMap.put(Constant.EXTERNAL_ID, externalId);
     innerMap.put(Constant.PROVIDER, provider);
@@ -656,16 +656,5 @@ public class UserTest extends TestNGCitrusTestDesigner {
       e.printStackTrace();
     }
     return null;
-  }
-
-  /**
-   * This method will check if url contains localhost then provide downstream uri else upstream uri.
-   *
-   * @param upstreamUri uri for server
-   * @param downStreamUri uri for local
-   * @return uri
-   */
-  private String getUserUri(String upstreamUri, String downStreamUri) {
-    return initGlobalValues.getLmsUrl().contains("localhost") ? downStreamUri : upstreamUri;
   }
 }
