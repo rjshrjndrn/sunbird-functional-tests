@@ -39,7 +39,7 @@ public class EndpointConfig {
     property.setIndexType(System.getenv("sunbird_es_index_type"));
     property.setIndex(System.getenv("sunbird_es_index"));
     property.setSunbirdDefaultChannel(System.getenv("sunbird_default_channel"));
-    property.setLmsUrl("http://localhost:9000/");
+    property.setLmsUrl(System.getenv("sunbird_test_base_url"));
     return property;
   }
 
