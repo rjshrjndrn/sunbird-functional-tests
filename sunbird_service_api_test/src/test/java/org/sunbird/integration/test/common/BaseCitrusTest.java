@@ -63,24 +63,29 @@ public class BaseCitrusTest extends TestNGCitrusTestDesigner {
       HttpClient httpClient,
       TestGlobalProperty config,
       String url,
-      String requestFormData,
-      String responseJson,
+      String requestFile,
+      String responseFile,
       HttpStatus responseCode,
       Map<String, Object> headers) {
-    System.out.println(requestFormData);
+    System.out.println(requestFile);
 
     getTestCase().setName(testName);
 
     String testFolderPath = MessageFormat.format("{0}/{1}", testTemplateDir, testName);
 
+    String requestFilePath =
+        MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, requestFile);
+    String responseFilePath =
+        MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, responseFile);
+
     new HttpUtil()
         .multipartPost(
-            http().client(httpClient), config, url, requestFormData, testFolderPath, headers);
+            http().client(httpClient), config, url, requestFilePath, testFolderPath, headers);
 
     http()
         .client(httpClient)
         .receive()
         .response(responseCode)
-        .payload(new ClassPathResource(responseJson));
+        .payload(new ClassPathResource(responseFilePath));
   }
 }
