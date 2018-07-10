@@ -27,6 +27,37 @@ public class BaseCitrusTest extends TestNGCitrusTestDesigner {
   public static Map<String, List<String>> toDeleteEsRecordsMap =
       new HashMap<String, List<String>>();
   public static String userAuthToken;
+  public static final String REQUEST_JSON = "request.json";
+  public static final String RESPONSE_JSON = "response.json";
+
+  public void performPostTest(
+      String testName,
+      String testTemplateDir,
+      HttpClient httpClient,
+      String url,
+      String contentType,
+      String requestFile,
+      String responseFile,
+      HttpStatus responseCode,
+      Map<String, Object> headers) {
+    System.out.println(requestFile);
+    getTestCase().setName(testName);
+
+    String requestFilePath =
+        MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, requestFile);
+    String responseFilePath =
+        MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, responseFile);
+
+    // Send request
+    new HttpUtil().post(http().client(httpClient), url, contentType, requestFilePath, headers);
+
+    // Verify response
+    http()
+        .client(httpClient)
+        .receive()
+        .response(responseCode)
+        .payload(new ClassPathResource(responseFilePath));
+  }
 
   public void performMultipartTest(
       String testName,
@@ -34,23 +65,30 @@ public class BaseCitrusTest extends TestNGCitrusTestDesigner {
       HttpClient httpClient,
       TestGlobalProperty config,
       String url,
-      String requestFormData,
-      String responseJson,
-      HttpStatus responseCode) {
-    System.out.println(requestFormData);
+      String requestFile,
+      String responseFile,
+      HttpStatus responseCode,
+      Map<String, Object> headers) {
+    System.out.println(requestFile);
 
     getTestCase().setName(testName);
 
     String testFolderPath = MessageFormat.format("{0}/{1}", testTemplateDir, testName);
 
+    String requestFilePath =
+        MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, requestFile);
+    String responseFilePath =
+        MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, responseFile);
+
     new HttpUtil()
-        .multipartPost(http().client(httpClient), config, url, requestFormData, testFolderPath);
+        .multipartPost(
+            http().client(httpClient), config, url, requestFilePath, testFolderPath, headers);
 
     http()
         .client(httpClient)
         .receive()
         .response(responseCode)
-        .payload(new ClassPathResource(responseJson));
+        .payload(new ClassPathResource(responseFilePath));
   }
 
   /**

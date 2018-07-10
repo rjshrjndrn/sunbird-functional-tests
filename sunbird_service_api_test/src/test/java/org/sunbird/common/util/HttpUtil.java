@@ -1,6 +1,7 @@
 package org.sunbird.common.util;
 
 import com.consol.citrus.dsl.builder.HttpClientActionBuilder;
+import com.consol.citrus.dsl.builder.HttpClientRequestActionBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import javax.ws.rs.core.MediaType;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -67,7 +69,7 @@ public class HttpUtil {
   /**
    * Send multipart HTTP post request with form data.
    *
-   * @param httpClient HTTP client to use for sending the request.
+   * @param httpClientActionBuilder HTTP client action builder to use for sending the request.
    * @param config Configuration (e.g. API key) used in sending HTTP request
    * @param url HTTP URL to use in the request
    * @param formDataFile File path containing each form parameter in a new line in format
@@ -80,6 +82,16 @@ public class HttpUtil {
       String url,
       String formDataFile,
       String formDataFileFolderPath) {
+    multipartPost(httpClientActionBuilder, config, url, formDataFile, formDataFileFolderPath, null);
+  }
+
+  public void multipartPost(
+      HttpClientActionBuilder httpClientActionBuilder,
+      TestGlobalProperty config,
+      String url,
+      String formDataFile,
+      String formDataFileFolderPath,
+      Map<String, Object> headers) {
     MultiValueMap<String, Object> formData = new LinkedMultiValueMap<>();
 
     try (Scanner scanner =
@@ -102,12 +114,45 @@ public class HttpUtil {
       e.printStackTrace();
     }
 
-    httpClientActionBuilder
-        .send()
-        .post(url)
-        .contentType(MediaType.MULTIPART_FORM_DATA)
-        .header(Constant.AUTHORIZATION, Constant.BEARER + config.getApiKey())
-        .payload(formData);
+    HttpClientRequestActionBuilder actionBuilder =
+        httpClientActionBuilder
+            .send()
+            .post(url)
+            .contentType(MediaType.MULTIPART_FORM_DATA)
+            .header(Constant.AUTHORIZATION, Constant.BEARER + config.getApiKey());
+
+    if (null != headers) {
+      actionBuilder = addHeaders(actionBuilder, headers);
+    }
+    actionBuilder.payload(formData);
+  }
+
+  public void post(
+      HttpClientActionBuilder httpClientActionBuilder,
+      String url,
+      String contentType,
+      String requestFilePath,
+      Map<String, Object> headers) {
+
+    contentType =
+        StringUtils.isNotBlank(contentType) ? contentType : MediaType.APPLICATION_JSON.toString();
+
+    HttpClientRequestActionBuilder actionBuilder =
+        httpClientActionBuilder.send().post(url).contentType(contentType);
+
+    addHeaders(actionBuilder, headers);
+
+    actionBuilder.payload(requestFilePath);
+  }
+
+  private HttpClientRequestActionBuilder addHeaders(
+      HttpClientRequestActionBuilder actionBuilder, Map<String, Object> headers) {
+    if (headers != null) {
+      for (Map.Entry<String, Object> entry : headers.entrySet()) {
+        actionBuilder = actionBuilder.header(entry.getKey(), entry.getValue());
+      }
+    }
+    return actionBuilder;
   }
 
   /**
