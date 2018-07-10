@@ -75,7 +75,7 @@ public class MalformedRequestTest extends BaseCitrusTest {
    * @param testName - name of the name
    * @param url - url of API
    */
-  @Test(dataProvider = "createRequestDataProvider", priority = 1)
+  @Test(dataProvider = "createRequestDataProvider")
   @CitrusParameters({"requestJson", "responseJson", "testName", "url"})
   @CitrusTest
   public void testRequestWithoutContentType(
@@ -104,7 +104,7 @@ public class MalformedRequestTest extends BaseCitrusTest {
    * @param testName - name of the name
    * @param url - url of API
    */
-  @Test(dataProvider = "createRequestDataProvider", priority = 2)
+  @Test(dataProvider = "createRequestDataProvider")
   @CitrusParameters({"requestJson", "responseJson", "testName", "url"})
   @CitrusTest
   public void testRequestWithInvalidContentType(
