@@ -94,8 +94,7 @@ public class BaseCitrusTest extends TestNGCitrusTestDesigner {
   /**
    * This method will provide default user auth token.This token will be generated only once.
    *
-   * @param httpClientActionBuilder
-   * @return
+   * @return user auth token
    */
   public static String getUserToken() {
     return getUserAuthToken(null, null, false);
@@ -105,7 +104,6 @@ public class BaseCitrusTest extends TestNGCitrusTestDesigner {
    * This method will generate the auth token of provided user details. if username or password is
    * null or empty then it will return null. This will generate every time a new token.
    *
-   * @param httpClientActionBuilder
    * @param userName username inside system
    * @param password password inside system
    * @return authToken
