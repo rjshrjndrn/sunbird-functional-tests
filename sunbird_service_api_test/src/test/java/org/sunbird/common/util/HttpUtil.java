@@ -156,7 +156,7 @@ public class HttpUtil {
   }
 
   /**
-   * This method is written for providing user auth token from key-cloak.
+   * This method will provide user auth token.
    *
    * @param url String complete of server.
    * @param userName user name for which we need to generate auth token.
