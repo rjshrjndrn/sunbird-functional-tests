@@ -40,6 +40,8 @@ public class EndpointConfig {
     property.setIndex(System.getenv("sunbird_es_index"));
     property.setSunbirdDefaultChannel(System.getenv("sunbird_default_channel"));
     property.setLmsUrl(System.getenv("sunbird_test_base_url"));
+    property.setSunbirdTestUserName(System.getenv("sunbird_username"));
+    property.setSunbirdTestUserPassword(System.getenv("sunbird_user_password"));
     return property;
   }
 
@@ -66,6 +68,8 @@ public class EndpointConfig {
     private String sunbirdDefaultChannel;
     private String lmsUrl;
     private String cassandraPassword;
+    private String sunbirdTestUserName;
+    private String sunbirdTestUserPassword;
 
     public String getApiKey() {
       return apiKey;
@@ -193,6 +197,22 @@ public class EndpointConfig {
 
     public void setCassandraPassword(String cassandraPassword) {
       this.cassandraPassword = cassandraPassword;
+    }
+
+    public String getSunbirdTestUserName() {
+      return sunbirdTestUserName;
+    }
+
+    public void setSunbirdTestUserName(String sunbirdTestUserName) {
+      this.sunbirdTestUserName = sunbirdTestUserName;
+    }
+
+    public String getSunbirdTestUserPassword() {
+      return sunbirdTestUserPassword;
+    }
+
+    public void setSunbirdTestUserPassword(String sunbirdTestUserPassword) {
+      this.sunbirdTestUserPassword = sunbirdTestUserPassword;
     }
 
     @Override

@@ -3,7 +3,6 @@ package org.sunbird.integration.test.user;
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.context.TestContext;
 import com.consol.citrus.dsl.builder.HttpClientActionBuilder.HttpClientReceiveActionBuilder;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.testng.CitrusParameters;
 import com.consol.citrus.validation.json.JsonMappingValidationCallback;
@@ -19,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.response.ResponseCode;
 import org.sunbird.common.util.Constant;
+import org.sunbird.integration.test.common.BaseCitrusTest;
 import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
  *
  * @author Manzarul
  */
-public class UserTest extends TestNGCitrusTestDesigner {
+public class UserTest extends BaseCitrusTest {
 
   private static String userId = null;
   private static String user_auth_token = null;
@@ -221,7 +221,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
     http()
         .client(restTestClient)
         .send()
-        .post("/auth/realms/" + initGlobalValues.getRelam() + "/protocol/openid-connect/token")
+        .post("/auth/realms/master" + "/protocol/openid-connect/token")
         .contentType("application/x-www-form-urlencoded")
         .payload(
             "client_id=admin-cli&username="
@@ -263,31 +263,8 @@ public class UserTest extends TestNGCitrusTestDesigner {
   @Test(dependsOnMethods = {"updateUserRequiredLoginActionTest"})
   @CitrusTest
   public void getAuthToken() {
-    http()
-        .client(restTestClient)
-        .send()
-        .post("/auth/realms/" + initGlobalValues.getRelam() + "/protocol/openid-connect/token")
-        .contentType("application/x-www-form-urlencoded")
-        .payload(
-            "client_id="
-                + initGlobalValues.getClientId()
-                + "&username="
-                + USER_NAME
-                + "@"
-                + initGlobalValues.getSunbirdDefaultChannel()
-                + "&password=password&grant_type=password");
-    http()
-        .client(restTestClient)
-        .receive()
-        .response(HttpStatus.OK)
-        .validationCallback(
-            new JsonMappingValidationCallback<Map>(Map.class, objectMapper) {
-              @Override
-              public void validate(Map response, Map<String, Object> headers, TestContext context) {
-                Assert.assertNotNull(response.get("access_token"));
-                user_auth_token = (String) response.get("access_token");
-              }
-            });
+    user_auth_token =
+        getUserToken(USER_NAME + "@" + initGlobalValues.getSunbirdDefaultChannel(), "password");
   }
 
   @Test(
@@ -441,7 +418,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
     innerMap.put(Constant.FIRST_NAME, "ft_first_Name_pw12401");
     innerMap.put(Constant.LAST_NAME, "ft_lastName");
     innerMap.put(Constant.PASSWORD, "password");
-    innerMap.put(Constant.CHANNEL,testGlobalProperty.getSunbirdDefaultChannel());
+    innerMap.put(Constant.CHANNEL, testGlobalProperty.getSunbirdDefaultChannel());
     USER_NAME = Constant.USER_NAME_PREFIX + EndpointConfig.val;
     String email = Constant.USER_NAME_PREFIX + EndpointConfig.val + "@gmail.com";
     innerMap.put(Constant.USER_NAME, USER_NAME);

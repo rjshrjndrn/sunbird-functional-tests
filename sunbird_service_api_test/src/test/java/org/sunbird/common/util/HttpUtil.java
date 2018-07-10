@@ -1,16 +1,25 @@
 package org.sunbird.common.util;
 
 import com.consol.citrus.dsl.builder.HttpClientActionBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import javax.ws.rs.core.MediaType;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.LinkedMultiValueMap;
@@ -23,7 +32,7 @@ import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
  * @author Manzarul, B Vinaya Kumar
  */
 public class HttpUtil {
-
+  private static ObjectMapper objectMapper = new ObjectMapper();
   /**
    * This method is written for deleting test data from elastic search.
    *
@@ -99,5 +108,35 @@ public class HttpUtil {
         .contentType(MediaType.MULTIPART_FORM_DATA)
         .header(Constant.AUTHORIZATION, Constant.BEARER + config.getApiKey())
         .payload(formData);
+  }
+
+  /**
+   * This method is written for providing user auth token from key-cloak.
+   *
+   * @param url String complete of server.
+   * @param userName user name for which we need to generate auth token.
+   * @param password password of user.
+   * @param clientId keycloak client id where user was created.
+   * @return user authtoken
+   */
+  public static String getUserAuthToken(
+      String url, String userName, String password, String clientId) {
+    String token = null;
+    try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+      HttpPost post = new HttpPost(url);
+      List<NameValuePair> arguments = new ArrayList<>(3);
+      arguments.add(new BasicNameValuePair("username", userName));
+      arguments.add(new BasicNameValuePair("password", password));
+      arguments.add(new BasicNameValuePair("client_id", clientId));
+      arguments.add(new BasicNameValuePair("grant_type", "password"));
+      post.setEntity(new UrlEncodedFormEntity(arguments));
+      HttpResponse response = httpclient.execute(post);
+      String val = EntityUtils.toString(response.getEntity());
+      Map<String, String> map = objectMapper.readValue(val, Map.class);
+      token = map.get("access_token");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return token;
   }
 }
