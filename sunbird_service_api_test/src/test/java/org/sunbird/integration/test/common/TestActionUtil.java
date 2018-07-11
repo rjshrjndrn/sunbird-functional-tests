@@ -91,9 +91,12 @@ public class TestActionUtil {
         .payload(new ClassPathResource(responseFilePath));
   }
 
-  public static Map<String, Object> getHeaders() {
+  public static Map<String, Object> getHeaders(boolean isAuthRequired) {
     Map<String, Object> headers = new HashMap<>();
-    headers.put(Constant.X_AUTHENTICATED_USER_TOKEN, "${accessToken}");
+    if (isAuthRequired) {
+      headers.put(Constant.X_AUTHENTICATED_USER_TOKEN, "${accessToken}");
+    }
+    headers.put(Constant.AUTHORIZATION, Constant.BEARER + System.getenv("sunbird_api_key"));
     return headers;
   }
 

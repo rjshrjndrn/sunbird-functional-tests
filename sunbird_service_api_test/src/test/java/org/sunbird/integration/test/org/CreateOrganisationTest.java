@@ -52,13 +52,13 @@ public class CreateOrganisationTest extends BaseCitrusTest {
   @CitrusTest
   public void testCreateOrganisationFailure(
       String requestJson, String responseJson, String testName) {
-
     performPostTest(
         testName,
         TEMPLATE_DIR,
         getCreateOrgUrl(),
         requestJson,
         HttpStatus.BAD_REQUEST,
-        responseJson);
+        responseJson,
+        true);
   }
 }

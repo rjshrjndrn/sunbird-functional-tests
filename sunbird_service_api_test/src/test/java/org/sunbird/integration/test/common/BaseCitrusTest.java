@@ -1,12 +1,15 @@
 package org.sunbird.integration.test.common;
 
+import com.consol.citrus.TestAction;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ws.rs.core.MediaType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.sunbird.common.util.HttpUtil;
@@ -14,6 +17,7 @@ import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 
 public class BaseCitrusTest extends TestNGCitrusTestDesigner {
 
+  @Autowired private TestGlobalProperty config;
   public static final String REQUEST_JSON = "request.json";
   public static final String RESPONSE_JSON = "response.json";
 
@@ -29,27 +33,29 @@ public class BaseCitrusTest extends TestNGCitrusTestDesigner {
       String requestUrl,
       String requestJson,
       HttpStatus responseCode,
-      String responseJson) {
-    sequential()
-        .actions(
-            TestActionUtil.getTokenRequestTestAction(http().client("keycloakTestClient")),
-            TestActionUtil.getTokenResponseTestAction(
-                http().client("keycloakTestClient"), getTestCase()),
-            TestActionUtil.getPostRequestTestAction(
-                http().client("restTestClient"),
-                getTestCase(),
-                testName,
-                templateDir,
-                requestUrl,
-                MediaType.APPLICATION_JSON.toString(),
-                requestJson,
-                TestActionUtil.getHeaders()),
-            TestActionUtil.getResponseTestAction(
-                http().client("restTestClient"),
-                testName,
-                templateDir,
-                responseCode,
-                responseJson));
+      String responseJson,
+      boolean isAuthRequired) {
+    List<TestAction> actionList = new ArrayList<>();
+    if (isAuthRequired) {
+      actionList.add(TestActionUtil.getTokenRequestTestAction(http().client("keycloakTestClient")));
+      actionList.add(
+          TestActionUtil.getTokenResponseTestAction(
+              http().client("keycloakTestClient"), getTestCase()));
+    }
+    actionList.add(
+        TestActionUtil.getPostRequestTestAction(
+            http().client("restTestClient"),
+            getTestCase(),
+            testName,
+            templateDir,
+            requestUrl,
+            MediaType.APPLICATION_JSON.toString(),
+            requestJson,
+            TestActionUtil.getHeaders(isAuthRequired)));
+    actionList.add(
+        TestActionUtil.getResponseTestAction(
+            http().client("restTestClient"), testName, templateDir, responseCode, responseJson));
+    sequential().actions(actionList.toArray(new TestAction[0]));
   }
 
   public void performMultipartTest(
@@ -82,5 +88,9 @@ public class BaseCitrusTest extends TestNGCitrusTestDesigner {
         .receive()
         .response(responseCode)
         .payload(new ClassPathResource(responseFilePath));
+  }
+
+  public String getLmsApiUriPath(String apiGatewayUriPath, String localUriPath) {
+    return config.getLmsUrl().contains("localhost") ? localUriPath : apiGatewayUriPath;
   }
 }

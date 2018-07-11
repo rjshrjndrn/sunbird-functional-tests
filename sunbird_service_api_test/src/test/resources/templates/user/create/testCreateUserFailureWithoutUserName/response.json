@@ -1,0 +1,16 @@
+{
+	"id": "api.user.create",
+	"ver": "v1",
+	"ts": "@ignore@",
+	"params": {
+		"resmsgid": null,
+		"msgid": "@ignore@",
+		"err": "USERNAME_MISSING",
+		"status": "USERNAME_MISSING",
+		"errmsg": "Username is mandatory."
+	},
+	"responseCode": "CLIENT_ERROR",
+	"result": {
+		
+	}
+}

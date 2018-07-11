@@ -1,0 +1,16 @@
+{
+	"id": "api.user.create",
+	"ver": "v1",
+	"ts": "@ignore@",
+	"params": {
+		"resmsgid": null,
+		"msgid": "@ignore@",
+		"err": "DATE_FORMAT_ERRROR",
+		"status": "DATE_FORMAT_ERRROR",
+		"errmsg": "Date format error."
+	},
+	"responseCode": "CLIENT_ERROR",
+	"result": {
+		
+	}
+}
