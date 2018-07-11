@@ -61,14 +61,6 @@ public class MalformedRequestTest extends BaseCitrusTest {
     };
   }
 
-  /**
-   * Test for create request without content-type header.
-   *
-   * @param requestJson - request input json
-   * @param responseJson - response output json
-   * @param testName - name of the name
-   * @param url - url of API
-   */
   @Test(dataProvider = "createRequestDataProvider")
   @CitrusParameters({"apiGatewayUriPath", "localUriPath", "testName"})
   @CitrusTest

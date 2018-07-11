@@ -68,12 +68,10 @@ public class TestActionUtil {
 
     String requestFilePath =
         MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, requestFile);
-    HttpClientRequestActionBuilder requestActionBuilder = null;
+    HttpClientRequestActionBuilder requestActionBuilder =
+        builder.send().post(url).messageType(MessageType.JSON);
     if (StringUtils.isNotBlank(contentType)) {
-      requestActionBuilder =
-          builder.send().post(url).messageType(MessageType.JSON).contentType(contentType);
-    } else {
-      requestActionBuilder = builder.send().post(url).messageType(MessageType.JSON);
+      requestActionBuilder.contentType(contentType);
     }
     addHeaders(requestActionBuilder, headers);
 
