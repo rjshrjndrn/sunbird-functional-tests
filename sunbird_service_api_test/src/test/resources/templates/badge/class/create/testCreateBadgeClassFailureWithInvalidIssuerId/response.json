@@ -1,0 +1,14 @@
+{
+  "id": "api.issuer.badge.create",
+  "ver": "v1",
+  "ts": "@ignore@",
+  "params": {
+    "resmsgid": null,
+    "msgid": "@ignore@",
+    "err": "RESOURCE_NOT_FOUND",
+    "status": "RESOURCE_NOT_FOUND",
+    "errmsg": "Requested resource not found"
+  },
+  "responseCode": "RESOURCE_NOT_FOUND",
+  "result": {}
+}

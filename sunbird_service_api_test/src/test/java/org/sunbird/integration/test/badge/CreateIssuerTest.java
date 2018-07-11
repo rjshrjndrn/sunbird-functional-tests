@@ -30,7 +30,6 @@ public class CreateIssuerTest extends BaseCitrusTest {
 
   public static final String TEMPLATE_DIR = "templates/badge/issuer/create";
 
-  public static final String REQUEST_FORM_DATA = "request.params";
   public static final String RESPONSE_JSON = "response.json";
 
   @Autowired private HttpClient restTestClient;
