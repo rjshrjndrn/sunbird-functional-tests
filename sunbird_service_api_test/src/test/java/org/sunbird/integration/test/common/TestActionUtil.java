@@ -30,7 +30,7 @@ public class TestActionUtil {
   public static TestAction getTokenRequestTestAction(
       HttpClientActionBuilder builder, String userName, String password) {
     String urlPath =
-        "/auth/realms/" + System.getenv("sunbird_sso_realm") + "/protocol/openid-connect/token";
+        "/realms/" + System.getenv("sunbird_sso_realm") + "/protocol/openid-connect/token";
     return builder
         .send()
         .post(urlPath)
