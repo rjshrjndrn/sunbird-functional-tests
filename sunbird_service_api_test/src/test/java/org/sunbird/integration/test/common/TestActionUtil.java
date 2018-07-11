@@ -5,7 +5,6 @@ import com.consol.citrus.TestCase;
 import com.consol.citrus.dsl.builder.HttpClientActionBuilder;
 import com.consol.citrus.dsl.builder.HttpClientRequestActionBuilder;
 import com.consol.citrus.message.MessageType;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +31,7 @@ public class TestActionUtil {
         .contentType("application/x-www-form-urlencoded")
         .payload(
             "client_id="
-                + "admin-cli"
+                + System.getenv("sunbird_sso_client_id")
                 + "&username="
                 + userName
                 + "&password="
@@ -42,7 +41,6 @@ public class TestActionUtil {
 
   public static TestAction getTokenResponseTestAction(
       HttpClientActionBuilder builder, TestCase testCase) {
-    ObjectMapper objectMapper = new ObjectMapper();
     return builder
         .receive()
         .response(HttpStatus.OK)
