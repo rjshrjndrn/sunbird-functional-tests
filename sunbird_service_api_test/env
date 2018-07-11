@@ -16,3 +16,6 @@
 | sunbird_es_index           | Elastic search index name.
 | sunbird_test_base_url      | https://dev.open-sunbird.org 
 | sunbird_default_channel    | sunbird-dev
+| sunbird_default_channel    | Default channel value for Sunbird. This is the default channel value of a root organisation created. e.g. sunbird-dev
+| sunbird_username           | Already created user which is used for API authorisation. e.g. ft_org_admin
+| sunbird_user_password      | Password corresponding to user set in 'sunbird_username' environment variable.

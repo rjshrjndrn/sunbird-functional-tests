@@ -1,13 +1,13 @@
 {
-  "id": "api.issuer.create",
+  "id": "api.org.upload",
   "ver": "v1",
   "ts": "@ignore@",
   "params": {
     "resmsgid": null,
     "msgid": "@ignore@",
-    "err": "URL_FORMAT_ERROR",
-    "status": "URL_FORMAT_ERROR",
-    "errmsg": "URL is invalid."
+    "err": "DATA_SIZE_EXCEEDED",
+    "status": "DATA_SIZE_EXCEEDED",
+    "errmsg": "@ignore@"
   },
   "responseCode": "CLIENT_ERROR",
   "result": {}
