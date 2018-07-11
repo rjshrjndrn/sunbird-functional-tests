@@ -1,9 +1,9 @@
 {
-"request":{
-  "firstName": "ft_testName",
-  "lastName": "test",
-  "password": "password",
-  "userName": "manzarul109",
-  "email":"manzarul07.com"
-} 
+	"request": {
+		"firstName": "ft_testName",
+		"lastName": "test",
+		"password": "password",
+		"userName": "manzarul109",
+		"email": "manzarul07.com"
+	}
 }

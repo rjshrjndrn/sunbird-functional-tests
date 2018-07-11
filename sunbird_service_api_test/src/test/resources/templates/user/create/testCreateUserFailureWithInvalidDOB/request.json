@@ -1,10 +1,10 @@
 {
-"request":{
-  "firstName": "testName",
-  "lastName": "test",
-  "password": "password",
-  "userName": "manzarul109",
-  "email":"manzarul07@gmail.com",
-  "dob":"12-02-2012"
-} 
+    "request": {
+        "firstName": "testName",
+        "lastName": "test",
+        "password": "password",
+        "userName": "manzarul109",
+        "email": "manzarul07@gmail.com",
+        "dob": "12-02-2012"
+    }
 }

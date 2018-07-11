@@ -1,15 +1,16 @@
 {
-"id":"api.user.create",
-"ver":"v1",
-"ts":"@ignore@",
-"params":
-{
-"resmsgid":null,
-"msgid":"@ignore@",
-"err": "EMAIL_FORMAT_ERROR",
-"status": "EMAIL_FORMAT_ERROR",
-"errmsg": "Email is invalid."
-}
-,"responseCode":"CLIENT_ERROR",
-"result":{}
+	"id": "api.user.create",
+	"ver": "v1",
+	"ts": "@ignore@",
+	"params": {
+		"resmsgid": null,
+		"msgid": "@ignore@",
+		"err": "EMAIL_FORMAT_ERROR",
+		"status": "EMAIL_FORMAT_ERROR",
+		"errmsg": "Email is invalid."
+	},
+	"responseCode": "CLIENT_ERROR",
+	"result": {
+		
+	}
 }
