@@ -64,7 +64,7 @@ public class EndpointConfig {
       synchronized (EndpointConfig.class) {
         if(StringUtils.isBlank(admin_token)) {
           ObjectMapper objectMapper = new ObjectMapper();
-          String baseUrl = System.getenv("sunbird_test_base_url");
+          String baseUrl = "http://localhost:8080";//System.getenv("sunbird_test_base_url");
           String url =
               baseUrl + "/auth/realms/" + property.getRelam() + "/protocol/openid-connect/token";
 
