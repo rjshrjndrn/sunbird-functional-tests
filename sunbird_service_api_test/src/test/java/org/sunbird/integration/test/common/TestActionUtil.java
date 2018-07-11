@@ -8,8 +8,7 @@ import com.consol.citrus.message.MessageType;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
-import javax.ws.rs.core.MediaType;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.sunbird.common.util.Constant;
@@ -62,13 +61,13 @@ public class TestActionUtil {
 
     String requestFilePath =
         MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, requestFile);
-
-    contentType =
-        StringUtils.isNotBlank(contentType) ? contentType : MediaType.APPLICATION_JSON.toString();
-
-    HttpClientRequestActionBuilder requestActionBuilder =
-        builder.send().post(url).messageType(MessageType.JSON).contentType(contentType);
-
+    HttpClientRequestActionBuilder requestActionBuilder = null;
+    if (StringUtils.isNotBlank(contentType)) {
+      requestActionBuilder =
+          builder.send().post(url).messageType(MessageType.JSON).contentType(contentType);
+    } else {
+      requestActionBuilder = builder.send().post(url).messageType(MessageType.JSON);
+    }
     addHeaders(requestActionBuilder, headers);
 
     return requestActionBuilder.payload(new ClassPathResource(requestFilePath));

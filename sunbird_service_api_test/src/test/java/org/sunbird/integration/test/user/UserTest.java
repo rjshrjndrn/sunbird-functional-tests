@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
@@ -36,9 +37,9 @@ public class UserTest extends BaseCitrusTest {
   private static String user_auth_token = null;
   private static String admin_token = null;
   public static Map<String, List<String>> deletedRecordsMap = new HashMap<String, List<String>>();
-  private static final String CREATE_USER_SERVER_URI = "/api/user/v1/create";
+  public static final String CREATE_USER_SERVER_URI = "/api/user/v1/create";
   private static final String UPDATE_USER_SERVER_URI = "/api/user/v1/update";
-  private static final String CREATE_USER_LOCAL_URI = "/v1/user/create";
+  public static final String CREATE_USER_LOCAL_URI = "/v1/user/create";
   private static final String UPDATE_USER_LOCAL_URI = "/v1/user/update";
   public static final String TEMPLATE_DIR = "templates/user/create";
   private static volatile String USER_NAME = "userName";
@@ -163,7 +164,8 @@ public class UserTest extends BaseCitrusTest {
         REQUEST_JSON,
         HttpStatus.BAD_REQUEST,
         RESPONSE_JSON,
-        false);
+        false,
+        MediaType.APPLICATION_JSON);
   }
 
   /**
