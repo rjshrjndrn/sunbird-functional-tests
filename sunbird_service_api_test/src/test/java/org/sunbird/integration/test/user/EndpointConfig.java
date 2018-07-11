@@ -60,41 +60,7 @@ public class EndpointConfig {
     property.setIndex(System.getenv("sunbird_es_index"));
     property.setSunbirdDefaultChannel(System.getenv("sunbird_default_channel"));
     property.setLmsUrl(System.getenv("sunbird_test_base_url"));
-    setAdminAuthToken(property);
     return property;
-  }
-
-  public void setAdminAuthToken(TestGlobalProperty property) {
-    if(StringUtils.isBlank(admin_token)) {
-      synchronized (EndpointConfig.class) {
-        if(StringUtils.isBlank(admin_token)) {
-          ObjectMapper objectMapper = new ObjectMapper();
-          String baseUrl = "http://localhost:8080";//System.getenv("sunbird_test_base_url");
-          String url =
-              baseUrl + "/auth/realms/" + property.getRelam() + "/protocol/openid-connect/token";
-
-          Map<String, String> headers = new HashMap<>();
-          headers.put("Content-Type", "application/x-www-form-urlencoded");
-
-          Map<String, String> params = new HashMap<>();
-          params.put("client_id", "admin-cli");
-          params.put("username", property.getKeycloakAdminUser());
-          params.put("password", property.getKeycloakAdminPass());
-          params.put("grant_type", "password");
-          String response = "";
-          try {
-            response = HttpUtil.sendPostRequest(url, params, headers);
-            Map<String, Object> responseMap = new HashMap<>();
-            responseMap = objectMapper
-                .readValue(response, new TypeReference<Map<String, Object>>() {
-                });
-            admin_token = (String) responseMap.get("access_token");
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        }
-      }
-    }
   }
 
   /**

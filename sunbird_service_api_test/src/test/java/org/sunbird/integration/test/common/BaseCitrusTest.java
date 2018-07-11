@@ -70,7 +70,6 @@ public class BaseCitrusTest extends TestNGCitrusTestDesigner {
       String responseFile,
       HttpStatus responseCode,
       Map<String, Object> headers) {
-    System.out.println(requestFile);
 
     getTestCase().setName(testName);
 

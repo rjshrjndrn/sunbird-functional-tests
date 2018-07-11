@@ -19,7 +19,10 @@ import org.testng.annotations.Test;
 public class OrganisationBulkUploadTest extends BaseCitrusTest {
 
   private static final String  TEST_DIR_BULK_UPLOAD_ORG_SUCCESS = "templates/bulkupload/organisation/success/";
-  private static final String  TEST_DIR_BULK_UPLOAD_ORG_FAILURE = "templates/bulkupload/organisation/failure/";
+  private static final String  TEST_DIR_BULK_UPLOAD_ORG_FAILURE = "templates/bulkupload/organisation/failure";
+  private static final String  TEST_DIR_BULK_UPLOAD_ORG_FAILURE_INVALID_FIELDS = "templates/bulkupload/organisation/failure/invalidfields/";
+  private static final String  TEST_DIR_BULK_UPLOAD_ORG_FAILURE_EMPTY_FILE = "templates/bulkupload/organisation/failure/emptyfile/";
+  private static final String  TEST_DIR_BULK_UPLOAD_ORG_FAILURE_FILE_ABSENT = "templates/bulkupload/organisation/failure/fileabsent/";
   private static final String  TEST_DIR_BULK_UPLOAD_ORG_RESPONSE = "templates/bulkupload/organisation/response/";
 
 
@@ -42,7 +45,7 @@ public class OrganisationBulkUploadTest extends BaseCitrusTest {
     };
   }
 
-  @DataProvider(name = "orgBulkUploadFailure")
+  /*@DataProvider(name = "orgBulkUploadFailure")
   public Object[][] orgBulkUploadFailure() {
     return new Object[][] {
         new Object[]{
@@ -60,6 +63,39 @@ public class OrganisationBulkUploadTest extends BaseCitrusTest {
             TEST_DIR_BULK_UPLOAD_ORG_RESPONSE + "fileAbsentFailureResponse.json",
             "orgBulkUploadWithoutFile"
         },
+    };
+  }*/
+
+  @DataProvider(name = "orgBulkUploadFailureInvalidFields")
+  public Object[][] orgBulkUploadFailureInvalidFields() {
+    return new Object[][] {
+        new Object[]{
+            "request-with-invalid-fields.params",
+            "failureResponse.json",
+            "invalidfields"
+        }
+    };
+  }
+
+  @DataProvider(name = "orgBulkUploadFailureEmptyFile")
+  public Object[][] orgBulkUploadFailureEmptyFile() {
+    return new Object[][] {
+        new Object[]{
+            "request-with-empty-file.params",
+            "emptyFileFailureResponse.json",
+            "emptyfile"
+        }
+    };
+  }
+
+  @DataProvider(name = "orgBulkUploadFailureFileAbsent")
+  public Object[][] orgBulkUploadFailureFileAbsent() {
+    return new Object[][] {
+        new Object[]{
+            "request-without-file.params",
+            "fileAbsentFailureResponse.json",
+            "fileabsent"
+        }
     };
   }
 
@@ -89,7 +125,7 @@ public class OrganisationBulkUploadTest extends BaseCitrusTest {
   }
 
   @Test(
-      dataProvider = "orgBulkUploadFailure"
+      dataProvider = "orgBulkUploadFailureInvalidFields"
   )
   @CitrusParameters({"requestFormData", "responseJson", "testName"})
   @CitrusTest
@@ -99,13 +135,10 @@ public class OrganisationBulkUploadTest extends BaseCitrusTest {
    * 2.upload csv file with empty file and expecting BAD request in response.
    * 3.call api without attaching csv file and excepting server error exception. //TODO: need to correct the code to throw CLIENT_ERROR
    */
-  public void testOrgBulkUploadFailureCases(String requestFormData, String responseJson, String testName) {
+  public void testOrgBulkUploadFailureInvalidFields(String requestFormData, String responseJson, String testName) {
     getTestCase().setName(testName);
-    String testFolderPath;
-
-    if ((TEST_DIR_BULK_UPLOAD_ORG_RESPONSE + "failureResponse.json")
-        .equals(responseJson)) {
-      testFolderPath = TEST_DIR_BULK_UPLOAD_ORG_FAILURE;
+    /*String testFolderPath;
+      testFolderPath = TEST_DIR_BULK_UPLOAD_ORG_FAILURE_INVALID_FIELDS;
       new HttpUtil().multipartPost(http().client(restTestClient), initGlobalValues,
           getOrgBulkUploadUrl(), requestFormData, testFolderPath, getHeaderWithAuthToken());
 
@@ -113,9 +146,28 @@ public class OrganisationBulkUploadTest extends BaseCitrusTest {
           .client(restTestClient)
           .receive()
           .response(HttpStatus.BAD_REQUEST)
-          .payload(new ClassPathResource(responseJson));
-    }else if((TEST_DIR_BULK_UPLOAD_ORG_RESPONSE + "emptyFileFailureResponse.json").equals(responseJson)){
-      testFolderPath = TEST_DIR_BULK_UPLOAD_ORG_FAILURE;
+          .payload(new ClassPathResource(responseJson));*/
+
+    performPostTest(
+        testName,
+        TEST_DIR_BULK_UPLOAD_ORG_FAILURE,
+        getOrgBulkUploadUrl(),
+        requestFormData,
+        HttpStatus.BAD_REQUEST,
+        responseJson);
+
+  }
+
+  @Test(
+      dataProvider = "orgBulkUploadFailureFileAbsent"
+  )
+  @CitrusParameters({"requestFormData", "responseJson", "testName"})
+  @CitrusTest
+  public void testOrgBulkUploadFailureFileAbsent(String requestFormData, String responseJson, String testName) {
+    getTestCase().setName(testName);
+    /*String testFolderPath;
+
+      testFolderPath = TEST_DIR_BULK_UPLOAD_ORG_FAILURE_FILE_ABSENT;
       new HttpUtil().multipartPost(http().client(restTestClient), initGlobalValues,
           getOrgBulkUploadUrl(), requestFormData, testFolderPath, getHeaderWithAuthToken());
 
@@ -123,18 +175,45 @@ public class OrganisationBulkUploadTest extends BaseCitrusTest {
           .client(restTestClient)
           .receive()
           .response(HttpStatus.BAD_REQUEST)
-          .payload(new ClassPathResource(responseJson));
-    }else if((TEST_DIR_BULK_UPLOAD_ORG_RESPONSE + "fileAbsentFailureResponse.json").equals(responseJson)){
-      testFolderPath = TEST_DIR_BULK_UPLOAD_ORG_FAILURE;
-      new HttpUtil().multipartPost(http().client(restTestClient), initGlobalValues,
+          .payload(new ClassPathResource(responseJson));*/
+
+    performPostTest(
+        testName,
+        TEST_DIR_BULK_UPLOAD_ORG_FAILURE,
+        getOrgBulkUploadUrl(),
+        requestFormData,
+        HttpStatus.BAD_REQUEST,
+        responseJson);
+
+  }
+
+  @Test(
+      dataProvider = "orgBulkUploadFailureEmptyFile"
+  )
+  @CitrusParameters({"requestFormData", "responseJson", "testName"})
+  @CitrusTest
+  public void testOrgBulkUploadFailureEmptyFile(String requestFormData, String responseJson, String testName) {
+    getTestCase().setName(testName);
+   /* String testFolderPath;
+
+      testFolderPath = TEST_DIR_BULK_UPLOAD_ORG_FAILURE_EMPTY_FILE;*/
+
+    performPostTest(
+        testName,
+        TEST_DIR_BULK_UPLOAD_ORG_FAILURE,
+        getOrgBulkUploadUrl(),
+        requestFormData,
+        HttpStatus.BAD_REQUEST,
+        responseJson);
+
+      /*new HttpUtil().multipartPost(http().client(restTestClient), initGlobalValues,
           getOrgBulkUploadUrl(), requestFormData, testFolderPath, getHeaderWithAuthToken());
 
       http()
           .client(restTestClient)
           .receive()
-          .response(HttpStatus.INTERNAL_SERVER_ERROR)
-          .payload(new ClassPathResource(responseJson));
-    }
+          .response(HttpStatus.BAD_REQUEST)
+          .payload(new ClassPathResource(responseJson));*/
   }
 
   private String getOrgBulkUploadUrl() {
