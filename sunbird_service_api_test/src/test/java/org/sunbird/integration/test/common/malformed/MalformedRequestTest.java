@@ -1,4 +1,4 @@
-package org.sunbird.integration.test.common.malformedRequest;
+package org.sunbird.integration.test.common.malformed;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.testng.CitrusParameters;
