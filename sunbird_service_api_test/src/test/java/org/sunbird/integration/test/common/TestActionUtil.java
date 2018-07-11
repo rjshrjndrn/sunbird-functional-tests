@@ -5,13 +5,20 @@ import com.consol.citrus.TestCase;
 import com.consol.citrus.dsl.builder.HttpClientActionBuilder;
 import com.consol.citrus.dsl.builder.HttpClientRequestActionBuilder;
 import com.consol.citrus.message.MessageType;
+import java.io.File;
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
+import javax.ws.rs.core.MediaType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.sunbird.common.util.Constant;
+import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 
 public class TestActionUtil {
   public static TestAction getTokenRequestTestAction(HttpClientActionBuilder builder) {
@@ -23,7 +30,7 @@ public class TestActionUtil {
   public static TestAction getTokenRequestTestAction(
       HttpClientActionBuilder builder, String userName, String password) {
     String urlPath =
-        "/realms/" + System.getenv("sunbird_sso_realm") + "/protocol/openid-connect/token";
+        "/auth/realms/" + System.getenv("sunbird_sso_realm") + "/protocol/openid-connect/token";
     return builder
         .send()
         .post(urlPath)
@@ -71,6 +78,57 @@ public class TestActionUtil {
     addHeaders(requestActionBuilder, headers);
 
     return requestActionBuilder.payload(new ClassPathResource(requestFilePath));
+  }
+
+  public static TestAction getMultipartRequestTestAction(
+      HttpClientActionBuilder builder,
+      TestCase testCase,
+      String testName,
+      String testTemplateDir,
+      String url,
+      String requestFile,
+      Map<String, Object> headers,
+      ClassLoader classLoader,
+      TestGlobalProperty config) {
+
+    testCase.setName(testName);
+
+    String formDataFileFolderPath = MessageFormat.format("{0}/{1}", testTemplateDir, testName);
+    String formDataFile =
+        MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, requestFile);
+
+    MultiValueMap<String, Object> formData = new LinkedMultiValueMap<>();
+
+    try (Scanner scanner = new Scanner(new File(classLoader.getResource(formDataFile).getFile()))) {
+
+      while (scanner.hasNext()) {
+        String[] param = scanner.nextLine().split(Constant.EQUAL_SIGN);
+        if (param != null && param.length == 2) {
+          if (param[0].equalsIgnoreCase(Constant.MULTIPART_FILE_NAME)) {
+            formData.add(
+                Constant.MULTIPART_FILE_NAME,
+                new ClassPathResource(formDataFileFolderPath + "/" + param[1]));
+          } else {
+            formData.add(param[0], param[1]);
+          }
+        }
+      }
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    HttpClientRequestActionBuilder actionBuilder =
+        builder
+            .send()
+            .post(url)
+            .contentType(MediaType.MULTIPART_FORM_DATA)
+            .header(Constant.AUTHORIZATION, Constant.BEARER + config.getApiKey());
+
+    if (null != headers) {
+      actionBuilder = addHeaders(actionBuilder, headers);
+    }
+    return actionBuilder.payload(formData);
   }
 
   public static TestAction getResponseTestAction(
