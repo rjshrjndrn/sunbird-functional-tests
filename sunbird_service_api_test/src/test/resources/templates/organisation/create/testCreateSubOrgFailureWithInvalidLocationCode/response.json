@@ -1,0 +1,14 @@
+{
+    "id": "api.org.create",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "INVALID_PARAMETER_VALUE",
+        "status": "INVALID_PARAMETER_VALUE",
+        "errmsg": "@ignore@"
+    },
+    "responseCode": "CLIENT_ERROR",
+    "result": {}
+}
