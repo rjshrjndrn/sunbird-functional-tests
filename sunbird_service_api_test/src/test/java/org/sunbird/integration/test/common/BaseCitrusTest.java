@@ -75,7 +75,6 @@ public class BaseCitrusTest extends TestNGCitrusTestDesigner {
             testName,
             templateDir,
             requestUrl,
-            MediaType.APPLICATION_JSON.toString(),
             requestJson,
             TestActionUtil.getHeaders(isAuthRequired),
             getClass().getClassLoader(),
