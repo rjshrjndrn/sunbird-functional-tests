@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import javax.ws.rs.core.MediaType;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.LinkedMultiValueMap;
@@ -68,13 +68,11 @@ public class TestActionUtil {
 
     String requestFilePath =
         MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, requestFile);
-
-    contentType =
-        StringUtils.isNotBlank(contentType) ? contentType : MediaType.APPLICATION_JSON.toString();
-
     HttpClientRequestActionBuilder requestActionBuilder =
-        builder.send().post(url).messageType(MessageType.JSON).contentType(contentType);
-
+        builder.send().post(url).messageType(MessageType.JSON);
+    if (StringUtils.isNotBlank(contentType)) {
+      requestActionBuilder.contentType(contentType);
+    }
     addHeaders(requestActionBuilder, headers);
 
     return requestActionBuilder.payload(new ClassPathResource(requestFilePath));

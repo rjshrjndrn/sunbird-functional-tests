@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
@@ -36,11 +35,10 @@ public class BaseCitrusTest extends TestNGCitrusTestDesigner {
       String requestJson,
       HttpStatus responseCode,
       String responseJson,
-      boolean isAuthRequired) {
-
+      boolean isAuthRequired,
+      String contentType) {
     List<TestAction> actionList = new ArrayList<>();
     addAuthActions(actionList, isAuthRequired);
-
     actionList.add(
         TestActionUtil.getPostRequestTestAction(
             http().client("restTestClient"),
@@ -48,7 +46,7 @@ public class BaseCitrusTest extends TestNGCitrusTestDesigner {
             testName,
             templateDir,
             requestUrl,
-            MediaType.APPLICATION_JSON.toString(),
+            contentType,
             requestJson,
             TestActionUtil.getHeaders(isAuthRequired)));
     actionList.add(
