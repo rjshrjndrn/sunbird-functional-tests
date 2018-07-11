@@ -34,7 +34,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class OrganisationTest extends BaseCitrusTest {
 
 	private static final String CREATE_ORGANISATION_URI = "/v1/org/create";
-	
+
 	private static final String ORGANISATION_TEMPLATE_PATH_CREATE = "templates/organisation/create/";
 
 	public static final String TEST_NAME_CREATE_ROOT_ORG_WITH_EXISTING_CHANNEL = "createRootOrgWithExistingChannel";
@@ -85,7 +85,7 @@ public class OrganisationTest extends BaseCitrusTest {
 					"TEST_NAME_CREATE_SUB_ORG_WITH_EXISTING_CHANNEL"
 			},
 
-			
+
 		};
 	}
 
@@ -130,8 +130,8 @@ public class OrganisationTest extends BaseCitrusTest {
 					ORGANISATION_TEMPLATE_PATH_CREATE + TEST_NAME_CREATE_SUB_ORG_WITH_INVALIDE_CHANNEL + RESPONSE_JSON,
 					"TEST_NAME_CREATE_SUB_ORG_WITH_INVALIDE_CHANNEL"
 			},
-			
-			
+
+
 		};
 
 	}
@@ -151,7 +151,6 @@ public class OrganisationTest extends BaseCitrusTest {
 	@Test(dataProvider = "createFailureOrgDataProvider", dependsOnMethods = { "getAdminAuthToken" },enabled = true)
 	@CitrusTest
 	@CitrusParameters({"requestJsonFile","responseJson","testCaseName"})
-
 	public void testCreateOrganisationFailure(String requestJsonFile,String responseJson,String testCaseName) {
 
 		HttpStatus reponseStatus;
@@ -162,7 +161,7 @@ public class OrganisationTest extends BaseCitrusTest {
 		}else {
 			reponseStatus = HttpStatus.UNAUTHORIZED;
 			isAccessToken = false;
-			
+
 		}
 		performFailureTest(testCaseName,HTTPMethod.POST,CREATE_ORGANISATION_URI,requestJsonFile,isAccessToken,reponseStatus,responseJson);
 
@@ -213,7 +212,7 @@ public class OrganisationTest extends BaseCitrusTest {
 
 					}
 				});
-		
+
 	}
 
 
