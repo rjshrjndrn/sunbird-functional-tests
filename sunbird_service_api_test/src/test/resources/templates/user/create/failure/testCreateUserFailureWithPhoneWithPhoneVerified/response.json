@@ -1,0 +1,15 @@
+{
+"id":"api.user.create",
+"ver":"v1",
+"ts":"@ignore@",
+"params":
+{
+"resmsgid":null,
+"msgid":"@ignore@",
+"err": "PHONE_VERIFY_ERROR",
+ "status": "PHONE_VERIFY_ERROR",
+ "errmsg": "Please provide a verified phone number in order to create/update user."
+}
+,"responseCode":"CLIENT_ERROR",
+"result":{}
+}

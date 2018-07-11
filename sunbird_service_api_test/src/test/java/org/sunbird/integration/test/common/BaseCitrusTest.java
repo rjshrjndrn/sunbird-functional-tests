@@ -90,7 +90,7 @@ public class BaseCitrusTest extends TestNGCitrusTestDesigner {
         .payload(new ClassPathResource(responseFilePath));
   }
 
-  public String getUri(String serverUri, String localuri) {
-    return config.getLmsUrl().contains("localhost") ? localuri : serverUri;
+  public String getLmsApiUrlPath(String apiGatewayUriPath, String localUriPath) {
+    return config.getLmsUrl().contains("localhost") ? localUriPath : apiGatewayUriPath;
   }
 }

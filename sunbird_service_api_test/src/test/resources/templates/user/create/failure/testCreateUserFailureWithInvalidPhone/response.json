@@ -1,0 +1,15 @@
+{
+"id":"api.user.create",
+"ver":"v1",
+"ts":"@ignore@",
+"params":
+{
+"resmsgid":null,
+"msgid":"@ignore@",
+"err": "INVALID_PHONE_NO_FORMAT",
+"status": "INVALID_PHONE_NO_FORMAT",
+"errmsg": "Please provide a valid phone number."
+}
+,"responseCode":"CLIENT_ERROR",
+"result":{}
+}
