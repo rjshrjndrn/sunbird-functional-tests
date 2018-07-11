@@ -86,7 +86,6 @@ public class TestActionUtil {
       String testName,
       String testTemplateDir,
       String url,
-      String contentType,
       String requestFile,
       Map<String, Object> headers,
       ClassLoader classLoader,

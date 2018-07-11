@@ -8,7 +8,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class CreateBadgeClassTest extends BaseCitrusTest {
-  public static final String TEST_NAME_CREATE_BADGE_CLASS_SUCCESS = "testCreateBadgeClassSuccess";
+  public static final String TEST_NAME_CREATE_BADGE_CLASS_FAILURE_WITH_INVALID_ROOT_ORG_ID =
+      "testCreateBadgeClassFailureWithInvalidRootOrgId";
 
   public static final String TEMPLATE_DIR = "templates/badge/class/create";
 
@@ -16,25 +17,26 @@ public class CreateBadgeClassTest extends BaseCitrusTest {
     return getLmsApiUriPath("/api/badging/v1/issuer/badge/create", "/v1/issuer/badge/create");
   }
 
-  @DataProvider(name = "createBadgeClassDataProviderSuccess")
-  public Object[][] createBadgeClassDataProviderSuccess() {
+  @DataProvider(name = "createBadgeClassDataProviderFailure")
+  public Object[][] createBadgeClassDataProviderFailure() {
     return new Object[][] {
-      new Object[] {REQUEST_FORM_DATA, RESPONSE_JSON, TEST_NAME_CREATE_BADGE_CLASS_SUCCESS}
+      new Object[] {
+        TEST_NAME_CREATE_BADGE_CLASS_FAILURE_WITH_INVALID_ROOT_ORG_ID, HttpStatus.BAD_REQUEST
+      }
     };
   }
 
-  @Test(dataProvider = "createBadgeClassDataProviderSuccess")
-  @CitrusParameters({"requestFormData", "responseJson", "testName"})
+  @Test(dataProvider = "createBadgeClassDataProviderFailure")
+  @CitrusParameters({"testName", "responseCode"})
   @CitrusTest
-  public void testCreateBadgeClassSuccess(
-      String requestFormData, String responseJson, String testName) {
+  public void testCreateBadgeClassFailure(String testName, HttpStatus responseCode) {
     performMultipartTest(
         testName,
         TEMPLATE_DIR,
         getCreateBadgeClassUrl(),
-        requestFormData,
-        HttpStatus.OK,
-        responseJson,
+        REQUEST_FORM_DATA,
+        responseCode,
+        RESPONSE_JSON,
         false);
   }
 }
