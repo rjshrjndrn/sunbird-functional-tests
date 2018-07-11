@@ -7,6 +7,7 @@ http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.citrusframework.org/schema/testcase
 http://www.citrusframework.org/schema/testcase/citrus-testcase.xsd">
-<spring:bean id="beforeTestSuite"  class="org.sunbird.integration.test.user.BeforeTestSuitCall"/>
+  <spring:bean id="beforeTestSuite"  class="org.sunbird.integration.test.user.BeforeTestSuitCall"/>
   <spring:bean id="afterTestSuite"   class="org.sunbird.common.AfterTestSuiteCleanUp"/>
+  <spring:bean id="defaultJsonMessageValidator" class="com.consol.citrus.validation.json.JsonTextMessageValidator"/>
 </spring:beans>

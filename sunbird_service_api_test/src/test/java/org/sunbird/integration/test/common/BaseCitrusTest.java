@@ -6,16 +6,12 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.ws.rs.core.MediaType;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.sunbird.common.util.HttpUtil;
 import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 
-/**
- * Class to contain the common things for all citrus tests.
- *
- * @author arvind.
- */
 public class BaseCitrusTest extends TestNGCitrusTestDesigner {
 
   public static final String REQUEST_JSON = "request.json";
@@ -29,32 +25,31 @@ public class BaseCitrusTest extends TestNGCitrusTestDesigner {
 
   public void performPostTest(
       String testName,
-      String testTemplateDir,
-      HttpClient httpClient,
-      String url,
-      String contentType,
-      String requestFile,
-      String responseFile,
+      String templateDir,
+      String requestUrl,
+      String requestJson,
       HttpStatus responseCode,
-      Map<String, Object> headers) {
-    System.out.println(requestFile);
-
-    getTestCase().setName(testName);
-
-    String requestFilePath =
-        MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, requestFile);
-    String responseFilePath =
-        MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, responseFile);
-
-    // Send request
-    new HttpUtil().post(http().client(httpClient), url, contentType, requestFilePath, headers);
-
-    // Verify response
-    http()
-        .client(httpClient)
-        .receive()
-        .response(responseCode)
-        .payload(new ClassPathResource(responseFilePath));
+      String responseJson) {
+    sequential()
+        .actions(
+            TestActionUtil.getTokenRequestTestAction(http().client("keycloakTestClient")),
+            TestActionUtil.getTokenResponseTestAction(
+                http().client("keycloakTestClient"), getTestCase()),
+            TestActionUtil.getPostRequestTestAction(
+                http().client("restTestClient"),
+                getTestCase(),
+                testName,
+                templateDir,
+                requestUrl,
+                MediaType.APPLICATION_JSON.toString(),
+                requestJson,
+                TestActionUtil.getHeaders()),
+            TestActionUtil.getResponseTestAction(
+                http().client("restTestClient"),
+                testName,
+                templateDir,
+                responseCode,
+                responseJson));
   }
 
   public void performMultipartTest(

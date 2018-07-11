@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Scanner;
 import javax.ws.rs.core.MediaType;
-import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
@@ -117,24 +116,6 @@ public class HttpUtil {
       actionBuilder = addHeaders(actionBuilder, headers);
     }
     actionBuilder.payload(formData);
-  }
-
-  public void post(
-      HttpClientActionBuilder httpClientActionBuilder,
-      String url,
-      String contentType,
-      String requestFilePath,
-      Map<String, Object> headers) {
-
-    contentType =
-        StringUtils.isNotBlank(contentType) ? contentType : MediaType.APPLICATION_JSON.toString();
-
-    HttpClientRequestActionBuilder actionBuilder =
-        httpClientActionBuilder.send().post(url).contentType(contentType);
-
-    addHeaders(actionBuilder, headers);
-
-    actionBuilder.payload(requestFilePath);
   }
 
   private HttpClientRequestActionBuilder addHeaders(
