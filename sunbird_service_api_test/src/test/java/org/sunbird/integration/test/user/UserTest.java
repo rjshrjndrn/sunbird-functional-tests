@@ -40,7 +40,7 @@ public class UserTest extends BaseCitrusTest {
   private static final String UPDATE_USER_SERVER_URI = "/api/user/v1/update";
   private static final String CREATE_USER_LOCAL_URI = "/v1/user/create";
   private static final String UPDATE_USER_LOCAL_URI = "/v1/user/update";
-  public static final String TEMPLATE_DIR = "templates/user/create/failure";
+  public static final String TEMPLATE_DIR = "templates/user/create";
   private static volatile String USER_NAME = "userName";
   private static String externalId = String.valueOf(System.currentTimeMillis());
   private static String provider = String.valueOf(System.currentTimeMillis() + 10);
@@ -159,10 +159,10 @@ public class UserTest extends BaseCitrusTest {
     performPostTest(
         testName,
         TEMPLATE_DIR,
-        getLmsApiUrlPath(CREATE_USER_SERVER_URI, CREATE_USER_LOCAL_URI),
-        Constant.REQUEST_JSON,
+        getLmsApiUriPath(CREATE_USER_SERVER_URI, CREATE_USER_LOCAL_URI),
+        REQUEST_JSON,
         HttpStatus.BAD_REQUEST,
-        Constant.RESPONSE_JSON,
+        RESPONSE_JSON,
         false);
   }
 
