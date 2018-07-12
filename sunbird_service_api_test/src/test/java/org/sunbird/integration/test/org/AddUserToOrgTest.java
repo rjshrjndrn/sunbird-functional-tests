@@ -24,7 +24,7 @@ public class AddUserToOrgTest extends BaseCitrusTest {
 	@Autowired private TestGlobalProperty config;
 
 	private String getCreateOrgUrl() {
-		return config.getLmsUrl().contains("localhost") ? "v1/org/member/add" : "/org/v1/member/add";
+		return getLmsApiUriPath("/org/v1/member/add","v1/org/member/add");
 	}
 
 	@DataProvider(name = "memeberAddToOrgFailureDataProvider")
@@ -42,13 +42,16 @@ public class AddUserToOrgTest extends BaseCitrusTest {
 	@CitrusTest
 	public void testMemeberAddToOrgFailure(
 			String requestJson, String responseJson, String testName) {
-
+		
+		String contentType = "application/json";
+		boolean isAuthRequired = true;
+		
 		performPostTest(
 				testName,
 				TEMPLATE_DIR,
 				getCreateOrgUrl(),
 				requestJson,
 				HttpStatus.BAD_REQUEST,
-				responseJson);
+				responseJson,isAuthRequired,contentType);
 	}
 }
