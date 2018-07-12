@@ -26,7 +26,7 @@ public class CreateOrganisationTest extends BaseCitrusTest {
   @Autowired private TestGlobalProperty config;
 
   private String getCreateOrgUrl() {
-    return config.getLmsUrl().contains("localhost") ? "/v1/org/create" : "/org/v1/create";
+    return config.getLmsUrl().contains("localhost") ? "/v1/org/create" : "/api/org/v1/create";
   }
 
   @DataProvider(name = "createFailureOrgDataProvider")
