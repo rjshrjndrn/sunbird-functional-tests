@@ -1,5 +1,0 @@
-{
-	"request": {
-		"loginId": "citrus:concat('ft_username_@',citrus:randomString(5, MIXED, true))"
-	}
-}
