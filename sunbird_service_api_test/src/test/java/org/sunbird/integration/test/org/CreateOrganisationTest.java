@@ -23,13 +23,6 @@ public class CreateOrganisationTest extends BaseCitrusTest {
   public static final String TEST_NAME_CREATE_SUB_ORG_WITHOUT_ACCESS_TOKEN =
       "testCreateSubOrgWithoutAccessToken";
 
-  /* Need to work on */
-  public static final String TEST_NAME_CREATE_ROOT_ORG_FAILURE_WITH_EXISTING_EXTERNAL_ID =
-      "testCreateRootOrgWithExistingExternalId";
-  public static final String TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_LOCATION_CODE =
-      "testCreateSubOrgWithLocationCode";
-  public static final String TEST_NAME_CREATE_ROOT_ORG_FAILURE_WITH_EXISTING_CHANNEL =
-      "testCreateRootOrgFailureWithExistingChannel";
 
   public static final String TEMPLATE_DIR = "templates/organisation/create";
 
