@@ -1,23 +1,10 @@
 package org.sunbird.integration.test.user;
 
-import com.consol.citrus.context.TestContext;
 import com.consol.citrus.dsl.endpoint.CitrusEndpoints;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
-import com.consol.citrus.validation.json.JsonMappingValidationCallback;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
-import org.sunbird.common.util.HttpUtil;
-import org.testng.Assert;
 
 /**
  * This class will do the initialization of all global variable.
@@ -26,8 +13,6 @@ import org.testng.Assert;
  */
 @Configuration
 public class EndpointConfig {
-
-  public static String admin_token = null;
 
   @Bean
   public HttpClient restTestClient() {
