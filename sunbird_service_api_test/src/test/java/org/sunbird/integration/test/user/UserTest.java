@@ -124,9 +124,9 @@ public class UserTest extends BaseCitrusTest {
    * @param responseJson
    * @param testName
    */
-  // @Test(dataProvider = "createUserDynamicDataProvider")
-  // @CitrusParameters({"requestJson", "responseJson", "testName"})
-  // @CitrusTest
+  @Test(dataProvider = "createUserDynamicDataProvider")
+  @CitrusParameters({"requestJson", "responseJson", "testName"})
+  @CitrusTest
   public void testCreateUser(String requestJson, String responseJson, String testName) {
     getTestCase().setName(testName);
     http()
@@ -190,8 +190,8 @@ public class UserTest extends BaseCitrusTest {
             });
   }
 
-  // @Test()
-  // @CitrusTest
+  @Test()
+  @CitrusTest
   /**
    * Key cloak admin token generation is required , because on sunbird dev server after creating
    * user , user have to login first then only his/her account will be active. so we need to disable
@@ -203,7 +203,7 @@ public class UserTest extends BaseCitrusTest {
     http()
         .client(restTestClient)
         .send()
-        .post("/auth/realms/" + initGlobalValues.getRelam() + "/protocol/openid-connect/token")
+        .post("/auth/realms/master/protocol/openid-connect/token")
         .contentType("application/x-www-form-urlencoded")
         .payload(
             "client_id=admin-cli&username="
@@ -225,8 +225,8 @@ public class UserTest extends BaseCitrusTest {
             });
   }
 
-  // @Test(dependsOnMethods = {"testCreateUser", "getAdminAuthToken"})
-  // @CitrusTest
+  @Test(dependsOnMethods = {"testCreateUser", "getAdminAuthToken"})
+  @CitrusTest
   /**
    * This method will disable user required action change password under keyCloak. after disabling
    * that , we can generate newly created user auth token.
@@ -242,8 +242,8 @@ public class UserTest extends BaseCitrusTest {
     http().client(restTestClient).receive().response(HttpStatus.NO_CONTENT);
   }
 
-  // @Test(dependsOnMethods = {"updateUserRequiredLoginActionTest"})
-  // @CitrusTest
+  @Test(dependsOnMethods = {"updateUserRequiredLoginActionTest"})
+  @CitrusTest
   public void getAuthToken() {
     http()
         .client(restTestClient)
@@ -272,7 +272,7 @@ public class UserTest extends BaseCitrusTest {
             });
   }
 
-  /* @Test(
+  @Test(
     dataProvider = "updateUserDataProvider",
     dependsOnMethods = {
       "testCreateUser",
@@ -280,7 +280,7 @@ public class UserTest extends BaseCitrusTest {
     }
   )
   @CitrusParameters({"requestJson", "responseJson", "testName"})
-  @CitrusTest*/
+  @CitrusTest
   public void testUpdateUser(String requestJson, String responseJson, String testName) {
     getTestCase().setName(testName);
     http()
@@ -303,8 +303,8 @@ public class UserTest extends BaseCitrusTest {
     }
   }
 
-  // @Test(dependsOnMethods = {"getAuthToken"})
-  // @CitrusTest
+  @Test(dependsOnMethods = {"getAuthToken"})
+  @CitrusTest
   public void getUserTest() {
     http()
         .client(restTestClient)
