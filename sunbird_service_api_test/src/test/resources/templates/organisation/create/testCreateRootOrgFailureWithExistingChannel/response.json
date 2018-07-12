@@ -5,9 +5,9 @@
     "params": {
         "resmsgid": null,
         "msgid": "@ignore@",
-        "err": "REQUIRED_DATA_MISSING",
-        "status": "REQUIRED_DATA_MISSING",
-        "errmsg": "Organization Id or Provider with External Id values are required for the operation"
+        "err": "CHANNEL_SHOULD_BE_UNIQUE",
+        "status": "CHANNEL_SHOULD_BE_UNIQUE",
+        "errmsg": "Channel value already used by another organization. Provide different value for channel"
     },
     "responseCode": "CLIENT_ERROR",
     "result": {}

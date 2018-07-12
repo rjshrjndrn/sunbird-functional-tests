@@ -1,0 +1,7 @@
+ {
+ "request":{            
+ 			"userId":"<Needtowork>",
+			"roles":["NewRole"],
+            "organisationId":"ORG_001"
+           }
+}

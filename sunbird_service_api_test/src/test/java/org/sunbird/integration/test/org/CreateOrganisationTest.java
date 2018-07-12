@@ -11,54 +11,68 @@ import org.testng.annotations.Test;
 
 public class CreateOrganisationTest extends BaseCitrusTest {
 
-  public static final String TEST_NAME_CREATE_SUB_ORG_FAILURE_WITHOUT_NAME =
-      "testCreateSubOrgFailureWithoutName";
-  public static final String TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_PROVIDER_WITHOUT_EXTERNAL_ID =
-      "testCreateSubOrgFailureWithProviderWithoutExternalId";
-  public static final String TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_INVALID_LOCATION_CODE =
-      "testCreateSubOrgFailureWithInvalidLocationCode";
-  public static final String TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_INVALID_CHANNEL =
-      "testCreateSubOrgFailureWithInvalidChannel";
+	public static final String TEST_NAME_CREATE_SUB_ORG_FAILURE_WITHOUT_NAME =
+			"testCreateSubOrgFailureWithoutName";
+	public static final String TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_PROVIDER_WITHOUT_EXTERNAL_ID =
+			"testCreateSubOrgFailureWithProviderWithoutExternalId";
+	public static final String TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_INVALID_LOCATION_CODE =
+			"testCreateSubOrgFailureWithInvalidLocationCode";
+	public static final String TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_INVALID_CHANNEL =
+			"testCreateSubOrgFailureWithInvalidChannel";
+	public static final String TEST_NAME_CREATE_ROOT_ORG_FAILURE_WITH_EXISTING_CHANNEL="testCreateRootOrgFailureWithExistingChannel";
+	public static final String TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_EXTERNAL_ID = "testCreateSubOrgFailureWithExternalId";
+	
+	public static final String TEST_NAME_CREATE_ROOT_ORG_FAILURE_WITH_EXISTING_EXTERNAL_ID = "testCreateRootOrgWithExistingExternalId";
+	public static final String TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_LOCATION_CODE = "testCreateSubOrgWithLocationCode";
+	
+	public static final String TEMPLATE_DIR = "templates/organisation/create";
 
-  public static final String TEMPLATE_DIR = "templates/organisation/create";
+	@Autowired private TestGlobalProperty config;
 
-  @Autowired private TestGlobalProperty config;
+	private String getCreateOrgUrl() {
+		return config.getLmsUrl().contains("localhost") ? "/v1/org/create" : "/org/v1/create";
+	}
 
-  private String getCreateOrgUrl() {
-    return config.getLmsUrl().contains("localhost") ? "/v1/org/create" : "/org/v1/create";
-  }
+	@DataProvider(name = "createFailureOrgDataProvider")
+	public Object[][] createFailureOrgDataProvider() {
 
-  @DataProvider(name = "createFailureOrgDataProvider")
-  public Object[][] createFailureOrgDataProvider() {
+		return new Object[][] {
+			new Object[] {REQUEST_JSON, RESPONSE_JSON, TEST_NAME_CREATE_SUB_ORG_FAILURE_WITHOUT_NAME},
+			new Object[] {
+					REQUEST_JSON,
+					RESPONSE_JSON,
+					TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_PROVIDER_WITHOUT_EXTERNAL_ID
+			},
+			new Object[] {
+					REQUEST_JSON, RESPONSE_JSON, TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_INVALID_LOCATION_CODE
+			},
+			new Object[] {
+					REQUEST_JSON, RESPONSE_JSON, TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_INVALID_CHANNEL
+			},
 
-    return new Object[][] {
-      new Object[] {REQUEST_JSON, RESPONSE_JSON, TEST_NAME_CREATE_SUB_ORG_FAILURE_WITHOUT_NAME},
-      new Object[] {
-        REQUEST_JSON,
-        RESPONSE_JSON,
-        TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_PROVIDER_WITHOUT_EXTERNAL_ID
-      },
-      new Object[] {
-        REQUEST_JSON, RESPONSE_JSON, TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_INVALID_LOCATION_CODE
-      },
-      new Object[] {
-        REQUEST_JSON, RESPONSE_JSON, TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_INVALID_CHANNEL
-      }
-    };
-  }
+			new Object[] {
+					REQUEST_JSON,RESPONSE_JSON,TEST_NAME_CREATE_ROOT_ORG_FAILURE_WITH_EXISTING_CHANNEL			
+			},
+			new Object[] {
+					REQUEST_JSON, RESPONSE_JSON, TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_EXTERNAL_ID
+			},
+		//TEST_NAME_CREATE_SUB_ORG_WITHOUT_ACCESS_TOKEN
 
-  @Test(dataProvider = "createFailureOrgDataProvider")
-  @CitrusParameters({"requestJson", "responseJson", "testName"})
-  @CitrusTest
-  public void testCreateOrganisationFailure(
-      String requestJson, String responseJson, String testName) {
+		};
+	}
 
-    performPostTest(
-        testName,
-        TEMPLATE_DIR,
-        getCreateOrgUrl(),
-        requestJson,
-        HttpStatus.BAD_REQUEST,
-        responseJson);
-  }
+	@Test(dataProvider = "createFailureOrgDataProvider")
+	@CitrusParameters({"requestJson", "responseJson", "testName"})
+	@CitrusTest
+	public void testCreateOrganisationFailure(
+			String requestJson, String responseJson, String testName) {
+
+		performPostTest(
+				testName,
+				TEMPLATE_DIR,
+				getCreateOrgUrl(),
+				requestJson,
+				HttpStatus.BAD_REQUEST,
+				responseJson);
+	}
 }

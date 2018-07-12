@@ -1,6 +1,6 @@
 {
     "id": "api.org.create",
-    "ver": "v1",
+    "ver": "@ignore@",
     "ts": "@ignore@",
     "params": {
         "resmsgid": null,

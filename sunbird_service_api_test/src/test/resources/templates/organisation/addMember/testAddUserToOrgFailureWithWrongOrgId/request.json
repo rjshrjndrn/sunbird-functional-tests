@@ -1,0 +1,6 @@
+ {
+ "request":{            
+ 			"userId":"citrus:concat('user_',citrus:randomNumber(10))",			
+            "organisationId":"citrus:concat('user_',citrus:randomNumber(10))"
+           }
+}

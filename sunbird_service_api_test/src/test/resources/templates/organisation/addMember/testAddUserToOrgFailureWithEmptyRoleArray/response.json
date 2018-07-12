@@ -1,13 +1,13 @@
 {
-    "id": "api.org.create",
+    "id": "api.org.member.add",
     "ver": "@ignore@",
     "ts": "@ignore@",
     "params": {
         "resmsgid": null,
         "msgid": "@ignore@",
-        "err": "INVALID_CHANNEL",
-        "status": "INVALID_CHANNEL",
-        "errmsg": "Channel value is invalid."
+        "err": "ROLE_MISSING",
+        "status": "ROLE_MISSING",
+        "errmsg": "Role of the user is required"
     },
     "responseCode": "CLIENT_ERROR",
     "result": {}
