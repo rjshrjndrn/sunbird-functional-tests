@@ -37,10 +37,6 @@ public class UserTest extends BaseCitrusTest {
   private static String user_auth_token = null;
   private static String admin_token = null;
   public static Map<String, List<String>> deletedRecordsMap = new HashMap<String, List<String>>();
-  public static final String CREATE_USER_SERVER_URI = "/api/user/v1/create";
-  private static final String UPDATE_USER_SERVER_URI = "/api/user/v1/update";
-  public static final String CREATE_USER_LOCAL_URI = "/v1/user/create";
-  private static final String UPDATE_USER_LOCAL_URI = "/v1/user/update";
   public static final String TEMPLATE_DIR = "templates/user/create";
   private static volatile String USER_NAME = "userName";
   private static String externalId = String.valueOf(System.currentTimeMillis());
@@ -132,7 +128,7 @@ public class UserTest extends BaseCitrusTest {
     http()
         .client(restTestClient)
         .send()
-        .post(CREATE_USER_SERVER_URI)
+        .post(getCreateUserUrl())
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson);
@@ -160,7 +156,7 @@ public class UserTest extends BaseCitrusTest {
     performPostTest(
         testName,
         TEMPLATE_DIR,
-        getLmsApiUriPath(CREATE_USER_SERVER_URI, CREATE_USER_LOCAL_URI),
+        getLmsApiUriPath(getCreateUserUrl(), getCreateUserUrl()),
         REQUEST_JSON,
         HttpStatus.BAD_REQUEST,
         RESPONSE_JSON,
@@ -286,7 +282,7 @@ public class UserTest extends BaseCitrusTest {
     http()
         .client(restTestClient)
         .send()
-        .patch(UPDATE_USER_SERVER_URI)
+        .patch(getUpdateUserUrl())
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson)

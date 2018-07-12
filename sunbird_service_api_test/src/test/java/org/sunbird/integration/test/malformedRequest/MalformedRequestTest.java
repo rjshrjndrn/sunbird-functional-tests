@@ -24,52 +24,41 @@ public class MalformedRequestTest extends BaseCitrusTest {
   @Autowired private HttpClient restTestClient;
   @Autowired private TestGlobalProperty initGlobalValues;
   private static String admin_token = null;
-  private static final String CREATE_ORG_SERVER_URI = "/api/org/v1/create";
-  private static final String CREATE_ORG_LOCAL_URI = "/v1/org/create";
-  private static final String CREATE_COURSE_BATCH_SERVER_URI = "/api/course/v1/batch/create";
-  private static final String CREATE_COURSE_BATCH_LOCAL_URI = "/v1/course/batch/create";
-  private static final String CREATE_PAGE_SERVER_URI = "/api/data/v1/page/create";
-  private static final String CREATE_PAGE_LOCAL_URI = "/v1/page/create";
-  private static final String CREATE_USER_NOTES_SERVER_URI = "/api/notes/v1/create";
-  private static final String CREATE_USER_NOTES_LOCAL_URI = "/v1/note/create";
   public static final String TEMPLATE_DIR = "templates/common/malformed";
 
   @DataProvider(name = "createRequestDataProvider")
   public Object[][] createRequestDataProvider() {
     return new Object[][] {
       new Object[] {
-        UserTest.CREATE_USER_SERVER_URI,
-        UserTest.CREATE_USER_LOCAL_URI,
+        getCreateUserUrl(),
         "userCreateFailureWithoutContentType"
       },
       new Object[] {
-        CREATE_PAGE_SERVER_URI, CREATE_PAGE_LOCAL_URI, "pageCreateFailureWithoutContentType"
+        getCreatePagerUrl(), "pageCreateFailureWithoutContentType"
       },
       new Object[] {
-        CREATE_USER_NOTES_SERVER_URI,
-        CREATE_USER_NOTES_LOCAL_URI,
+        getCreateUserNotesUrl(),
         "notesCreateFailureWithoutContentType"
       },
       new Object[] {
-        CREATE_ORG_SERVER_URI, CREATE_ORG_LOCAL_URI, "orgCreateFailureWithoutContentType"
+        getCreateOrgUrl(), "orgCreateFailureWithoutContentType"
       },
       new Object[] {
-        CREATE_COURSE_BATCH_SERVER_URI,
-        CREATE_COURSE_BATCH_LOCAL_URI,
+        getCreateCourseBatchUrl(),
         "batchCreateFailureWithoutContentType"
       }
     };
   }
 
   @Test(dataProvider = "createRequestDataProvider")
-  @CitrusParameters({"apiGatewayUriPath", "localUriPath", "testName"})
+  @CitrusParameters({"uriPath", "testName"})
   @CitrusTest
   public void testRequestWithoutContentType(
-      String apiGatewayUriPath, String localUriPath, String testName) {
+      String url, String testName) {
     performPostTest(
         testName,
         TEMPLATE_DIR,
-        getLmsApiUriPath(apiGatewayUriPath, localUriPath),
+        url,
         REQUEST_JSON,
         HttpStatus.BAD_REQUEST,
         RESPONSE_JSON,
@@ -106,4 +95,36 @@ public class MalformedRequestTest extends BaseCitrusTest {
         .response(HttpStatus.BAD_REQUEST)
         .payload(new ClassPathResource(responseJson));
   }
+
+  private String getCreateUserUrl() {
+    return initGlobalValues.getLmsUrl().contains("localhost")
+        ? "/v1/user/create"
+        : "/api/user/v1/create";
+  }
+
+  private String getCreateOrgUrl() {
+    return initGlobalValues.getLmsUrl().contains("localhost")
+        ? "/v1/org/create"
+        : "/api/org/v1/create";
+  }
+
+  private String getCreatePagerUrl() {
+    return initGlobalValues.getLmsUrl().contains("localhost")
+        ? "/v1/page/create"
+        : "/api/data/v1/page/create";
+  }
+
+  private String getCreateCourseBatchUrl() {
+    return initGlobalValues.getLmsUrl().contains("localhost")
+        ? "/v1/course/batch/create"
+        : "/api/course/v1/batch/create";
+  }
+
+  private String getCreateUserNotesUrl() {
+    return initGlobalValues.getLmsUrl().contains("localhost")
+        ? "/v1/note/create"
+        : "/api/notes/v1/create";
+  }
+
+
 }
