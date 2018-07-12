@@ -2,6 +2,7 @@ package org.sunbird.integration.test.org;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.testng.CitrusParameters;
+import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.sunbird.integration.test.common.BaseCitrusTest;
@@ -52,13 +53,14 @@ public class CreateOrganisationTest extends BaseCitrusTest {
   @CitrusTest
   public void testCreateOrganisationFailure(
       String requestJson, String responseJson, String testName) {
-
     performPostTest(
         testName,
         TEMPLATE_DIR,
         getCreateOrgUrl(),
         requestJson,
         HttpStatus.BAD_REQUEST,
-        responseJson);
+        responseJson,
+        true,
+        MediaType.APPLICATION_JSON);
   }
 }
