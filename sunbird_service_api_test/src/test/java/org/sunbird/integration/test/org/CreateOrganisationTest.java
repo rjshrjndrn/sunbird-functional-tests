@@ -1,5 +1,8 @@
 package org.sunbird.integration.test.org;
 
+
+import javax.ws.rs.core.MediaType;
+
 import org.springframework.http.HttpStatus;
 import org.sunbird.integration.test.common.BaseCitrusTest;
 import org.testng.annotations.DataProvider;
@@ -30,9 +33,8 @@ public class CreateOrganisationTest extends BaseCitrusTest {
 	
 	public static final String TEMPLATE_DIR = "templates/organisation/create";
 
-
 	private String getCreateOrgUrl() {
-		System.out.println( " URL ::::::::::" +  getLmsApiUriPath("/v1/org/create", "/org/v1/create"));
+	
 		return getLmsApiUriPath("/org/v1/create","/v1/org/create");
 	}
 
@@ -57,7 +59,6 @@ public class CreateOrganisationTest extends BaseCitrusTest {
 			new Object[] {
 					TEST_NAME_CREATE_SUB_ORG_WITHOUT_ACCESS_TOKEN
 			}
-		
 
 		};
 	}
@@ -67,7 +68,7 @@ public class CreateOrganisationTest extends BaseCitrusTest {
 	@CitrusTest
 	public void testCreateOrganisationFailure(String testName) {
 		
-		String contentType = "application/json";
+		String contentType =  MediaType.APPLICATION_JSON;
 		boolean isAuthRequired = true;
 		HttpStatus httpStatusCode;
 		
@@ -76,8 +77,7 @@ public class CreateOrganisationTest extends BaseCitrusTest {
 			httpStatusCode = HttpStatus.UNAUTHORIZED;
 		}else {
 			httpStatusCode = HttpStatus.BAD_REQUEST;
-		}
-			
+		}			
 		
 		performPostTest(
 				testName,
@@ -87,4 +87,5 @@ public class CreateOrganisationTest extends BaseCitrusTest {
 				httpStatusCode,
 				RESPONSE_JSON,isAuthRequired,contentType);
 	}
+
 }
