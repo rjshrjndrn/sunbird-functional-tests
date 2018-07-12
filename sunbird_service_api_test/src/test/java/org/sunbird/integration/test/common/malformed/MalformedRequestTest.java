@@ -1,10 +1,13 @@
 package org.sunbird.integration.test.common.malformed;
 
 import com.consol.citrus.annotations.CitrusTest;
+import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.testng.CitrusParameters;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.sunbird.common.util.Constant;
 import org.sunbird.integration.test.common.BaseCitrusTest;
+import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 import org.sunbird.integration.test.user.UserTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -17,40 +20,59 @@ import org.testng.annotations.Test;
  */
 public class MalformedRequestTest extends BaseCitrusTest {
 
-  @Autowired private HttpClient restTestClient;
   @Autowired private TestGlobalProperty initGlobalValues;
-  private static String admin_token = null;
   public static final String TEMPLATE_DIR = "templates/common/malformed";
 
   @DataProvider(name = "createRequestDataProvider")
   public Object[][] createRequestDataProvider() {
-    return new Object[][] {
-      new Object[] {
-        getCreateUserUrl(),
-        "userCreateFailureWithoutContentType"
-      },
-      new Object[] {
-        getCreatePagerUrl(), "pageCreateFailureWithoutContentType"
-      },
-      new Object[] {
-        getCreateUserNotesUrl(),
-        "notesCreateFailureWithoutContentType"
-      },
-      new Object[] {
-        getCreateOrgUrl(), "orgCreateFailureWithoutContentType"
-      },
-      new Object[] {
-        getCreateCourseBatchUrl(),
-        "batchCreateFailureWithoutContentType"
-      }
+    return new Object[][]{
+        new Object[]{
+            getCreateUserUrl(),
+            "userCreateFailureWithoutContentType", null
+        },
+        new Object[]{
+            getCreatePagerUrl(), "pageCreateFailureWithoutContentType", null
+        },
+        new Object[]{
+            getCreateUserNotesUrl(),
+            "notesCreateFailureWithoutContentType", null
+        },
+        new Object[]{
+            getCreateOrgUrl(), "orgCreateFailureWithoutContentType", null
+        },
+        new Object[]{
+            getCreateCourseBatchUrl(),
+            "batchCreateFailureWithoutContentType", null
+        },
+        new Object[]{
+            getCreateUserUrl(),
+            "userCreateFailureWithoutContentType", Constant.CONTENT_TYPE_APPLICATION_JSON_LD
+        },
+        new Object[]{
+            getCreatePagerUrl(), "pageCreateFailureWithoutContentType",
+            Constant.CONTENT_TYPE_APPLICATION_JSON_LD
+        },
+        new Object[]{
+            getCreateUserNotesUrl(),
+            "notesCreateFailureWithoutContentType", Constant.CONTENT_TYPE_APPLICATION_JSON_LD
+        },
+        new Object[]{
+            getCreateOrgUrl(), "orgCreateFailureWithoutContentType",
+            Constant.CONTENT_TYPE_APPLICATION_JSON_LD
+        },
+        new Object[]{
+            getCreateCourseBatchUrl(),
+            "batchCreateFailureWithoutContentType", Constant.CONTENT_TYPE_APPLICATION_JSON_LD
+        }
+
     };
   }
 
   @Test(dataProvider = "createRequestDataProvider")
-  @CitrusParameters({"uriPath", "testName"})
+  @CitrusParameters({"uriPath", "testName", "contentType"})
   @CitrusTest
   public void testRequestWithoutContentType(
-      String url, String testName) {
+      String url, String testName, String contentType) {
     performPostTest(
         testName,
         TEMPLATE_DIR,
