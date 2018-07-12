@@ -18,12 +18,16 @@ public class CreateOrganisationTest extends BaseCitrusTest {
 	public static final String TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_INVALID_LOCATION_CODE =
 			"testCreateSubOrgFailureWithInvalidLocationCode";
 	public static final String TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_INVALID_CHANNEL =
-			"testCreateSubOrgFailureWithInvalidChannel";
-	public static final String TEST_NAME_CREATE_ROOT_ORG_FAILURE_WITH_EXISTING_CHANNEL="testCreateRootOrgFailureWithExistingChannel";
-	public static final String TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_EXTERNAL_ID = "testCreateSubOrgFailureWithExternalId";
+			"testCreateSubOrgFailureWithInvalidChannel";	
+	public static final String TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_EXTERNAL_ID_WITHOUT_PROVIDER = "testCreateSubOrgFailureWithExternalIdWithoutProvider";
 	
+	
+	/* Need to work on */
 	public static final String TEST_NAME_CREATE_ROOT_ORG_FAILURE_WITH_EXISTING_EXTERNAL_ID = "testCreateRootOrgWithExistingExternalId";
 	public static final String TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_LOCATION_CODE = "testCreateSubOrgWithLocationCode";
+	public static final String TEST_NAME_CREATE_ROOT_ORG_FAILURE_WITH_EXISTING_CHANNEL="testCreateRootOrgFailureWithExistingChannel";
+	public static final String TEST_NAME_CREATE_SUB_ORG_WITHOUT_ACCESS_TOKEN = "testCreateSubOrgWithoutAccessTolen";
+	
 	
 	public static final String TEMPLATE_DIR = "templates/organisation/create";
 
@@ -49,14 +53,10 @@ public class CreateOrganisationTest extends BaseCitrusTest {
 			new Object[] {
 					REQUEST_JSON, RESPONSE_JSON, TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_INVALID_CHANNEL
 			},
-
 			new Object[] {
-					REQUEST_JSON,RESPONSE_JSON,TEST_NAME_CREATE_ROOT_ORG_FAILURE_WITH_EXISTING_CHANNEL			
+					REQUEST_JSON, RESPONSE_JSON, TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_EXTERNAL_ID_WITHOUT_PROVIDER
 			},
-			new Object[] {
-					REQUEST_JSON, RESPONSE_JSON, TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_EXTERNAL_ID
-			},
-		//TEST_NAME_CREATE_SUB_ORG_WITHOUT_ACCESS_TOKEN
+		
 
 		};
 	}

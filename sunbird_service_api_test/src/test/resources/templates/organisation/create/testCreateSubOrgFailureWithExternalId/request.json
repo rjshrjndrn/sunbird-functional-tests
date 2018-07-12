@@ -1,8 +1,0 @@
-{
-	"request":{
-  		"orgName": "citrus:concat('org_',citrus:randomNumber(10))",
-  		"orgCode": "citrus:concat('org_code_',citrus:randomNumber(10))",  	
-  		"externalId": "citrus:concat('ext_',citrus:randomNumber(10))"
-  
-	} 
-}

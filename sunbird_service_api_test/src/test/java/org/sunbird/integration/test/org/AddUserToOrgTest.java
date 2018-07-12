@@ -9,17 +9,17 @@ import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class MemberAddToOrgTest extends BaseCitrusTest {
+public class AddUserToOrgTest extends BaseCitrusTest {
 
 	public static final String TEST_ADD_USER_TO_ORG_FAILURE_WITH_EMPTY_ROLE_ARRAY =
 			"testAddUserToOrgFailureWithEmptyRoleArray";
 	
-	public static final String TEST_NAME_ADD_USER_TO_ORG_FAILURE_WITH_WRONG_USER_ID =
-			"testAddUserToOrgFailureWithWrongUserId";
-	public static final String TEST_NAME_ADD_USER_TO_ORG_FAILURE_WITH_ORG_ID =
-			"testAddUserToOrgFailureWithWrongOrgId";
+	public static final String TEST_NAME_ADD_USER_TO_ORG_FAILURE_WITH_INVALID_USER_ID =
+			"testAddUserToOrgFailureWithInvalidUserId";
+	public static final String TEST_NAME_ADD_USER_TO_ORG_FAILURE_WITH_INVALID_ORG_ID =
+			"testAddUserToOrgFailureWithInvalidOrgId";
 	
-	public static final String TEMPLATE_DIR = "templates/organisation/addMember";
+	public static final String TEMPLATE_DIR = "templates/organisation/user/add";
 
 	@Autowired private TestGlobalProperty config;
 
@@ -32,8 +32,8 @@ public class MemberAddToOrgTest extends BaseCitrusTest {
 
 		return new Object[][] {
 			new Object[] {REQUEST_JSON, RESPONSE_JSON, TEST_ADD_USER_TO_ORG_FAILURE_WITH_EMPTY_ROLE_ARRAY},	
-			new Object[] {REQUEST_JSON, RESPONSE_JSON, TEST_NAME_ADD_USER_TO_ORG_FAILURE_WITH_WRONG_USER_ID},	
-			new Object[] {REQUEST_JSON, RESPONSE_JSON, TEST_NAME_ADD_USER_TO_ORG_FAILURE_WITH_ORG_ID},	
+			new Object[] {REQUEST_JSON, RESPONSE_JSON, TEST_NAME_ADD_USER_TO_ORG_FAILURE_WITH_INVALID_USER_ID},	
+			new Object[] {REQUEST_JSON, RESPONSE_JSON, TEST_NAME_ADD_USER_TO_ORG_FAILURE_WITH_INVALID_ORG_ID},	
 		};
 	}
 
