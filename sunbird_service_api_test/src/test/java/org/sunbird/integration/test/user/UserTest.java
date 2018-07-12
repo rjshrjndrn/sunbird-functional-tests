@@ -39,14 +39,9 @@ public class UserTest extends BaseCitrusTest {
   public static Map<String, List<String>> deletedRecordsMap = new HashMap<String, List<String>>();
   public static final String CREATE_USER_SERVER_URI = "/api/user/v1/create";
   private static final String UPDATE_USER_SERVER_URI = "/api/user/v1/update";
-  private static final String GET_USER_BY_ID_SERVER_URI = "/api/user/v1/profile/read";
-  private static final String GET_USER_BY_ID_LOCAL_URI = "/v1/user/getuser";
   public static final String CREATE_USER_LOCAL_URI = "/v1/user/create";
   private static final String UPDATE_USER_LOCAL_URI = "/v1/user/update";
   public static final String TEMPLATE_DIR = "templates/user/create";
-  private static final String TEMPLATE_DIR_GET_USER_BY_LOGIN_ID = "templates/user/getbyloginid";
-  private static final String GET_USER_BY_LOGINID_REQ_SUB_PATH = "/loginid/request/";
-  private static final String GET_USER_BY_LOGINID_RESP_SUB_PATH = "/loginid/response/";
   private static volatile String USER_NAME = "userName";
   private static String externalId = String.valueOf(System.currentTimeMillis());
   private static String provider = String.valueOf(System.currentTimeMillis() + 10);
@@ -115,15 +110,6 @@ public class UserTest extends BaseCitrusTest {
         Constant.UPDATE_USER_TEMPLATE_LOCATION + "user_update_bad_request_response.json",
         "invalidRequestDataChannelTest"
       }
-    };
-  }
-
-  @DataProvider(name = "getUserByLoginIdFailure")
-  public Object[][] getUserByLoginIdFailure() {
-    return new Object[][] {
-      new Object[] {"testGetUserByLoginIdFailureWithInvalidLoginId"},
-      new Object[] {"testGetUserByLoginIdFailureWithEmptyLoginId"},
-      new Object[] {"testGetUserByLoginIdFailureWithInvalidRequest"}
     };
   }
 
@@ -341,37 +327,6 @@ public class UserTest extends BaseCitrusTest {
                 Assert.assertEquals(response.getResponseCode(), ResponseCode.OK);
               }
             });
-  }
-
-  @Test(dataProvider = "getUserByLoginIdFailure")
-  @CitrusParameters({"testName"})
-  @CitrusTest
-  public void testGetUserByLoginIdFailure(String testName) {
-    performPostTest(
-        testName,
-        TEMPLATE_DIR_GET_USER_BY_LOGIN_ID,
-        getLmsApiUriPath(GET_USER_BY_ID_SERVER_URI, GET_USER_BY_ID_LOCAL_URI),
-        REQUEST_JSON,
-        HttpStatus.BAD_REQUEST,
-        RESPONSE_JSON,
-        false,
-        MediaType.APPLICATION_JSON);
-  }
-
-  @Test(dependsOnMethods = {"testCreateUser"})
-  @CitrusTest
-  public void testGetUserByLoginIdSuccess() {
-    variable("loginIdval", USER_NAME + "@" + initGlobalValues.getSunbirdDefaultChannel());
-    variable("channel", initGlobalValues.getSunbirdDefaultChannel());
-    performPostTest(
-        "testGetUserByLoginIdSuccess",
-        TEMPLATE_DIR_GET_USER_BY_LOGIN_ID,
-        getLmsApiUriPath(GET_USER_BY_ID_SERVER_URI, GET_USER_BY_ID_LOCAL_URI),
-        REQUEST_JSON,
-        HttpStatus.OK,
-        RESPONSE_JSON,
-        false,
-        MediaType.APPLICATION_JSON);
   }
 
   /**
