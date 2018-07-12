@@ -56,7 +56,6 @@ public class CreateOrganisationTest extends BaseCitrusTest {
   @CitrusTest
   public void testCreateOrganisationFailure(String testName) {
 
-    String contentType = MediaType.APPLICATION_JSON;
     boolean isAuthRequired = true;
     HttpStatus httpStatusCode;
 
@@ -75,6 +74,6 @@ public class CreateOrganisationTest extends BaseCitrusTest {
         httpStatusCode,
         RESPONSE_JSON,
         isAuthRequired,
-        contentType);
+        MediaType.APPLICATION_JSON);
   }
 }

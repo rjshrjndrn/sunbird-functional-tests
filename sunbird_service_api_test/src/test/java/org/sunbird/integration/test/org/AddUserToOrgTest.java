@@ -2,6 +2,9 @@ package org.sunbird.integration.test.org;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.testng.CitrusParameters;
+
+import javax.ws.rs.core.MediaType;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.sunbird.integration.test.common.BaseCitrusTest;
@@ -23,42 +26,41 @@ public class AddUserToOrgTest extends BaseCitrusTest {
 
   @Autowired private TestGlobalProperty config;
 
-  private String getCreateOrgUrl() {
+  private String getCreateAddUserToOrgUrl() {
     return getLmsApiUriPath("/org/v1/member/add", "v1/org/member/add");
   }
 
   @DataProvider(name = "memeberAddToOrgFailureDataProvider")
-  public Object[][] memeberAddToOrgFailureDataProvider() {
+  public Object[][] addUserToOrgFailureDataProvider() {
 
     return new Object[][] {
       new Object[] {
-        REQUEST_JSON, RESPONSE_JSON, TEST_ADD_USER_TO_ORG_FAILURE_WITH_EMPTY_ROLE_ARRAY
+        TEST_ADD_USER_TO_ORG_FAILURE_WITH_EMPTY_ROLE_ARRAY
       },
       new Object[] {
-        REQUEST_JSON, RESPONSE_JSON, TEST_NAME_ADD_USER_TO_ORG_FAILURE_WITH_INVALID_USER_ID
+        TEST_NAME_ADD_USER_TO_ORG_FAILURE_WITH_INVALID_USER_ID
       },
       new Object[] {
-        REQUEST_JSON, RESPONSE_JSON, TEST_NAME_ADD_USER_TO_ORG_FAILURE_WITH_INVALID_ORG_ID
+        TEST_NAME_ADD_USER_TO_ORG_FAILURE_WITH_INVALID_ORG_ID
       },
     };
   }
 
   @Test(dataProvider = "memeberAddToOrgFailureDataProvider")
-  @CitrusParameters({"requestJson", "responseJson", "testName"})
+  @CitrusParameters({"testName"})
   @CitrusTest
-  public void testMemeberAddToOrgFailure(String requestJson, String responseJson, String testName) {
+  public void testAddUserToOrgFailure(String requestJson, String responseJson, String testName) {
 
-    String contentType = "application/json";
     boolean isAuthRequired = true;
 
     performPostTest(
         testName,
         TEMPLATE_DIR,
-        getCreateOrgUrl(),
-        requestJson,
+        getCreateAddUserToOrgUrl(),
+        REQUEST_JSON,
         HttpStatus.BAD_REQUEST,
-        responseJson,
+        RESPONSE_JSON,
         isAuthRequired,
-        contentType);
+        MediaType.APPLICATION_JSON);
   }
 }
