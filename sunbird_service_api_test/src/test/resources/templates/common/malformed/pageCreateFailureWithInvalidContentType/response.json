@@ -1,0 +1,16 @@
+{
+	"id": "@ignore@",
+	"ver": "v1",
+	"ts": "@ignore@",
+	"params": {
+		"resmsgid": null,
+		"msgid": "@ignore@",
+		"err": "CONTENT_TYPE_ERROR",
+		"status": "CONTENT_TYPE_ERROR",
+		"errmsg": "Please add Content-Type header with value application/json"
+	},
+	"responseCode": "CLIENT_ERROR",
+	"result": {
+		
+	}
+}
