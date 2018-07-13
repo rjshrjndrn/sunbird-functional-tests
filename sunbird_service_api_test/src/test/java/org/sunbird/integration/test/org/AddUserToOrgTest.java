@@ -21,7 +21,7 @@ public class AddUserToOrgTest extends BaseCitrusTest {
   public static final String TEMPLATE_DIR = "templates/organisation/user/add";
 
   private String getAddUserToOrgUrl() {
-    return getLmsApiUriPath("/org/v1/member/add", "v1/org/member/add");
+    return getLmsApiUriPath("/api/org/v1/member/add", "v1/org/member/add");
   }
 
   @DataProvider(name = "addUserToOrgFailureDataProvider")
