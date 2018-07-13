@@ -24,15 +24,14 @@ public class SearchIssuerTest extends BaseCitrusTest {
   public Object[][] searchIssuerFailureDataProvider() {
 
     return new Object[][] {
-      new Object[] {TEST_NAME_SEARCH_ISSUER_FAILURE_WITHOUT_FILTER, true, HttpStatus.BAD_REQUEST},
+      new Object[] {TEST_NAME_SEARCH_ISSUER_FAILURE_WITHOUT_FILTER, HttpStatus.BAD_REQUEST},
     };
   }
 
   @Test(dataProvider = "searchIssuerFailureDataProvider")
-  @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
+  @CitrusParameters({"testName", "httpStatusCode"})
   @CitrusTest
-  public void testSearchIssuerFailure(
-      String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+  public void testSearchIssuerFailure(String testName, HttpStatus httpStatusCode) {
 
     performPostTest(
         testName,
@@ -41,7 +40,7 @@ public class SearchIssuerTest extends BaseCitrusTest {
         REQUEST_JSON,
         httpStatusCode,
         RESPONSE_JSON,
-        isAuthRequired,
+        false,
         MediaType.APPLICATION_JSON);
   }
 }

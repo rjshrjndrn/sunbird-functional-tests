@@ -24,15 +24,14 @@ public class SearchLocationTest extends BaseCitrusTest {
   public Object[][] searchLocationFailureDataProvider() {
 
     return new Object[][] {
-      new Object[] {TEST_NAME_SEARCH_LOCATION_FAILURE_WITHOUT_FILTER, true, HttpStatus.BAD_REQUEST},
+      new Object[] {TEST_NAME_SEARCH_LOCATION_FAILURE_WITHOUT_FILTER, HttpStatus.BAD_REQUEST},
     };
   }
 
   @Test(dataProvider = "searchLocationFailureDataProvider")
-  @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
+  @CitrusParameters({"testName", "httpStatusCode"})
   @CitrusTest
-  public void testSearchLocationFailure(
-      String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+  public void testSearchLocationFailure(String testName, HttpStatus httpStatusCode) {
 
     performPostTest(
         testName,
@@ -41,7 +40,7 @@ public class SearchLocationTest extends BaseCitrusTest {
         REQUEST_JSON,
         httpStatusCode,
         RESPONSE_JSON,
-        isAuthRequired,
+        false,
         MediaType.APPLICATION_JSON);
   }
 }
