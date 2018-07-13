@@ -20,21 +20,18 @@ public class SearchOrganisationTest extends BaseCitrusTest {
     return getLmsApiUriPath("/org/v1/search", "/v1/org/search");
   }
 
-  @DataProvider(name = "searchFailureOrgDataProvider")
-  public Object[][] searchFailureOrgDataProvider() {
+  @DataProvider(name = "searchOrgFailureDataProvider")
+  public Object[][] searchOrgFailureDataProvider() {
 
     return new Object[][] {
-      new Object[] {
-        TEST_NAME_SEARCH_ORG_FAILURE_WITHOUT_FILTER, true, HttpStatus.INTERNAL_SERVER_ERROR
-      },
+      new Object[] {TEST_NAME_SEARCH_ORG_FAILURE_WITHOUT_FILTER, HttpStatus.INTERNAL_SERVER_ERROR},
     };
   }
 
-  @Test(dataProvider = "searchFailureOrgDataProvider")
-  @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
+  @Test(dataProvider = "searchOrgFailureDataProvider")
+  @CitrusParameters({"testName", "httpStatusCode"})
   @CitrusTest
-  public void testSearchOrganisationFailure(
-      String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+  public void testSearchOrganisationFailure(String testName, HttpStatus httpStatusCode) {
 
     performPostTest(
         testName,
@@ -43,7 +40,7 @@ public class SearchOrganisationTest extends BaseCitrusTest {
         REQUEST_JSON,
         httpStatusCode,
         RESPONSE_JSON,
-        isAuthRequired,
+        false,
         MediaType.APPLICATION_JSON);
   }
 }
