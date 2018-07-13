@@ -1,0 +1,14 @@
+{
+    "id": "api.issuer.badge.search",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "INVALID_REQUESTED_DATA",
+        "status": "INVALID_REQUESTED_DATA",
+        "errmsg": "Requested data for this operation is not valid."
+    },
+    "responseCode": "CLIENT_ERROR",
+    "result": {}
+}
