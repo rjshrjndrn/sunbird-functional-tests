@@ -1,4 +1,4 @@
-package org.sunbird.integration.test.user;
+package org.sunbird.integration.test.course;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.testng.CitrusParameters;
@@ -8,38 +8,38 @@ import org.sunbird.integration.test.common.BaseCitrusTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class SearchUserTest extends BaseCitrusTest {
+public class SearchCourseTest extends BaseCitrusTest {
 
-  public static final String TEST_NAME_SEARCH_USER_FAILURE_WITHOUT_ACCESS_TOKEN =
-      "testSearchUserFailureWithoutAccessToken";
+  public static final String TEST_NAME_SEARCH_COURSE_FAILURE_WITHOUT_ACCESS_TOKEN =
+      "testSearchCourseFailureWithoutAccessToken";
 
-  public static final String TEMPLATE_DIR = "templates/user/search";
+  public static final String TEMPLATE_DIR = "templates/course/search";
 
-  private String getSearchUserUrl() {
+  private String getSearchCourseUrl() {
 
-    return getLmsApiUriPath("/api/user/v1/user/search", "/v1/user/search");
+    return getLmsApiUriPath("/api/course/v1/search", "/v1/course/search");
   }
 
-  @DataProvider(name = "searchUserFailureDataProvider")
-  public Object[][] searchUserFailureDataProvider() {
+  @DataProvider(name = "searchCourseFailureDataProvider")
+  public Object[][] searchCourseFailureDataProvider() {
 
     return new Object[][] {
       new Object[] {
-        TEST_NAME_SEARCH_USER_FAILURE_WITHOUT_ACCESS_TOKEN, false, HttpStatus.UNAUTHORIZED
+        TEST_NAME_SEARCH_COURSE_FAILURE_WITHOUT_ACCESS_TOKEN, false, HttpStatus.UNAUTHORIZED
       },
     };
   }
 
-  @Test(dataProvider = "searchUserFailureDataProvider")
+  @Test(dataProvider = "searchCourseFailureDataProvider")
   @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
   @CitrusTest
-  public void testSearchUserFailure(
+  public void testSearchCourseFailure(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
 
     performPostTest(
         testName,
         TEMPLATE_DIR,
-        getSearchUserUrl(),
+        getSearchCourseUrl(),
         REQUEST_JSON,
         httpStatusCode,
         RESPONSE_JSON,

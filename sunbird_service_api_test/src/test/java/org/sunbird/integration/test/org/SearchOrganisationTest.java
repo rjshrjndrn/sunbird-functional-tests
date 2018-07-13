@@ -1,4 +1,4 @@
-package org.sunbird.integration.test.user;
+package org.sunbird.integration.test.org;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.testng.CitrusParameters;
@@ -8,38 +8,38 @@ import org.sunbird.integration.test.common.BaseCitrusTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class SearchUserTest extends BaseCitrusTest {
+public class SearchOrganisationTest extends BaseCitrusTest {
 
-  public static final String TEST_NAME_SEARCH_USER_FAILURE_WITHOUT_ACCESS_TOKEN =
-      "testSearchUserFailureWithoutAccessToken";
+  public static final String TEST_NAME_SEARCH_ORG_FAILURE_WITHOUT_FILTER =
+      "testSearchOrgFailureWithoutFilter";
 
-  public static final String TEMPLATE_DIR = "templates/user/search";
+  public static final String TEMPLATE_DIR = "templates/organisation/search";
 
-  private String getSearchUserUrl() {
+  private String getSearchOrgUrl() {
 
-    return getLmsApiUriPath("/api/user/v1/user/search", "/v1/user/search");
+    return getLmsApiUriPath("/org/v1/search", "/v1/org/search");
   }
 
-  @DataProvider(name = "searchUserFailureDataProvider")
-  public Object[][] searchUserFailureDataProvider() {
+  @DataProvider(name = "searchFailureOrgDataProvider")
+  public Object[][] searchFailureOrgDataProvider() {
 
     return new Object[][] {
       new Object[] {
-        TEST_NAME_SEARCH_USER_FAILURE_WITHOUT_ACCESS_TOKEN, false, HttpStatus.UNAUTHORIZED
+        TEST_NAME_SEARCH_ORG_FAILURE_WITHOUT_FILTER, true, HttpStatus.INTERNAL_SERVER_ERROR
       },
     };
   }
 
-  @Test(dataProvider = "searchUserFailureDataProvider")
+  @Test(dataProvider = "searchFailureOrgDataProvider")
   @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
   @CitrusTest
-  public void testSearchUserFailure(
+  public void testSearchOrganisationFailure(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
 
     performPostTest(
         testName,
         TEMPLATE_DIR,
-        getSearchUserUrl(),
+        getSearchOrgUrl(),
         REQUEST_JSON,
         httpStatusCode,
         RESPONSE_JSON,
