@@ -39,6 +39,8 @@ public class UserTest extends BaseCitrusTest {
   public static Map<String, List<String>> deletedRecordsMap = new HashMap<String, List<String>>();
   public static final String CREATE_USER_SERVER_URI = "/api/user/v1/create";
   private static final String UPDATE_USER_SERVER_URI = "/api/user/v1/update";
+  private static final String GET_USER_BY_ID_SERVER_URI = "/api/user/v1/profile/read";
+  private static final String GET_USER_BY_ID_LOCAL_URI = "/v1/user/getuser";
   public static final String CREATE_USER_LOCAL_URI = "/v1/user/create";
   private static final String UPDATE_USER_LOCAL_URI = "/v1/user/update";
   public static final String TEMPLATE_DIR = "templates/user/create";
@@ -114,6 +116,7 @@ public class UserTest extends BaseCitrusTest {
   }
 
   @Autowired private HttpClient restTestClient;
+  @Autowired private HttpClient keycloakTestClient;
   @Autowired private TestGlobalProperty initGlobalValues;
   private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -124,9 +127,9 @@ public class UserTest extends BaseCitrusTest {
    * @param responseJson
    * @param testName
    */
-  // @Test(dataProvider = "createUserDynamicDataProvider")
-  // @CitrusParameters({"requestJson", "responseJson", "testName"})
-  // @CitrusTest
+  @Test(dataProvider = "createUserDynamicDataProvider")
+  @CitrusParameters({"requestJson", "responseJson", "testName"})
+  @CitrusTest
   public void testCreateUser(String requestJson, String responseJson, String testName) {
     getTestCase().setName(testName);
     http()
@@ -190,8 +193,8 @@ public class UserTest extends BaseCitrusTest {
             });
   }
 
-  // @Test()
-  // @CitrusTest
+  @Test()
+  @CitrusTest
   /**
    * Key cloak admin token generation is required , because on sunbird dev server after creating
    * user , user have to login first then only his/her account will be active. so we need to disable
@@ -201,9 +204,9 @@ public class UserTest extends BaseCitrusTest {
    */
   public void getAdminAuthToken() {
     http()
-        .client(restTestClient)
+        .client(keycloakTestClient)
         .send()
-        .post("/auth/realms/" + initGlobalValues.getRelam() + "/protocol/openid-connect/token")
+        .post("/realms/master/protocol/openid-connect/token")
         .contentType("application/x-www-form-urlencoded")
         .payload(
             "client_id=admin-cli&username="
@@ -212,7 +215,7 @@ public class UserTest extends BaseCitrusTest {
                 + initGlobalValues.getKeycloakAdminPass()
                 + "&grant_type=password");
     http()
-        .client(restTestClient)
+        .client(keycloakTestClient)
         .receive()
         .response(HttpStatus.OK)
         .validationCallback(
@@ -225,30 +228,30 @@ public class UserTest extends BaseCitrusTest {
             });
   }
 
-  // @Test(dependsOnMethods = {"testCreateUser", "getAdminAuthToken"})
-  // @CitrusTest
+  @Test(dependsOnMethods = {"testCreateUser", "getAdminAuthToken"})
+  @CitrusTest
   /**
    * This method will disable user required action change password under keyCloak. after disabling
    * that , we can generate newly created user auth token.
    */
   public void updateUserRequiredLoginActionTest() {
     http()
-        .client(restTestClient)
+        .client(keycloakTestClient)
         .send()
-        .put("/auth/admin/realms/" + initGlobalValues.getRelam() + "/users/" + userId)
+        .put("/admin/realms/" + initGlobalValues.getRelam() + "/users/" + userId)
         .header(Constant.AUTHORIZATION, Constant.BEARER + admin_token)
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .payload("{\"requiredActions\":[]}");
-    http().client(restTestClient).receive().response(HttpStatus.NO_CONTENT);
+    http().client(keycloakTestClient).receive().response(HttpStatus.NO_CONTENT);
   }
 
-  // @Test(dependsOnMethods = {"updateUserRequiredLoginActionTest"})
-  // @CitrusTest
+  @Test(dependsOnMethods = {"updateUserRequiredLoginActionTest"})
+  @CitrusTest
   public void getAuthToken() {
     http()
-        .client(restTestClient)
+        .client(keycloakTestClient)
         .send()
-        .post("/auth/realms/" + initGlobalValues.getRelam() + "/protocol/openid-connect/token")
+        .post("/realms/" + initGlobalValues.getRelam() + "/protocol/openid-connect/token")
         .contentType("application/x-www-form-urlencoded")
         .payload(
             "client_id="
@@ -259,7 +262,7 @@ public class UserTest extends BaseCitrusTest {
                 + initGlobalValues.getSunbirdDefaultChannel()
                 + "&password=password&grant_type=password");
     http()
-        .client(restTestClient)
+        .client(keycloakTestClient)
         .receive()
         .response(HttpStatus.OK)
         .validationCallback(
@@ -272,7 +275,7 @@ public class UserTest extends BaseCitrusTest {
             });
   }
 
-  /* @Test(
+  @Test(
     dataProvider = "updateUserDataProvider",
     dependsOnMethods = {
       "testCreateUser",
@@ -280,7 +283,7 @@ public class UserTest extends BaseCitrusTest {
     }
   )
   @CitrusParameters({"requestJson", "responseJson", "testName"})
-  @CitrusTest*/
+  @CitrusTest
   public void testUpdateUser(String requestJson, String responseJson, String testName) {
     getTestCase().setName(testName);
     http()
@@ -303,8 +306,8 @@ public class UserTest extends BaseCitrusTest {
     }
   }
 
-  // @Test(dependsOnMethods = {"getAuthToken"})
-  // @CitrusTest
+  @Test(dependsOnMethods = {"getAuthToken"})
+  @CitrusTest
   public void getUserTest() {
     http()
         .client(restTestClient)
@@ -327,6 +330,22 @@ public class UserTest extends BaseCitrusTest {
                 Assert.assertEquals(response.getResponseCode(), ResponseCode.OK);
               }
             });
+  }
+
+  @Test(dependsOnMethods = {"testCreateUser"})
+  @CitrusTest
+  public void testGetUserByLoginIdSuccess() {
+    variable("loginIdval", USER_NAME + "@" + initGlobalValues.getSunbirdDefaultChannel());
+    variable("channel", initGlobalValues.getSunbirdDefaultChannel());
+    performPostTest(
+        "testGetUserByLoginIdSuccess",
+        GetUserByLoginIdTest.TEMPLATE_DIR,
+        getLmsApiUriPath(GET_USER_BY_ID_SERVER_URI, GET_USER_BY_ID_LOCAL_URI),
+        REQUEST_JSON,
+        HttpStatus.OK,
+        RESPONSE_JSON,
+        false,
+        MediaType.APPLICATION_JSON);
   }
 
   /**
