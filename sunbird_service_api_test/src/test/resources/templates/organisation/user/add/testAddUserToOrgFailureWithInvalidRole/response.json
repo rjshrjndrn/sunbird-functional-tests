@@ -1,0 +1,14 @@
+{
+    "id": "api.org.member.add",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "INVALID_ROLE",
+        "status": "INVALID_ROLE",
+        "errmsg": "Invalid role value provided in request."
+    },
+    "responseCode": "CLIENT_ERROR",
+    "result": {}
+}
