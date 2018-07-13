@@ -22,8 +22,8 @@ import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 
 public class TestActionUtil {
   public static TestAction getTokenRequestTestAction(HttpClientActionBuilder builder) {
-    String userName =System.getenv("sunbird_username");
-    String password =System.getenv("sunbird_user_password");
+    String userName = System.getenv("sunbird_username");
+    String password = System.getenv("sunbird_user_password");
     return getTokenRequestTestAction(builder, userName, password);
   }
 

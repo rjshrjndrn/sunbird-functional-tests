@@ -83,12 +83,6 @@ public class BaseCitrusTest extends TestNGCitrusTestDesigner {
     sequential().actions(actionList.toArray(new TestAction[0]));
   }
 
-  /*public Map<String, Object> getHeaderWithAuthToken(){
-    Map<String, Object> header = new HashMap<>();
-    header.put(Constant.X_AUTHENTICATED_USER_TOKEN, EndpointConfig.admin_token);
-    return header;
-  }*/
-
   public void performMultipartTest(
       String testName,
       String testTemplateDir,

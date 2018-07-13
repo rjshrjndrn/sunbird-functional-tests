@@ -35,6 +35,12 @@ import org.testng.annotations.Test;
  */
 public class LocationTest extends BaseCitrusTest {
 
+  private static final String CREATE_LOCATION_SERVER_URI ="/api/data/v1/location/create";
+  private static final String CREATE_LOCATION_LOCAL_URI = "/v1/location/create";
+  private static final String UPDATE_LOCATION_SERVER_URI ="/api/data/v1/location/update";
+  private static final String UPDATE_LOCATION_LOCAL_URI = "/v1/location/update";
+  private static final String DELETE_LOCATION_SERVER_URI ="/api/data/v1/location/delete";
+  private static final String DELETE_LOCATION_LOCAL_URI = "/v1/location/delete";
   private static String stateLocationId = null;
 
   private static String districtLocationId = null;
@@ -492,20 +498,14 @@ public class LocationTest extends BaseCitrusTest {
   }
 
   private String getCreateLocationUrl() {
-    return initGlobalValues.getLmsUrl().contains("localhost")
-        ? "/v1/location/create"
-        : "/api/data/v1/location/create";
+    return getLmsApiUriPath(CREATE_LOCATION_SERVER_URI, CREATE_LOCATION_LOCAL_URI);
   }
 
   private String getUpdateLocationUrl() {
-    return initGlobalValues.getLmsUrl().contains("localhost")
-        ? "/v1/location/update"
-        : "/api/data/v1/location/update";
+    return getLmsApiUriPath(UPDATE_LOCATION_SERVER_URI, UPDATE_LOCATION_LOCAL_URI);
   }
 
   private String getDeleteLocationUrl() {
-    return initGlobalValues.getLmsUrl().contains("localhost")
-        ? "/v1/location/delete"
-        : "/api/data/v1/location/delete";
+    return getLmsApiUriPath(DELETE_LOCATION_SERVER_URI, DELETE_LOCATION_LOCAL_URI);
   }
 }
