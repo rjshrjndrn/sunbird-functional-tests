@@ -12,8 +12,6 @@ public class SearchLocationTest extends BaseCitrusTest {
 
   public static final String TEST_NAME_SEARCH_LOCATION_FAILURE_WITHOUT_FILTER =
       "testSearchLocationFailureWithoutFilter";
- 
-
 
   public static final String TEMPLATE_DIR = "templates/location/search";
 
@@ -22,21 +20,21 @@ public class SearchLocationTest extends BaseCitrusTest {
     return getLmsApiUriPath("/api/data/v1/location/search", "/v1/location/search");
   }
 
-  @DataProvider(name = "searchFailureLocationDataProvider")
-  public Object[][] searchFailureLocationDataProvider() {
+  @DataProvider(name = "searchLocationFailureDataProvider")
+  public Object[][] searchLocationFailureDataProvider() {
 
     return new Object[][] {
-      new Object[] {TEST_NAME_SEARCH_LOCATION_FAILURE_WITHOUT_FILTER,true,HttpStatus.BAD_REQUEST},
-     
+      new Object[] {TEST_NAME_SEARCH_LOCATION_FAILURE_WITHOUT_FILTER, true, HttpStatus.BAD_REQUEST},
     };
   }
 
-  @Test(dataProvider = "searchFailureLocationDataProvider")
-  @CitrusParameters({"testName","isAuthRequired","httpStatusCode"})
+  @Test(dataProvider = "searchLocationFailureDataProvider")
+  @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
   @CitrusTest
-  public void testSearchLocationFailure(String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+  public void testSearchLocationFailure(
+      String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
 
-     performPostTest(
+    performPostTest(
         testName,
         TEMPLATE_DIR,
         getSearchLocationUrl(),

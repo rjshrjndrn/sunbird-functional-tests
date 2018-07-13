@@ -12,8 +12,6 @@ public class SearchIssuerTest extends BaseCitrusTest {
 
   public static final String TEST_NAME_SEARCH_ISSUER_FAILURE_WITHOUT_FILTER =
       "testSearchIssuerFailureWithoutFilter";
- 
-
 
   public static final String TEMPLATE_DIR = "templates/badge/issuer/search";
 
@@ -22,21 +20,21 @@ public class SearchIssuerTest extends BaseCitrusTest {
     return getLmsApiUriPath("/api/badging/v1/issuer/badge/search", "/v1/issuer/badge/search");
   }
 
-  @DataProvider(name = "searchFailureIssuerDataProvider")
-  public Object[][] searchFailureIssuerDataProvider() {
+  @DataProvider(name = "searchIssuerFailureDataProvider")
+  public Object[][] searchIssuerFailureDataProvider() {
 
     return new Object[][] {
-      new Object[] {TEST_NAME_SEARCH_ISSUER_FAILURE_WITHOUT_FILTER,true,HttpStatus.BAD_REQUEST},
-     
+      new Object[] {TEST_NAME_SEARCH_ISSUER_FAILURE_WITHOUT_FILTER, true, HttpStatus.BAD_REQUEST},
     };
   }
 
-  @Test(dataProvider = "searchFailureIssuerDataProvider")
-  @CitrusParameters({"testName","isAuthRequired","httpStatusCode"})
+  @Test(dataProvider = "searchIssuerFailureDataProvider")
+  @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
   @CitrusTest
-  public void testSearchIssuerFailure(String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+  public void testSearchIssuerFailure(
+      String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
 
-     performPostTest(
+    performPostTest(
         testName,
         TEMPLATE_DIR,
         getSearchIssuerUrl(),

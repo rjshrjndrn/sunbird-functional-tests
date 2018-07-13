@@ -12,31 +12,32 @@ public class SearchAssertionTest extends BaseCitrusTest {
 
   public static final String TEST_NAME_SEARCH_ASSERTION_FAILURE_WITHOUT_FILTER =
       "testSearchAssertionFailureWithoutFilter";
- 
-
 
   public static final String TEMPLATE_DIR = "templates/badge/assertion/search";
 
   private String getSearchIssuerUrl() {
 
-    return getLmsApiUriPath("/api/badging/v1issuer/badge/assertion/search", "/v1/issuer/badge/assertion/search");
+    return getLmsApiUriPath(
+        "/api/badging/v1/issuer/badge/assertion/search", "/v1/issuer/badge/assertion/search");
   }
 
-  @DataProvider(name = "searchFailureAssertionDataProvider")
-  public Object[][] searchFailureAssertionDataProvider() {
+  @DataProvider(name = "searchAssertionFailureDataProvider")
+  public Object[][] searchAssertionFailureDataProvider() {
 
     return new Object[][] {
-      new Object[] {TEST_NAME_SEARCH_ASSERTION_FAILURE_WITHOUT_FILTER,true,HttpStatus.BAD_REQUEST},
-     
+      new Object[] {
+        TEST_NAME_SEARCH_ASSERTION_FAILURE_WITHOUT_FILTER, true, HttpStatus.BAD_REQUEST
+      },
     };
   }
 
-  @Test(dataProvider = "searchFailureAssertionDataProvider")
-  @CitrusParameters({"testName","isAuthRequired","httpStatusCode"})
+  @Test(dataProvider = "searchAssertionFailureDataProvider")
+  @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
   @CitrusTest
-  public void testSearchAssertionFailure(String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+  public void testSearchAssertionFailure(
+      String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
 
-     performPostTest(
+    performPostTest(
         testName,
         TEMPLATE_DIR,
         getSearchIssuerUrl(),
