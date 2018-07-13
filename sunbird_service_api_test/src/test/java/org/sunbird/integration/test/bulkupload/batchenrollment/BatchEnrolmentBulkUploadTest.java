@@ -7,7 +7,7 @@ import org.sunbird.integration.test.common.BaseCitrusTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class BatchEnrollmentBulkUploadTest extends BaseCitrusTest {
+public class BatchEnrolmentBulkUploadTest extends BaseCitrusTest {
 
   private static final String TEMPLATE_DIR = "templates/bulkupload/batchenrollment";
   private static final String BATCH_ENROLMENT_SERVER_URI = "/api/course/v1/batch/bulk/enrollment";
