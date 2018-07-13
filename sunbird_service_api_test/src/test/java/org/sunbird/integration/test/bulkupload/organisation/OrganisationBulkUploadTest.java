@@ -15,8 +15,6 @@ public class OrganisationBulkUploadTest extends BaseCitrusTest {
   private static final String BULK_UPLOAD_ORGANISATION_SERVER_URI="/api/org/v1/upload";
   private static final String BULK_UPLOAD_ORGANISATION_LOCAL_URI ="/v1/org/upload";
 
-  @Autowired private TestGlobalProperty initGlobalValues;
-
   @DataProvider(name = "organisationBulkUploadSuccessDataProvider")
   public Object[][] organisationBulkUploadSuccessDataProvider() {
     return new Object[][] {

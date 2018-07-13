@@ -28,11 +28,6 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-/**
- * Class contains functional test cases for location APIs.
- *
- * @author arvind.
- */
 public class LocationTest extends BaseCitrusTest {
 
   private static final String CREATE_LOCATION_SERVER_URI ="/api/data/v1/location/create";

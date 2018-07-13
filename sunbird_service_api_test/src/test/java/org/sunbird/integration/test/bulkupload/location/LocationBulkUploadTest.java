@@ -20,6 +20,7 @@ public class LocationBulkUploadTest extends BaseCitrusTest {
   private static final String LOCATION_BULK_UPLOAD_SERVER_URI="/api/data/v1/bulk/location/upload";
   private static final String LOCATION_BULK_UPLOAD_LOCAL_URI ="/v1/bulk/location/upload";
 
+
   @DataProvider(name = "stateBulkUploadSuccessDataProvider")
   public Object[][] stateBulkUploadSuccessDataProvider() {
     return new Object[][] {
