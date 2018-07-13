@@ -17,140 +17,81 @@ import org.testng.annotations.Test;
  */
 public class BatchBulkEnrolmentTest extends BaseCitrusTest {
 
-  private static final String  TEST_DIR_BATCH_BULK_ENROLMENT_SUCCESS = "templates/bulkupload/coursebatch/success";
-  private static final String  TEST_DIR_BATCH_BULK_ENROLMENT_FAILURE = "templates/bulkupload/coursebatch/failure";
+  private static final String  TEMPLATE_DIR = "templates/bulkupload/batchenrollment";
+  private static final String BATCH_ENROLMENT_SERVER_URI="/api/course/v1/batch/bulk/enrollment";
+  private static final String BATCH_ENROLMENT_LOCAL_URI ="/v1/batch/bulk/enrollment";
 
-  @Autowired private TestGlobalProperty initGlobalValues;
-
-  @DataProvider(name = "batchBulkEnrolmentSuccess")
-  public Object[][] batchBulkEnrolmentSuccess() {
+  @DataProvider(name = "createBatchEnrolmentBulkUploadSuccessDataProvider")
+  public Object[][] createBatchEnrolmentBulkUploadSuccessDataProvider() {
     return new Object[][] {
         new Object[]{
-            "request-with-valid-fields.params",
-            "successResponse.json",
-            "batchBulkEnrolmentWithValidFields"
+            REQUEST_FORM_DATA,
+            RESPONSE_JSON,
+            "testBatchEnrollmentBulkUploadSuccess",
+            HttpStatus.OK
         }
     };
   }
 
-  @DataProvider(name = "batchBulkEnrolmentFailureInvalidFields")
-  public Object[][] batchBulkEnrolmentFailureInvalidFields() {
+  @DataProvider(name = "createBatchEnrolmentBulkUploadFailureDataProvider")
+  public Object[][] createBatchEnrolmentBulkUploadFailureDataProvider() {
     return new Object[][] {
         new Object[]{
-            "request-with-invalid-fields.params",
-            "failureResponse.json",
-            "batchBulkEnrolmentWithInvalidFields"
-        }
-    };
-  }
-
-  @DataProvider(name = "batchBulkEnrolmentFailureEmptyFile")
-  public Object[][] batchBulkEnrolmentFailureEmptyFile() {
-    return new Object[][] {
-        new Object[]{
-            "request-with-empty-file.params",
-            "emptyFileFailureResponse.json",
-            "batchBulkEnrolmentWithEmptyFile"
-        }
-    };
-  }
-
-  @DataProvider(name = "batchBulkEnrolmentFailureFileAbsent")
-  public Object[][] batchBulkEnrolmentFailureFileAbsent() {
-    return new Object[][] {
-        new Object[]{
-            "request-without-file.params",
-            "fileAbsentFailureResponse.json",
-            "batchBulkEnrolmentWithoutFile"
+            REQUEST_FORM_DATA,
+            RESPONSE_JSON,
+            "testBatchEnrollmentBulkUploadFailureWithInvalidColumn",
+            HttpStatus.BAD_REQUEST
         },
+        new Object[]{
+            REQUEST_FORM_DATA,
+            RESPONSE_JSON,
+            "testBatchEnrollmentBulkUploadFailureWithEmptyCsvFile",
+            HttpStatus.BAD_REQUEST
+        },
+        new Object[]{
+            REQUEST_FORM_DATA,
+            RESPONSE_JSON,
+            "testBatchEnrollmentBulkUploadFailureWithoutCsvFile",
+            HttpStatus.INTERNAL_SERVER_ERROR
+        }
+
     };
   }
 
   @Test(
-      dataProvider = "batchBulkEnrolmentSuccess"
+      dataProvider = "createBatchEnrolmentBulkUploadSuccessDataProvider"
   )
-  @CitrusParameters({"requestFormData", "responseJson", "testName"})
+  @CitrusParameters({"requestFormData", "responseJson", "testName", "status"})
   @CitrusTest
-  /**
-   * Method to validate the functional test cases for batch bulk enrolment for success scenario -
-   * 1.upload csv file with fields batchId,userIds.
-   */
-  public void testBatchBulkEnrolmentSuccess(String requestFormData, String responseJson, String testName) {
+  public void testBatchEnrolmentBulkUploadSuccess(String requestFormData, String responseJson, String testName, HttpStatus status) {
     performMultipartTest(
         testName,
-        TEST_DIR_BATCH_BULK_ENROLMENT_SUCCESS,
+        TEMPLATE_DIR,
         getBatchBulkEnrolmentUrl(),
         requestFormData,
-        HttpStatus.OK,
+        status,
         responseJson, true);
 
   }
 
   @Test(
-      dataProvider = "batchBulkEnrolmentFailureInvalidFields"
+      dataProvider = "createBatchEnrolmentBulkUploadFailureDataProvider"
   )
-  @CitrusParameters({"requestFormData", "responseJson", "testName"})
+  @CitrusParameters({"requestFormData", "responseJson", "testName" , "status"})
   @CitrusTest
-  /*
-   * Method to validate functional test cases for batch bulk enrolment for failure scenarios-
-   * 1.upload csv file with invalid fields and expecting BAD request in response.
-   */
-  public void testBatchBulkEnrolmentFailureInvalidFields(String requestFormData, String responseJson, String testName) {
+  public void testBatchEnrolmentBulkUploadFailure(String requestFormData, String responseJson, String testName, HttpStatus status) {
     getTestCase().setName(testName);
 
     performMultipartTest(
         testName,
-        TEST_DIR_BATCH_BULK_ENROLMENT_FAILURE,
+        TEMPLATE_DIR,
         getBatchBulkEnrolmentUrl(),
         requestFormData,
-        HttpStatus.BAD_REQUEST,
-        responseJson, true);
-  }
-
-  @Test(
-      dataProvider = "batchBulkEnrolmentFailureEmptyFile"
-  )
-  @CitrusParameters({"requestFormData", "responseJson", "testName"})
-  @CitrusTest
-  /*
-   * Method to validate functional test cases for batch bulk enrolment for failure scenario -
-   * 1.upload csv file with empty file and expecting BAD request in response.
-   */
-  public void testBatchBulkEnrolmentFailureEmptyFile(String requestFormData, String responseJson, String testName) {
-    getTestCase().setName(testName);
-
-    performMultipartTest(
-        testName,
-        TEST_DIR_BATCH_BULK_ENROLMENT_FAILURE,
-        getBatchBulkEnrolmentUrl(),
-        requestFormData,
-        HttpStatus.BAD_REQUEST,
-        responseJson, true);
-  }
-
-  @Test(
-      dataProvider = "batchBulkEnrolmentFailureFileAbsent"
-  )
-  @CitrusParameters({"requestFormData", "responseJson", "testName"})
-  @CitrusTest
-  /*
-   * Method to validate functional test cases for batch bulk enrolment for failure scenario -
-   * 1.call api without attaching csv file and excepting server error exception. //TODO: need to correct the code to throw CLIENT_ERROR
-   */
-  public void testBatchBulkEnrolmentFailureFileAbsent(String requestFormData, String responseJson, String testName) {
-    getTestCase().setName(testName);
-    performMultipartTest(
-        testName,
-        TEST_DIR_BATCH_BULK_ENROLMENT_FAILURE,
-        getBatchBulkEnrolmentUrl(),
-        requestFormData,
-        HttpStatus.INTERNAL_SERVER_ERROR,
+        status,
         responseJson, true);
   }
 
   private String getBatchBulkEnrolmentUrl() {
-    return initGlobalValues.getLmsUrl().contains("localhost")
-        ? "/v1/batch/bulk/enrollment"
-        : "/api/course/v1/batch/bulk/enrollment";
+    return getLmsApiUriPath(BATCH_ENROLMENT_SERVER_URI, BATCH_ENROLMENT_LOCAL_URI);
   }
 }

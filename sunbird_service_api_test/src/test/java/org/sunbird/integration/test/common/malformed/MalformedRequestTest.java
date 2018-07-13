@@ -1,14 +1,10 @@
 package org.sunbird.integration.test.common.malformed;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.testng.CitrusParameters;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.sunbird.common.util.Constant;
 import org.sunbird.integration.test.common.BaseCitrusTest;
-import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
-import org.sunbird.integration.test.user.UserTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -20,99 +16,91 @@ import org.testng.annotations.Test;
  */
 public class MalformedRequestTest extends BaseCitrusTest {
 
-  @Autowired private TestGlobalProperty initGlobalValues;
+  private static final String CREATE_ORG_SERVER_URI = "/api/org/v1/create";
+  private static final String CREATE_ORG_LOCAL_URI = "/v1/org/create";
+  private static final String CREATE_COURSE_BATCH_SERVER_URI = "/api/course/v1/batch/create";
+  private static final String CREATE_COURSE_BATCH_LOCAL_URI = "/v1/course/batch/create";
+  private static final String CREATE_PAGE_SERVER_URI = "/api/data/v1/page/create";
+  private static final String CREATE_PAGE_LOCAL_URI = "/v1/page/create";
+  private static final String CREATE_USER_NOTES_SERVER_URI = "/api/notes/v1/create";
+  private static final String CREATE_USER_NOTES_LOCAL_URI = "/v1/note/create";
   public static final String TEMPLATE_DIR = "templates/common/malformed";
+  private static final String CREATE_USER_SERVER_URI = "/api/user/v1/create";
+  private static final String CREATE_USER_LOCAL_URI = "/v1/user/create";
 
   @DataProvider(name = "createRequestDataProvider")
   public Object[][] createRequestDataProvider() {
-    return new Object[][]{
-        new Object[]{
-            getCreateUserUrl(),
-            "userCreateFailureWithoutContentType", null
+    return new Object[][] {
+        new Object[] {
+            CREATE_USER_SERVER_URI,
+            CREATE_USER_LOCAL_URI,
+            "userCreateFailureWithoutContentType",
+            null
         },
-        new Object[]{
-            getCreatePagerUrl(), "pageCreateFailureWithoutContentType", null
+        new Object[] {
+            CREATE_PAGE_SERVER_URI, CREATE_PAGE_LOCAL_URI, "pageCreateFailureWithoutContentType", null
         },
-        new Object[]{
-            getCreateUserNotesUrl(),
-            "notesCreateFailureWithoutContentType", null
+        new Object[] {
+            CREATE_USER_NOTES_SERVER_URI,
+            CREATE_USER_NOTES_LOCAL_URI,
+            "notesCreateFailureWithoutContentType",
+            null
         },
-        new Object[]{
-            getCreateOrgUrl(), "orgCreateFailureWithoutContentType", null
+        new Object[] {
+            CREATE_ORG_SERVER_URI, CREATE_ORG_LOCAL_URI, "orgCreateFailureWithoutContentType", null
         },
-        new Object[]{
-            getCreateCourseBatchUrl(),
-            "batchCreateFailureWithoutContentType", null
+        new Object[] {
+            CREATE_COURSE_BATCH_SERVER_URI,
+            CREATE_COURSE_BATCH_LOCAL_URI,
+            "batchCreateFailureWithoutContentType",
+            null
         },
-        new Object[]{
-            getCreateUserUrl(),
-            "userCreateFailureWithoutContentType", Constant.CONTENT_TYPE_APPLICATION_JSON_LD
-        },
-        new Object[]{
-            getCreatePagerUrl(), "pageCreateFailureWithoutContentType",
+        new Object[] {
+            CREATE_USER_SERVER_URI,
+            CREATE_USER_LOCAL_URI,
+            "userCreateFailureWithInvalidContentType",
             Constant.CONTENT_TYPE_APPLICATION_JSON_LD
         },
-        new Object[]{
-            getCreateUserNotesUrl(),
-            "notesCreateFailureWithoutContentType", Constant.CONTENT_TYPE_APPLICATION_JSON_LD
-        },
-        new Object[]{
-            getCreateOrgUrl(), "orgCreateFailureWithoutContentType",
+        new Object[] {
+            CREATE_PAGE_SERVER_URI,
+            CREATE_PAGE_LOCAL_URI,
+            "pageCreateFailureWithInvalidContentType",
             Constant.CONTENT_TYPE_APPLICATION_JSON_LD
         },
-        new Object[]{
-            getCreateCourseBatchUrl(),
-            "batchCreateFailureWithoutContentType", Constant.CONTENT_TYPE_APPLICATION_JSON_LD
+        new Object[] {
+            CREATE_USER_NOTES_SERVER_URI,
+            CREATE_USER_NOTES_LOCAL_URI,
+            "notesCreateFailureWithInvalidContentType",
+            Constant.CONTENT_TYPE_APPLICATION_JSON_LD
+        },
+        new Object[] {
+            CREATE_ORG_SERVER_URI,
+            CREATE_ORG_LOCAL_URI,
+            "orgCreateFailureWithInvalidContentType",
+            Constant.CONTENT_TYPE_APPLICATION_JSON_LD
+        },
+        new Object[] {
+            CREATE_COURSE_BATCH_SERVER_URI,
+            CREATE_COURSE_BATCH_LOCAL_URI,
+            "batchCreateFailureWithInvalidContentType",
+            Constant.CONTENT_TYPE_APPLICATION_JSON_LD
         }
-
     };
   }
 
   @Test(dataProvider = "createRequestDataProvider")
-  @CitrusParameters({"uriPath", "testName", "contentType"})
+  @CitrusParameters({"apiGatewayUriPath", "localUriPath", "testName", "contentType"})
   @CitrusTest
   public void testRequestWithoutContentType(
-      String url, String testName, String contentType) {
+      String apiGatewayUriPath, String localUriPath, String testName, String contentType) {
     performPostTest(
         testName,
         TEMPLATE_DIR,
-        url,
+        getLmsApiUriPath(apiGatewayUriPath, localUriPath),
         REQUEST_JSON,
         HttpStatus.BAD_REQUEST,
         RESPONSE_JSON,
         true,
         contentType);
   }
-
-  private String getCreateUserUrl() {
-    return initGlobalValues.getLmsUrl().contains("localhost")
-        ? "/v1/user/create"
-        : "/api/user/v1/create";
-  }
-
-  private String getCreateOrgUrl() {
-    return initGlobalValues.getLmsUrl().contains("localhost")
-        ? "/v1/org/create"
-        : "/api/org/v1/create";
-  }
-
-  private String getCreatePagerUrl() {
-    return initGlobalValues.getLmsUrl().contains("localhost")
-        ? "/v1/page/create"
-        : "/api/data/v1/page/create";
-  }
-
-  private String getCreateCourseBatchUrl() {
-    return initGlobalValues.getLmsUrl().contains("localhost")
-        ? "/v1/course/batch/create"
-        : "/api/course/v1/batch/create";
-  }
-
-  private String getCreateUserNotesUrl() {
-    return initGlobalValues.getLmsUrl().contains("localhost")
-        ? "/v1/note/create"
-        : "/api/notes/v1/create";
-  }
-
-
 }

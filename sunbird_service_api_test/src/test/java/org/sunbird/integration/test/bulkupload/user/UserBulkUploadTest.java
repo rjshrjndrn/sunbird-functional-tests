@@ -18,79 +18,61 @@ import org.testng.annotations.Test;
  */
 public class UserBulkUploadTest extends BaseCitrusTest{
 
-  private static final String  TEST_DIR_BULK_UPLOAD_USER_SUCCESS = "templates/bulkupload/user/success";
-  private static final String  TEST_DIR_BULK_UPLOAD_USER_FAILURE = "templates/bulkupload/user/failure";
+  private static final String  TEMPLATE_DIR = "templates/bulkupload/user";
+  private static final String USER_BULK_UPLOAD_SERVER_URI="/api/user/v1/upload";
+  private static final String USER_BULK_UPLOAD_LOCAL_URI ="/v1/user/upload";
 
-  @Autowired private TestGlobalProperty initGlobalValues;
-  @DataProvider(name = "userBulkUploadSuccess")
-  public Object[][] userBulkUploadSuccess() {
+  @DataProvider(name = "userBulkUploadSuccessDataProvider")
+  public Object[][] userBulkUploadSuccessDataProvider() {
     return new Object[][] {
         new Object[]{
-            "request-with-valid-fields.params",
-            "successResponse.json",
-            "userBulkUploadWithValidFields"
+            REQUEST_FORM_DATA,
+            RESPONSE_JSON,
+            "testUserBulkUploadSuccess"
         }
     };
   }
 
-  @DataProvider(name = "userBulkUploadFailureInvalidFields")
-  public Object[][] userBulkUploadFailureInvalidFields() {
+  @DataProvider(name = "userBulkUploadFailureDataProvider")
+  public Object[][] userBulkUploadFailureDataProvider() {
     return new Object[][] {
         new Object[]{
-            "request-with-invalid-fields.params",
-            "invalidColumnsFailureResponse.json",
-            "userBulkUploadWithInvalidFields"
-        }
-    };
-  }
-
-  @DataProvider(name = "userBulkUploadFailureEmptyFile")
-  public Object[][] userBulkUploadFailureEmptyFile() {
-    return new Object[][] {
+            REQUEST_FORM_DATA,
+            RESPONSE_JSON,
+            "testUserBulkUploadFailureWithInvalidColumn",
+            HttpStatus.BAD_REQUEST
+        },
         new Object[]{
-            "request-with-empty-file.params",
-            "emptyFileFailureResponse.json",
-            "userBulkUploadWithEmptyFile"
-        }
-    };
-  }
-
-  @DataProvider(name = "userBulkUploadFailureFileAbsent")
-  public Object[][] userBulkUploadFailureFileAsent() {
-    return new Object[][] {
+            REQUEST_FORM_DATA,
+            RESPONSE_JSON,
+            "testUserBulkUploadFailureWithEmptyCsvFile",
+            HttpStatus.BAD_REQUEST
+        },
         new Object[]{
-            "request-without-file.params",
-            "fileAbsentFailureResponse.json",
-            "userBulkUploadWithoutFile"
-        }
-    };
-  }
-
-  @DataProvider(name = "userBulkUploadFailureOrgDetailMissing")
-  public Object[][] userBulkUploadFailureOrgDetailMissing() {
-    return new Object[][] {
+            REQUEST_FORM_DATA,
+            RESPONSE_JSON,
+            "testUserBulkUploadFailureWithoutCsvFile",
+            HttpStatus.BAD_REQUEST
+        },
         new Object[]{
-            "request-without-org-detail.params",
-            "requiredParamMissingFailureResponse.json",
-            "userBulkUploadWithoutOrgDetail"
+            REQUEST_FORM_DATA,
+            RESPONSE_JSON,
+            "testUserBulkUploadFailureWithoutOrgDetails",
+            HttpStatus.BAD_REQUEST
         }
     };
   }
 
   @Test(
-      dataProvider = "userBulkUploadSuccess"
+      dataProvider = "userBulkUploadSuccessDataProvider"
   )
   @CitrusParameters({"requestFormData", "responseJson", "testName"})
   @CitrusTest
-  /**
-   * Method to validate the functional test cases for user bulk upload for success scenario -
-   * 1.upload csv file with fields : orgName,isRootOrg,channel,externalId,provider,description,homeUrl,orgCode,orgType,preferredLanguage,contactDetail
-   */
-  public void testOrgBulkUploadSuccess(String requestFormData, String responseJson, String testName) {
+  public void testUserBulkUploadSuccess(String requestFormData, String responseJson, String testName) {
     getTestCase().setName(testName);
     performMultipartTest(
         testName,
-        TEST_DIR_BULK_UPLOAD_USER_SUCCESS,
+        TEMPLATE_DIR,
         getUserBulkUploadUrl(),
         requestFormData,
         HttpStatus.OK,
@@ -99,93 +81,23 @@ public class UserBulkUploadTest extends BaseCitrusTest{
   }
 
   @Test(
-      dataProvider = "userBulkUploadFailureInvalidFields"
+      dataProvider = "userBulkUploadFailureDataProvider"
   )
-  @CitrusParameters({"requestFormData", "responseJson", "testName"})
+  @CitrusParameters({"requestFormData", "responseJson", "testName" , "status"})
   @CitrusTest
-  /**
-   * Method to validate functional test cases for user bulk upload for failure scenario -
-   * 1.upload csv file with invalid fields and expecting BAD request in response.
-   */
-  public void testOrgBulkUploadFailureWithInvalidFields(String requestFormData, String responseJson, String testName) {
+  public void testUserBulkUploadFailure(String requestFormData, String responseJson, String testName, HttpStatus status) {
     getTestCase().setName(testName);
-
     performMultipartTest(
         testName,
-        TEST_DIR_BULK_UPLOAD_USER_FAILURE,
+        TEMPLATE_DIR,
         getUserBulkUploadUrl(),
         requestFormData,
-        HttpStatus.BAD_REQUEST,
-        responseJson, true);
-  }
-
-  @Test(
-      dataProvider = "userBulkUploadFailureEmptyFile"
-  )
-  @CitrusParameters({"requestFormData", "responseJson", "testName"})
-  @CitrusTest
-  /**
-   * Method to validate functional test cases for user bulk upload for failure scenario -
-   * 1.upload csv file with empty file and expecting BAD request in response.
-   */
-  public void testOrgBulkUploadFailureWithEmptyFile(String requestFormData, String responseJson, String testName) {
-    getTestCase().setName(testName);
-
-    performMultipartTest(
-        testName,
-        TEST_DIR_BULK_UPLOAD_USER_FAILURE,
-        getUserBulkUploadUrl(),
-        requestFormData,
-        HttpStatus.BAD_REQUEST,
-        responseJson, true);
-  }
-
-  @Test(
-      dataProvider = "userBulkUploadFailureFileAbsent"
-  )
-  @CitrusParameters({"requestFormData", "responseJson", "testName"})
-  @CitrusTest
-  /**
-   * Method to validate functional test cases for user bulk upload for failure scenario -
-   * 1.call api without attaching csv file and excepting server error exception.
-   */
-  public void testOrgBulkUploadFailureWithoutFile(String requestFormData, String responseJson, String testName) {
-    getTestCase().setName(testName);
-
-    performMultipartTest(
-        testName,
-        TEST_DIR_BULK_UPLOAD_USER_FAILURE,
-        getUserBulkUploadUrl(),
-        requestFormData,
-        HttpStatus.BAD_REQUEST,
-        responseJson, true);
-  }
-
-  @Test(
-      dataProvider = "userBulkUploadFailureOrgDetailMissing"
-  )
-  @CitrusParameters({"requestFormData", "responseJson", "testName"})
-  @CitrusTest
-  /**
-   * Method to validate functional test cases for user bulk upload for failure scenario -
-   * 1.upload csv file with valid file and org details are missing, and expecting BAD_REQUEST.
-   */
-  public void testOrgBulkUploadFailureWithoutOrgDetails(String requestFormData, String responseJson, String testName) {
-    getTestCase().setName(testName);
-
-    performMultipartTest(
-        testName,
-        TEST_DIR_BULK_UPLOAD_USER_FAILURE,
-        getUserBulkUploadUrl(),
-        requestFormData,
-        HttpStatus.BAD_REQUEST,
+        status,
         responseJson, true);
   }
 
   private String getUserBulkUploadUrl() {
-    return initGlobalValues.getLmsUrl().contains("localhost")
-        ? "/v1/user/upload"
-        : "/api/user/v1/upload";
+    return getLmsApiUriPath(USER_BULK_UPLOAD_SERVER_URI, USER_BULK_UPLOAD_LOCAL_URI);
   }
 
 }

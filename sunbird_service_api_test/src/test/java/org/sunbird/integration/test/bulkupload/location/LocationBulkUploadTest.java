@@ -15,77 +15,71 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
- * Class contains functional test cases for location bulk upload.
  * @author arvind.
  */
 public class LocationBulkUploadTest extends BaseCitrusTest {
 
-  private static final String  TEST_DIR_BULK_UPLOAD_LOCATION_SUCCESS = "templates/location/bulkupload/state/success/";
-  private static final String  TEST_DIR_BULK_UPLOAD_LOCATION_FAILURE = "templates/location/bulkupload/state/failure/";
+  private static final String  TEMPLATE_DIR = "templates/bulkupload/location";
+  private static final String LOCATION_BULK_UPLOAD_SERVER_URI="/api/data/v1/bulk/location/upload";
+  private static final String LOCATION_BULK_UPLOAD_LOCAL_URI ="/v1/bulk/location/upload";
 
-  public static final String REQUEST_FORM_DATA = "request.params";
-  public static final String RESPONSE_JSON = "response.json";
-
-  @Autowired
-  private HttpClient restTestClient;
-  @Autowired private TestGlobalProperty initGlobalValues;
-  private ObjectMapper objectMapper = new ObjectMapper();
-
-  @DataProvider(name = "stateBulkUploadDataProvider")
-  public Object[][] stateBulkUploadDataProvider() {
+  @DataProvider(name = "stateBulkUploadSuccessDataProvider")
+  public Object[][] stateBulkUploadSuccessDataProvider() {
     return new Object[][] {
         new Object[]{
-            TEST_DIR_BULK_UPLOAD_LOCATION_SUCCESS + REQUEST_FORM_DATA,
-            TEST_DIR_BULK_UPLOAD_LOCATION_SUCCESS + RESPONSE_JSON,
-            "stateBulkUploadSuccess"
-        },
+            REQUEST_FORM_DATA,
+            RESPONSE_JSON,
+            "testLocationBulkUploadOfStateTypeSuccess"
+        }
+    };
+  }
+
+  @DataProvider(name = "stateBulkUploadFailureDataProvider")
+  public Object[][] stateBulkUploadFailureDataProvider() {
+    return new Object[][] {
         new Object[]{
-            TEST_DIR_BULK_UPLOAD_LOCATION_FAILURE + REQUEST_FORM_DATA,
-            TEST_DIR_BULK_UPLOAD_LOCATION_FAILURE + RESPONSE_JSON,
-            "stateBulkUploadWithoutMandatoryParams"
+            REQUEST_FORM_DATA,
+            RESPONSE_JSON,
+            "testLocationBulkUploadOfStateTypeFailureWithMissingMandatoryColumn",
+            HttpStatus.BAD_REQUEST
         }
     };
   }
 
   @Test(
-      dataProvider = "stateBulkUploadDataProvider"
+      dataProvider = "stateBulkUploadSuccessDataProvider"
   )
   @CitrusParameters({"requestFormData", "responseJson", "testName"})
   @CitrusTest
-  /**
-   * Method to validate the functional test cases for the state type location bulk upload. It include scenarios -
-   * 1.State upload with valid file. Expecting success response with processId.
-   * 2.Upload file without mandatory fields and expecting BAD_REQUEST in response with error message as mandatory parameter are missing.
-   */
-  public void testStateBulkUpload(String requestFormData, String responseJson, String testName){
+  public void testLocationBulkUploadStateTypeSuccess(String requestFormData, String responseJson, String testName){
     getTestCase().setName(testName);
-    String testFolderPath ;
-    if ((TEST_DIR_BULK_UPLOAD_LOCATION_SUCCESS + RESPONSE_JSON)
-        .equals(responseJson)) {
-      testFolderPath= TEST_DIR_BULK_UPLOAD_LOCATION_SUCCESS;
-      new HttpUtil().multipartPost(http().client(restTestClient), initGlobalValues, getLocationBulkUploadUrl(), requestFormData, testFolderPath);
+    performMultipartTest(
+        testName,
+        TEMPLATE_DIR,
+        getLocationBulkUploadUrl(),
+        requestFormData,
+        HttpStatus.OK,
+        responseJson, true);
+  }
 
-      http()
-          .client(restTestClient)
-          .receive()
-          .response(HttpStatus.OK)
-          .payload(new ClassPathResource(responseJson));
-    } else {
-      testFolderPath = TEST_DIR_BULK_UPLOAD_LOCATION_FAILURE;
-      new HttpUtil().multipartPost(http().client(restTestClient), initGlobalValues, getLocationBulkUploadUrl(), requestFormData, testFolderPath);
-
-      http()
-          .client(restTestClient)
-          .receive()
-          .response(HttpStatus.BAD_REQUEST)
-          .payload(new ClassPathResource(responseJson));
-    }
+  @Test(
+      dataProvider = "stateBulkUploadFailureDataProvider"
+  )
+  @CitrusParameters({"requestFormData", "responseJson", "testName" , "status"})
+  @CitrusTest
+  public void testLocationBulkUploadStateTypeFailure(String requestFormData, String responseJson, String testName, HttpStatus status){
+    getTestCase().setName(testName);
+    performMultipartTest(
+        testName,
+        TEMPLATE_DIR,
+        getLocationBulkUploadUrl(),
+        requestFormData,
+        status,
+        responseJson, true);
   }
 
   private String getLocationBulkUploadUrl() {
-    return initGlobalValues.getLmsUrl().contains("localhost")
-        ? "/v1/bulk/location/upload"
-        : "/api/data/v1/bulk/location/upload";
+    return getLmsApiUriPath(LOCATION_BULK_UPLOAD_SERVER_URI, LOCATION_BULK_UPLOAD_LOCAL_URI);
   }
 
   @CleanUp
