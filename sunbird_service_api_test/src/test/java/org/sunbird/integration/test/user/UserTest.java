@@ -39,6 +39,8 @@ public class UserTest extends BaseCitrusTest {
   public static Map<String, List<String>> deletedRecordsMap = new HashMap<String, List<String>>();
   public static final String CREATE_USER_SERVER_URI = "/api/user/v1/create";
   private static final String UPDATE_USER_SERVER_URI = "/api/user/v1/update";
+  private static final String GET_USER_BY_ID_SERVER_URI = "/api/user/v1/profile/read";
+  private static final String GET_USER_BY_ID_LOCAL_URI = "/v1/user/getuser";
   public static final String CREATE_USER_LOCAL_URI = "/v1/user/create";
   private static final String UPDATE_USER_LOCAL_URI = "/v1/user/update";
   public static final String TEMPLATE_DIR = "templates/user/create";
@@ -327,6 +329,22 @@ public class UserTest extends BaseCitrusTest {
                 Assert.assertEquals(response.getResponseCode(), ResponseCode.OK);
               }
             });
+  }
+
+  @Test(dependsOnMethods = {"testCreateUser"})
+  @CitrusTest
+  public void testGetUserByLoginIdSuccess() {
+    variable("loginIdval", USER_NAME + "@" + initGlobalValues.getSunbirdDefaultChannel());
+    variable("channel", initGlobalValues.getSunbirdDefaultChannel());
+    performPostTest(
+        "testGetUserByLoginIdSuccess",
+        GetUserByLoginIdTest.TEMPLATE_DIR,
+        getLmsApiUriPath(GET_USER_BY_ID_SERVER_URI, GET_USER_BY_ID_LOCAL_URI),
+        REQUEST_JSON,
+        HttpStatus.OK,
+        RESPONSE_JSON,
+        false,
+        MediaType.APPLICATION_JSON);
   }
 
   /**
