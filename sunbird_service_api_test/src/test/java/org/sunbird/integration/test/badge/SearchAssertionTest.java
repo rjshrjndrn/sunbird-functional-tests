@@ -30,7 +30,7 @@ public class SearchAssertionTest extends BaseCitrusTest {
   }
 
   @Test(dataProvider = "searchAssertionFailureDataProvider")
-  @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
+  @CitrusParameters({"testName", "httpStatusCode"})
   @CitrusTest
   public void testSearchAssertionFailure(String testName, HttpStatus httpStatusCode) {
 
