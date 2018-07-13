@@ -14,9 +14,6 @@ import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-/**
- * @author arvind.
- */
 public class LocationBulkUploadTest extends BaseCitrusTest {
 
   private static final String  TEMPLATE_DIR = "templates/bulkupload/location";
@@ -27,8 +24,6 @@ public class LocationBulkUploadTest extends BaseCitrusTest {
   public Object[][] stateBulkUploadSuccessDataProvider() {
     return new Object[][] {
         new Object[]{
-            REQUEST_FORM_DATA,
-            RESPONSE_JSON,
             "testLocationBulkUploadOfStateTypeSuccess"
         }
     };
@@ -38,8 +33,6 @@ public class LocationBulkUploadTest extends BaseCitrusTest {
   public Object[][] stateBulkUploadFailureDataProvider() {
     return new Object[][] {
         new Object[]{
-            REQUEST_FORM_DATA,
-            RESPONSE_JSON,
             "testLocationBulkUploadOfStateTypeFailureWithMissingMandatoryColumn",
             HttpStatus.BAD_REQUEST
         }
@@ -49,33 +42,31 @@ public class LocationBulkUploadTest extends BaseCitrusTest {
   @Test(
       dataProvider = "stateBulkUploadSuccessDataProvider"
   )
-  @CitrusParameters({"requestFormData", "responseJson", "testName"})
+  @CitrusParameters({"testName"})
   @CitrusTest
-  public void testLocationBulkUploadStateTypeSuccess(String requestFormData, String responseJson, String testName){
-    getTestCase().setName(testName);
+  public void testLocationBulkUploadStateTypeSuccess(String testName){
     performMultipartTest(
         testName,
         TEMPLATE_DIR,
         getLocationBulkUploadUrl(),
-        requestFormData,
+        REQUEST_FORM_DATA,
         HttpStatus.OK,
-        responseJson, true);
+        RESPONSE_JSON, true);
   }
 
   @Test(
       dataProvider = "stateBulkUploadFailureDataProvider"
   )
-  @CitrusParameters({"requestFormData", "responseJson", "testName" , "status"})
+  @CitrusParameters({"testName" , "status"})
   @CitrusTest
-  public void testLocationBulkUploadStateTypeFailure(String requestFormData, String responseJson, String testName, HttpStatus status){
-    getTestCase().setName(testName);
+  public void testLocationBulkUploadStateTypeFailure(String testName, HttpStatus status){
     performMultipartTest(
         testName,
         TEMPLATE_DIR,
         getLocationBulkUploadUrl(),
-        requestFormData,
+        REQUEST_FORM_DATA,
         status,
-        responseJson, true);
+        RESPONSE_JSON, true);
   }
 
   private String getLocationBulkUploadUrl() {

@@ -9,9 +9,6 @@ import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-/**
- * @author arvind
- */
 public class OrganisationBulkUploadTest extends BaseCitrusTest {
 
   private static final String  TEMPLATE_DIR = "templates/bulkupload/organisation";
@@ -24,8 +21,6 @@ public class OrganisationBulkUploadTest extends BaseCitrusTest {
   public Object[][] organisationBulkUploadSuccessDataProvider() {
     return new Object[][] {
         new Object[]{
-            REQUEST_FORM_DATA,
-            RESPONSE_JSON,
             "testOrgBulkUploadSuccess"
         }
     };
@@ -35,20 +30,14 @@ public class OrganisationBulkUploadTest extends BaseCitrusTest {
   public Object[][] organisationBulkUploadFailureDataProvider() {
     return new Object[][] {
         new Object[]{
-            REQUEST_FORM_DATA,
-            RESPONSE_JSON,
             "testOrgBulkUploadFailureWithInvalidColumn",
             HttpStatus.BAD_REQUEST
         },
         new Object[]{
-            REQUEST_FORM_DATA,
-            RESPONSE_JSON,
             "testOrgBulkUploadFailureWithEmptyCsvFile",
             HttpStatus.BAD_REQUEST
         },
         new Object[]{
-            REQUEST_FORM_DATA,
-            RESPONSE_JSON,
             "testOrgBulkUploadFailureWithoutCsvFile",
             HttpStatus.INTERNAL_SERVER_ERROR
         }
@@ -58,32 +47,31 @@ public class OrganisationBulkUploadTest extends BaseCitrusTest {
   @Test(
       dataProvider = "organisationBulkUploadSuccessDataProvider"
   )
-  @CitrusParameters({"requestFormData", "responseJson", "testName"})
+  @CitrusParameters({"testName"})
   @CitrusTest
-  public void testOrgBulkUploadSuccess(String requestFormData, String responseJson, String testName) {
+  public void testOrgBulkUploadSuccess(String testName) {
     performMultipartTest(
         testName,
         TEMPLATE_DIR,
         getOrgBulkUploadUrl(),
-        requestFormData,
+        REQUEST_FORM_DATA,
         HttpStatus.OK,
-        responseJson, true);
+        RESPONSE_JSON, true);
   }
 
   @Test(
       dataProvider = "organisationBulkUploadFailureDataProvider"
   )
-  @CitrusParameters({"requestFormData", "responseJson", "testName", "status"})
+  @CitrusParameters({"testName", "status"})
   @CitrusTest
-  public void testOrgBulkUploadFailure(String requestFormData, String responseJson, String testName, HttpStatus status) {
-    getTestCase().setName(testName);
+  public void testOrgBulkUploadFailure(String testName, HttpStatus status) {
     performMultipartTest(
         testName,
         TEMPLATE_DIR,
         getOrgBulkUploadUrl(),
-        requestFormData,
+        REQUEST_FORM_DATA,
         status,
-        responseJson, true);
+        RESPONSE_JSON, true);
 
   }
 

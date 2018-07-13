@@ -13,9 +13,6 @@ import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-/**
- * @author arvind.
- */
 public class UserBulkUploadTest extends BaseCitrusTest{
 
   private static final String  TEMPLATE_DIR = "templates/bulkupload/user";
@@ -26,8 +23,6 @@ public class UserBulkUploadTest extends BaseCitrusTest{
   public Object[][] userBulkUploadSuccessDataProvider() {
     return new Object[][] {
         new Object[]{
-            REQUEST_FORM_DATA,
-            RESPONSE_JSON,
             "testUserBulkUploadSuccess"
         }
     };
@@ -37,26 +32,18 @@ public class UserBulkUploadTest extends BaseCitrusTest{
   public Object[][] userBulkUploadFailureDataProvider() {
     return new Object[][] {
         new Object[]{
-            REQUEST_FORM_DATA,
-            RESPONSE_JSON,
             "testUserBulkUploadFailureWithInvalidColumn",
             HttpStatus.BAD_REQUEST
         },
         new Object[]{
-            REQUEST_FORM_DATA,
-            RESPONSE_JSON,
             "testUserBulkUploadFailureWithEmptyCsvFile",
             HttpStatus.BAD_REQUEST
         },
         new Object[]{
-            REQUEST_FORM_DATA,
-            RESPONSE_JSON,
             "testUserBulkUploadFailureWithoutCsvFile",
             HttpStatus.BAD_REQUEST
         },
         new Object[]{
-            REQUEST_FORM_DATA,
-            RESPONSE_JSON,
             "testUserBulkUploadFailureWithoutOrgDetails",
             HttpStatus.BAD_REQUEST
         }
@@ -66,34 +53,32 @@ public class UserBulkUploadTest extends BaseCitrusTest{
   @Test(
       dataProvider = "userBulkUploadSuccessDataProvider"
   )
-  @CitrusParameters({"requestFormData", "responseJson", "testName"})
+  @CitrusParameters({"testName"})
   @CitrusTest
-  public void testUserBulkUploadSuccess(String requestFormData, String responseJson, String testName) {
-    getTestCase().setName(testName);
+  public void testUserBulkUploadSuccess(String testName) {
     performMultipartTest(
         testName,
         TEMPLATE_DIR,
         getUserBulkUploadUrl(),
-        requestFormData,
+        REQUEST_FORM_DATA,
         HttpStatus.OK,
-        responseJson, true);
+        RESPONSE_JSON, true);
 
   }
 
   @Test(
       dataProvider = "userBulkUploadFailureDataProvider"
   )
-  @CitrusParameters({"requestFormData", "responseJson", "testName" , "status"})
+  @CitrusParameters({"testName" , "status"})
   @CitrusTest
-  public void testUserBulkUploadFailure(String requestFormData, String responseJson, String testName, HttpStatus status) {
-    getTestCase().setName(testName);
+  public void testUserBulkUploadFailure(String testName, HttpStatus status) {
     performMultipartTest(
         testName,
         TEMPLATE_DIR,
         getUserBulkUploadUrl(),
-        requestFormData,
+        REQUEST_FORM_DATA,
         status,
-        responseJson, true);
+        RESPONSE_JSON, true);
   }
 
   private String getUserBulkUploadUrl() {

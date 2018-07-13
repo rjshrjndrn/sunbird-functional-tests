@@ -12,9 +12,6 @@ import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-/**
- * @author arvind
- */
 public class BatchBulkEnrolmentTest extends BaseCitrusTest {
 
   private static final String  TEMPLATE_DIR = "templates/bulkupload/batchenrollment";
@@ -25,8 +22,6 @@ public class BatchBulkEnrolmentTest extends BaseCitrusTest {
   public Object[][] createBatchEnrolmentBulkUploadSuccessDataProvider() {
     return new Object[][] {
         new Object[]{
-            REQUEST_FORM_DATA,
-            RESPONSE_JSON,
             "testBatchEnrollmentBulkUploadSuccess",
             HttpStatus.OK
         }
@@ -37,20 +32,14 @@ public class BatchBulkEnrolmentTest extends BaseCitrusTest {
   public Object[][] createBatchEnrolmentBulkUploadFailureDataProvider() {
     return new Object[][] {
         new Object[]{
-            REQUEST_FORM_DATA,
-            RESPONSE_JSON,
             "testBatchEnrollmentBulkUploadFailureWithInvalidColumn",
             HttpStatus.BAD_REQUEST
         },
         new Object[]{
-            REQUEST_FORM_DATA,
-            RESPONSE_JSON,
             "testBatchEnrollmentBulkUploadFailureWithEmptyCsvFile",
             HttpStatus.BAD_REQUEST
         },
         new Object[]{
-            REQUEST_FORM_DATA,
-            RESPONSE_JSON,
             "testBatchEnrollmentBulkUploadFailureWithoutCsvFile",
             HttpStatus.INTERNAL_SERVER_ERROR
         }
@@ -61,34 +50,32 @@ public class BatchBulkEnrolmentTest extends BaseCitrusTest {
   @Test(
       dataProvider = "createBatchEnrolmentBulkUploadSuccessDataProvider"
   )
-  @CitrusParameters({"requestFormData", "responseJson", "testName", "status"})
+  @CitrusParameters({"testName", "status"})
   @CitrusTest
-  public void testBatchEnrolmentBulkUploadSuccess(String requestFormData, String responseJson, String testName, HttpStatus status) {
+  public void testBatchEnrolmentBulkUploadSuccess(String testName, HttpStatus status) {
     performMultipartTest(
         testName,
         TEMPLATE_DIR,
         getBatchBulkEnrolmentUrl(),
-        requestFormData,
+        REQUEST_FORM_DATA,
         status,
-        responseJson, true);
+        RESPONSE_JSON, true);
 
   }
 
   @Test(
       dataProvider = "createBatchEnrolmentBulkUploadFailureDataProvider"
   )
-  @CitrusParameters({"requestFormData", "responseJson", "testName" , "status"})
+  @CitrusParameters({"testName" , "status"})
   @CitrusTest
-  public void testBatchEnrolmentBulkUploadFailure(String requestFormData, String responseJson, String testName, HttpStatus status) {
-    getTestCase().setName(testName);
-
+  public void testBatchEnrolmentBulkUploadFailure(String testName, HttpStatus status) {
     performMultipartTest(
         testName,
         TEMPLATE_DIR,
         getBatchBulkEnrolmentUrl(),
-        requestFormData,
+        REQUEST_FORM_DATA,
         status,
-        responseJson, true);
+        RESPONSE_JSON, true);
   }
 
   private String getBatchBulkEnrolmentUrl() {
