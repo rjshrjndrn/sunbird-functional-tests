@@ -116,6 +116,7 @@ public class UserTest extends BaseCitrusTest {
   }
 
   @Autowired private HttpClient restTestClient;
+  @Autowired private HttpClient keycloakTestClient;
   @Autowired private TestGlobalProperty initGlobalValues;
   private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -134,7 +135,7 @@ public class UserTest extends BaseCitrusTest {
     http()
         .client(restTestClient)
         .send()
-        .post(CREATE_USER_SERVER_URI)
+        .post(getCreateUserUrl())
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson);
@@ -162,7 +163,7 @@ public class UserTest extends BaseCitrusTest {
     performPostTest(
         testName,
         TEMPLATE_DIR,
-        getLmsApiUriPath(CREATE_USER_SERVER_URI, CREATE_USER_LOCAL_URI),
+        getCreateUserUrl(),
         REQUEST_JSON,
         HttpStatus.BAD_REQUEST,
         RESPONSE_JSON,
@@ -203,9 +204,9 @@ public class UserTest extends BaseCitrusTest {
    */
   public void getAdminAuthToken() {
     http()
-        .client(restTestClient)
+        .client(keycloakTestClient)
         .send()
-        .post("/auth/realms/master/protocol/openid-connect/token")
+        .post("/realms/master/protocol/openid-connect/token")
         .contentType("application/x-www-form-urlencoded")
         .payload(
             "client_id=admin-cli&username="
@@ -214,7 +215,7 @@ public class UserTest extends BaseCitrusTest {
                 + initGlobalValues.getKeycloakAdminPass()
                 + "&grant_type=password");
     http()
-        .client(restTestClient)
+        .client(keycloakTestClient)
         .receive()
         .response(HttpStatus.OK)
         .validationCallback(
@@ -288,7 +289,7 @@ public class UserTest extends BaseCitrusTest {
     http()
         .client(restTestClient)
         .send()
-        .patch(UPDATE_USER_SERVER_URI)
+        .patch(getUpdateUserUrl())
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson)
@@ -339,7 +340,7 @@ public class UserTest extends BaseCitrusTest {
     performPostTest(
         "testGetUserByLoginIdSuccess",
         GetUserByLoginIdTest.TEMPLATE_DIR,
-        getLmsApiUriPath(GET_USER_BY_ID_SERVER_URI, GET_USER_BY_ID_LOCAL_URI),
+        getUserByIdUrl(),
         REQUEST_JSON,
         HttpStatus.OK,
         RESPONSE_JSON,
@@ -533,5 +534,17 @@ public class UserTest extends BaseCitrusTest {
       e.printStackTrace();
     }
     return null;
+  }
+
+  private String getCreateUserUrl() {
+    return getLmsApiUriPath(CREATE_USER_SERVER_URI, CREATE_USER_LOCAL_URI);
+  }
+
+  private String getUpdateUserUrl() {
+    return getLmsApiUriPath(UPDATE_USER_SERVER_URI, UPDATE_USER_LOCAL_URI);
+  }
+
+  private String getUserByIdUrl() {
+    return getLmsApiUriPath(GET_USER_BY_ID_SERVER_URI, GET_USER_BY_ID_LOCAL_URI);
   }
 }
