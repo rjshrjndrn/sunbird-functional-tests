@@ -9,24 +9,24 @@ import org.testng.annotations.Test;
 
 public class BatchEnrolmentBulkUploadTest extends BaseCitrusTest {
 
-  private static final String TEMPLATE_DIR = "templates/bulkupload/batchenrollment";
+  private static final String TEMPLATE_DIR = "templates/bulkupload/batchenrolment";
   private static final String BATCH_ENROLMENT_SERVER_URI = "/api/course/v1/batch/bulk/enrollment";
   private static final String BATCH_ENROLMENT_LOCAL_URI = "/v1/batch/bulk/enrollment";
 
   @DataProvider(name = "createBatchEnrolmentBulkUploadSuccessDataProvider")
   public Object[][] createBatchEnrolmentBulkUploadSuccessDataProvider() {
-    return new Object[][] {new Object[] {"testBatchEnrollmentBulkUploadSuccess", HttpStatus.OK}};
+    return new Object[][] {new Object[] {"testBatchEnrolmentBulkUploadSuccess", HttpStatus.OK}};
   }
 
   @DataProvider(name = "createBatchEnrolmentBulkUploadFailureDataProvider")
   public Object[][] createBatchEnrolmentBulkUploadFailureDataProvider() {
     return new Object[][] {
       new Object[] {
-        "testBatchEnrollmentBulkUploadFailureWithInvalidColumn", HttpStatus.BAD_REQUEST
+        "testBatchEnrolmentBulkUploadFailureWithInvalidColumn", HttpStatus.BAD_REQUEST
       },
-      new Object[] {"testBatchEnrollmentBulkUploadFailureWithEmptyCsvFile", HttpStatus.BAD_REQUEST},
+      new Object[] {"testBatchEnrolmentBulkUploadFailureWithEmptyCsvFile", HttpStatus.BAD_REQUEST},
       new Object[] {
-        "testBatchEnrollmentBulkUploadFailureWithoutCsvFile", HttpStatus.INTERNAL_SERVER_ERROR
+        "testBatchEnrolmentBulkUploadFailureWithoutCsvFile", HttpStatus.INTERNAL_SERVER_ERROR
       }
     };
   }
