@@ -206,7 +206,7 @@ public class UserTest extends BaseCitrusTest {
     http()
         .client(keycloakTestClient)
         .send()
-        .post("/realms/master/protocol/openid-connect/token")
+        .post("/realms/" + initGlobalValues.getRelam() + "/protocol/openid-connect/token")
         .contentType("application/x-www-form-urlencoded")
         .payload(
             "client_id=admin-cli&username="
