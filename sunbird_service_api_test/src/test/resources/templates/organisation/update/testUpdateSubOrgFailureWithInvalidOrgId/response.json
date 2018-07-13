@@ -1,0 +1,14 @@
+{
+    "id": "api.org.create",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "CHANNEL_SHOULD_BE_UNIQUE",
+        "status": "CHANNEL_SHOULD_BE_UNIQUE",
+        "errmsg": "Channel value already used by another organization. Provide different value for channel"
+    },
+    "responseCode": "CLIENT_ERROR",
+    "result": {}
+}

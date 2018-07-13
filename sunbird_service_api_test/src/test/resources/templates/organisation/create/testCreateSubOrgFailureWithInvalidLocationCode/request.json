@@ -1,6 +1,8 @@
 {
-	"request": {
-		"orgName": "FT_orgName",
-		"locationCode": ["invalid"]
-	}
+  "request": {
+    "orgName": "FT_orgName",
+    "locationCode": [
+      "invalid"
+    ]
+  }
 }

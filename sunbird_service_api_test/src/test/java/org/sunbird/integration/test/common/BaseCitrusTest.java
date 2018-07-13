@@ -16,7 +16,7 @@ import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 
 public class BaseCitrusTest extends TestNGCitrusTestDesigner {
 
-  @Autowired private TestGlobalProperty config;
+  @Autowired protected TestGlobalProperty config;
 
   public static final String REQUEST_FORM_DATA = "request.params";
   public static final String REQUEST_JSON = "request.json";
