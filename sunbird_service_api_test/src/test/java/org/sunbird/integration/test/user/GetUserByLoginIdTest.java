@@ -18,7 +18,7 @@ public class GetUserByLoginIdTest extends BaseCitrusTest {
     return new Object[][] {
       new Object[] {"testGetUserByLoginIdFailureWithInvalidLoginId"},
       new Object[] {"testGetUserByLoginIdFailureWithEmptyLoginId"},
-      new Object[] {"testGetUserByLoginIdFailureWithInvalidRequest"}
+      new Object[] {"testGetUserByLoginIdFailureWithoutLoginId"}
     };
   }
 
