@@ -5,7 +5,6 @@ import com.consol.citrus.testng.CitrusParameters;
 import org.springframework.http.HttpStatus;
 import org.sunbird.common.util.Constant;
 import org.sunbird.integration.test.common.BaseCitrusTest;
-import org.sunbird.integration.test.user.UserTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -26,64 +25,66 @@ public class MalformedRequestTest extends BaseCitrusTest {
   private static final String CREATE_USER_NOTES_SERVER_URI = "/api/notes/v1/create";
   private static final String CREATE_USER_NOTES_LOCAL_URI = "/v1/note/create";
   public static final String TEMPLATE_DIR = "templates/common/malformed";
+  private static final String CREATE_USER_SERVER_URI = "/api/user/v1/create";
+  private static final String CREATE_USER_LOCAL_URI = "/v1/user/create";
 
   @DataProvider(name = "createRequestDataProvider")
   public Object[][] createRequestDataProvider() {
     return new Object[][] {
-      new Object[] {
-        UserTest.CREATE_USER_SERVER_URI,
-        UserTest.CREATE_USER_LOCAL_URI,
-        "userCreateFailureWithoutContentType",
-        null
-      },
-      new Object[] {
-        CREATE_PAGE_SERVER_URI, CREATE_PAGE_LOCAL_URI, "pageCreateFailureWithoutContentType", null
-      },
-      new Object[] {
-        CREATE_USER_NOTES_SERVER_URI,
-        CREATE_USER_NOTES_LOCAL_URI,
-        "notesCreateFailureWithoutContentType",
-        null
-      },
-      new Object[] {
-        CREATE_ORG_SERVER_URI, CREATE_ORG_LOCAL_URI, "orgCreateFailureWithoutContentType", null
-      },
-      new Object[] {
-        CREATE_COURSE_BATCH_SERVER_URI,
-        CREATE_COURSE_BATCH_LOCAL_URI,
-        "batchCreateFailureWithoutContentType",
-        null
-      },
-      new Object[] {
-        UserTest.CREATE_USER_SERVER_URI,
-        UserTest.CREATE_USER_LOCAL_URI,
-        "userCreateFailureWithInvalidContentType",
-        Constant.CONTENT_TYPE_APPLICATION_JSON_LD
-      },
-      new Object[] {
-        CREATE_PAGE_SERVER_URI,
-        CREATE_PAGE_LOCAL_URI,
-        "pageCreateFailureWithInvalidContentType",
-        Constant.CONTENT_TYPE_APPLICATION_JSON_LD
-      },
-      new Object[] {
-        CREATE_USER_NOTES_SERVER_URI,
-        CREATE_USER_NOTES_LOCAL_URI,
-        "notesCreateFailureWithInvalidContentType",
-        Constant.CONTENT_TYPE_APPLICATION_JSON_LD
-      },
-      new Object[] {
-        CREATE_ORG_SERVER_URI,
-        CREATE_ORG_LOCAL_URI,
-        "orgCreateFailureWithInvalidContentType",
-        Constant.CONTENT_TYPE_APPLICATION_JSON_LD
-      },
-      new Object[] {
-        CREATE_COURSE_BATCH_SERVER_URI,
-        CREATE_COURSE_BATCH_LOCAL_URI,
-        "batchCreateFailureWithInvalidContentType",
-        Constant.CONTENT_TYPE_APPLICATION_JSON_LD
-      }
+        new Object[] {
+            CREATE_USER_SERVER_URI,
+            CREATE_USER_LOCAL_URI,
+            "userCreateFailureWithoutContentType",
+            null
+        },
+        new Object[] {
+            CREATE_PAGE_SERVER_URI, CREATE_PAGE_LOCAL_URI, "pageCreateFailureWithoutContentType", null
+        },
+        new Object[] {
+            CREATE_USER_NOTES_SERVER_URI,
+            CREATE_USER_NOTES_LOCAL_URI,
+            "notesCreateFailureWithoutContentType",
+            null
+        },
+        new Object[] {
+            CREATE_ORG_SERVER_URI, CREATE_ORG_LOCAL_URI, "orgCreateFailureWithoutContentType", null
+        },
+        new Object[] {
+            CREATE_COURSE_BATCH_SERVER_URI,
+            CREATE_COURSE_BATCH_LOCAL_URI,
+            "batchCreateFailureWithoutContentType",
+            null
+        },
+        new Object[] {
+            CREATE_USER_SERVER_URI,
+            CREATE_USER_LOCAL_URI,
+            "userCreateFailureWithInvalidContentType",
+            Constant.CONTENT_TYPE_APPLICATION_JSON_LD
+        },
+        new Object[] {
+            CREATE_PAGE_SERVER_URI,
+            CREATE_PAGE_LOCAL_URI,
+            "pageCreateFailureWithInvalidContentType",
+            Constant.CONTENT_TYPE_APPLICATION_JSON_LD
+        },
+        new Object[] {
+            CREATE_USER_NOTES_SERVER_URI,
+            CREATE_USER_NOTES_LOCAL_URI,
+            "notesCreateFailureWithInvalidContentType",
+            Constant.CONTENT_TYPE_APPLICATION_JSON_LD
+        },
+        new Object[] {
+            CREATE_ORG_SERVER_URI,
+            CREATE_ORG_LOCAL_URI,
+            "orgCreateFailureWithInvalidContentType",
+            Constant.CONTENT_TYPE_APPLICATION_JSON_LD
+        },
+        new Object[] {
+            CREATE_COURSE_BATCH_SERVER_URI,
+            CREATE_COURSE_BATCH_LOCAL_URI,
+            "batchCreateFailureWithInvalidContentType",
+            Constant.CONTENT_TYPE_APPLICATION_JSON_LD
+        }
     };
   }
 
