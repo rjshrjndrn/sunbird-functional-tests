@@ -30,8 +30,8 @@ public class CreateOrganisationTest extends BaseCitrusTest {
     return getLmsApiUriPath("/api/org/v1/create", "/v1/org/create");
   }
 
-  @DataProvider(name = "createFailureOrgDataProvider")
-  public Object[][] createFailureOrgDataProvider() {
+  @DataProvider(name = "createOrgFailureDataProvider")
+  public Object[][] createOrgFailureDataProvider() {
 
     return new Object[][] {
       new Object[] {TEST_NAME_CREATE_SUB_ORG_FAILURE_WITHOUT_NAME, true, HttpStatus.BAD_REQUEST},
@@ -57,7 +57,7 @@ public class CreateOrganisationTest extends BaseCitrusTest {
     };
   }
 
-  @Test(dataProvider = "createFailureOrgDataProvider")
+  @Test(dataProvider = "createOrgFailureDataProvider")
   @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
   @CitrusTest
   public void testCreateOrganisationFailure(
