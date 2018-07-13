@@ -1,0 +1,29 @@
+{
+  "id": "api.issuer.badge.create",
+  "ver": "v1",
+  "ts": "@ignore@",
+  "params": {
+    "resmsgid": null,
+    "msgid": "@ignore@",
+    "err": null,
+    "status": "success",
+    "errmsg": null
+  },
+  "responseCode": "OK",
+  "result": {
+    "image": "@ignore@",
+    "badgeId": "@ignore@",
+    "criteria": "@ignore@",
+    "roles": ["TEACHER_BADGE_ISSUER"],
+    "description": "FT badge description",
+    "type": "user",
+    "rootOrgId": "01251120279812505612",
+    "issuerId": "${issuerId}",
+    "createdDate": "@ignore@",
+    "recipientCount": 0,
+    "subtype": "award",
+    "issuerIdUrl": "@ignore@",
+    "name": "FT_badge_class",
+    "badgeIdUrl": "@ignore@"
+  }
+}

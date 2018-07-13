@@ -1,0 +1,9 @@
+issuerId=issuerId
+name=FT_badge_class
+description=FT badge description
+criteria=FT some criteria
+rootOrgId=01251120279812505612
+type=user
+subtype=award
+roles=["TEACHER_BADGE_ISSUER"]
+file=image.png
