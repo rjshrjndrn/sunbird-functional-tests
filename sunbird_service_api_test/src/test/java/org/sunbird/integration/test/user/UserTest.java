@@ -236,22 +236,22 @@ public class UserTest extends BaseCitrusTest {
    */
   public void updateUserRequiredLoginActionTest() {
     http()
-        .client(restTestClient)
+        .client(keycloakTestClient)
         .send()
-        .put("/auth/admin/realms/" + initGlobalValues.getRelam() + "/users/" + userId)
+        .put("/admin/realms/" + initGlobalValues.getRelam() + "/users/" + userId)
         .header(Constant.AUTHORIZATION, Constant.BEARER + admin_token)
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .payload("{\"requiredActions\":[]}");
-    http().client(restTestClient).receive().response(HttpStatus.NO_CONTENT);
+    http().client(keycloakTestClient).receive().response(HttpStatus.NO_CONTENT);
   }
 
   @Test(dependsOnMethods = {"updateUserRequiredLoginActionTest"})
   @CitrusTest
   public void getAuthToken() {
     http()
-        .client(restTestClient)
+        .client(keycloakTestClient)
         .send()
-        .post("/auth/realms/" + initGlobalValues.getRelam() + "/protocol/openid-connect/token")
+        .post("/realms/" + initGlobalValues.getRelam() + "/protocol/openid-connect/token")
         .contentType("application/x-www-form-urlencoded")
         .payload(
             "client_id="
@@ -262,7 +262,7 @@ public class UserTest extends BaseCitrusTest {
                 + initGlobalValues.getSunbirdDefaultChannel()
                 + "&password=password&grant_type=password");
     http()
-        .client(restTestClient)
+        .client(keycloakTestClient)
         .receive()
         .response(HttpStatus.OK)
         .validationCallback(
