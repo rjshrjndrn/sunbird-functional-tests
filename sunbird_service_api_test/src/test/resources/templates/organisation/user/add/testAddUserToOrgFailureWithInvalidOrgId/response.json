@@ -1,6 +1,6 @@
 {
     "id": "api.org.member.add",
-    "ver": "@ignore@",
+    "ver": "v1",
     "ts": "@ignore@",
     "params": {
         "resmsgid": null,

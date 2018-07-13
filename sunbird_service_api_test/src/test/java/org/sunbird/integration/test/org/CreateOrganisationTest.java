@@ -47,7 +47,7 @@ public class CreateOrganisationTest extends BaseCitrusTest {
   @Test(dataProvider = "createFailureOrgDataProvider")
   @CitrusParameters({"testName","isAuthRequired","httpStatusCode"})
   @CitrusTest
-  public void testCreateOrganisationFailure(String testName,boolean isAuthRequired, HttpStatus httpStatusCode) {
+  public void testCreateOrganisationFailure(String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
 
      performPostTest(
         testName,
