@@ -1,0 +1,14 @@
+{
+    "id": "api.org.member.add",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "INVALID_USER_DATA",
+        "status": "INVALID_USER_DATA",
+        "errmsg": "Given User Data doesn't exist in our records. Please provide a valid one"
+    },
+    "responseCode": "CLIENT_ERROR",
+    "result": {}
+}

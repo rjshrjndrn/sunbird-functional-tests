@@ -13,6 +13,9 @@ pipeline {
         sunbird_es_port = "9300"
         sunbird_es_index = "searchindex"
         sunbird_test_base_url = "https://dev.open-sunbird.org"
+		sunbird_sso_url="https://dev.open-sunbird.org/auth"
+		sunbird_username="ft_org_admin@org.com"
+		sunbird_default_channel="ft_test"
     }
 
     agent { label "build-slave" }

@@ -1,30 +1,35 @@
 package org.sunbird.integration.test.badge;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.testng.CitrusParameters;
-
-import java.text.MessageFormat;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
-import org.sunbird.common.util.HttpUtil;
+import org.sunbird.integration.test.common.BaseCitrusTest;
 import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class CreateIssuerTest extends TestNGCitrusTestDesigner {
+public class CreateIssuerTest extends BaseCitrusTest {
 
-  public static final String TEST_NAME_CREATE_ISSUER_SUCCESS = "createIssuerSuccess";
-  public static final String TEST_NAME_CREATE_ISSUER_WITH_IMAGE_SUCCESS = "createIssuerWithImageSuccess";
+  public static final String TEST_NAME_CREATE_ISSUER_SUCCESS = "testCreateIssuerSuccess";
+  public static final String TEST_NAME_CREATE_ISSUER_SUCCESS_WITH_IMAGE =
+      "testCreateIssuerSuccessWithImage";
+  public static final String TEST_NAME_CREATE_ISSUER_FAILURE_WITHOUT_NAME =
+      "testCreateIssuerFailureWithoutName";
+  public static final String TEST_NAME_CREATE_ISSUER_FAILURE_WITHOUT_DESCRIPTION =
+      "testCreateIssuerFailureWithoutDescription";
+  public static final String TEST_NAME_CREATE_ISSUER_FAILURE_WITHOUT_URL =
+      "testCreateIssuerFailureWithoutUrl";
+  public static final String TEST_NAME_CREATE_ISSUER_FAILURE_WITH_INVALID_URL =
+      "testCreateIssuerFailureWithInvalidUrl";
+  public static final String TEST_NAME_CREATE_ISSUER_FAILURE_WITHOUT_EMAIL =
+      "testCreateIssuerFailureWithoutEmail";
+  public static final String TEST_NAME_CREATE_ISSUER_FAILURE_WITH_INVALID_EMAIL =
+      "testCreateIssuerFailureWithInvalidEmail";
 
   public static final String TEMPLATE_DIR = "templates/badge/issuer/create";
-  public static final String TEST_DIR_CREATE_ISSUER_SUCCESS = MessageFormat.format("{0}/{1}/", TEMPLATE_DIR, TEST_NAME_CREATE_ISSUER_SUCCESS);
-  public static final String TEST_DIR_CREATE_ISSUER_WITH_IMAGE_SUCCESS = MessageFormat.format("{0}/{1}/", TEMPLATE_DIR, TEST_NAME_CREATE_ISSUER_WITH_IMAGE_SUCCESS);
 
-  public static final String REQUEST_FORM_DATA = "request.params";
   public static final String RESPONSE_JSON = "response.json";
 
   @Autowired private HttpClient restTestClient;
@@ -32,60 +37,73 @@ public class CreateIssuerTest extends TestNGCitrusTestDesigner {
   @Autowired private TestGlobalProperty initGlobalValues;
 
   private String getCreateIssuerUrl() {
+    System.out.println("initGlobalValues = " + initGlobalValues);
     return initGlobalValues.getLmsUrl().contains("localhost")
         ? "/v1/issuer/create"
         : "/api/badging/v1/issuer/create";
   }
 
-  private void performTest(
-      String testName,
-      HttpClient httpClient,
-      TestGlobalProperty config,
-      String url,
-      String requestFormData,
-      String responseJson) {
-    System.out.println(requestFormData);
-
-    getTestCase().setName(testName);
-
-    String testFolderPath = MessageFormat.format("{0}/{1}", TEMPLATE_DIR, testName);
-
-    new HttpUtil().multipartPost(http().client(httpClient), config, url, requestFormData, testFolderPath);
-
-    http()
-        .client(httpClient)
-        .receive()
-        .response(HttpStatus.OK)
-        .payload(new ClassPathResource(responseJson));
-  }
-
-  @DataProvider(name = "createIssuerDataProvider")
-  public Object[][] createIssuerDataProvider() {
+  @DataProvider(name = "createIssuerDataProviderSuccess")
+  public Object[][] createIssuerDataProviderSuccess() {
     return new Object[][] {
-            new Object[]{
-                    TEST_DIR_CREATE_ISSUER_SUCCESS + REQUEST_FORM_DATA,
-                    TEST_DIR_CREATE_ISSUER_SUCCESS + RESPONSE_JSON,
-                    TEST_NAME_CREATE_ISSUER_SUCCESS
-            },
-            new Object[]{
-                    TEST_DIR_CREATE_ISSUER_WITH_IMAGE_SUCCESS + REQUEST_FORM_DATA,
-                    TEST_DIR_CREATE_ISSUER_WITH_IMAGE_SUCCESS + RESPONSE_JSON,
-                    TEST_NAME_CREATE_ISSUER_WITH_IMAGE_SUCCESS
-            }
+      new Object[] {REQUEST_FORM_DATA, RESPONSE_JSON, TEST_NAME_CREATE_ISSUER_SUCCESS},
+      new Object[] {REQUEST_FORM_DATA, RESPONSE_JSON, TEST_NAME_CREATE_ISSUER_SUCCESS_WITH_IMAGE}
     };
   }
 
-  @Test(dataProvider = "createIssuerDataProvider")
+  @DataProvider(name = "createIssuerDataProviderFailure")
+  public Object[][] createIssuerDataProviderFailure() {
+    return new Object[][] {
+      new Object[] {REQUEST_FORM_DATA, RESPONSE_JSON, TEST_NAME_CREATE_ISSUER_FAILURE_WITHOUT_NAME},
+      new Object[] {
+        REQUEST_FORM_DATA, RESPONSE_JSON, TEST_NAME_CREATE_ISSUER_FAILURE_WITHOUT_DESCRIPTION
+      },
+      new Object[] {REQUEST_FORM_DATA, RESPONSE_JSON, TEST_NAME_CREATE_ISSUER_FAILURE_WITHOUT_URL},
+      new Object[] {
+        REQUEST_FORM_DATA, RESPONSE_JSON, TEST_NAME_CREATE_ISSUER_FAILURE_WITH_INVALID_URL
+      },
+      new Object[] {
+        REQUEST_FORM_DATA, RESPONSE_JSON, TEST_NAME_CREATE_ISSUER_FAILURE_WITHOUT_EMAIL
+      },
+      new Object[] {
+        REQUEST_FORM_DATA, RESPONSE_JSON, TEST_NAME_CREATE_ISSUER_FAILURE_WITH_INVALID_EMAIL
+      }
+    };
+  }
+
+  @Test(dataProvider = "createIssuerDataProviderSuccess")
   @CitrusParameters({"requestFormData", "responseJson", "testName"})
   @CitrusTest
-  public void testCreateIssuer(String requestFormData, String responseJson, String testName) {
+  public void testCreateIssuerSuccess(
+      String requestFormData, String responseJson, String testName) {
     System.out.println("initGlobalValues = " + initGlobalValues);
-    performTest(
+    performMultipartTest(
         testName,
+        TEMPLATE_DIR,
         restTestClient,
         initGlobalValues,
         getCreateIssuerUrl(),
         requestFormData,
-        responseJson);
+        responseJson,
+        HttpStatus.OK,
+        null);
+  }
+
+  @Test(dataProvider = "createIssuerDataProviderFailure")
+  @CitrusParameters({"requestFormData", "responseJson", "testName"})
+  @CitrusTest
+  public void testCreateIssuerFailure(
+      String requestFormData, String responseJson, String testName) {
+    System.out.println("initGlobalValues = " + initGlobalValues);
+    performMultipartTest(
+        testName,
+        TEMPLATE_DIR,
+        restTestClient,
+        initGlobalValues,
+        getCreateIssuerUrl(),
+        requestFormData,
+        responseJson,
+        HttpStatus.BAD_REQUEST,
+        null);
   }
 }

@@ -1,0 +1,2 @@
+firstNameInvalidField,lastName,userName,password,email,roles,externalId,externalIdProvider,externalIdType,externalIds
+Amit789655,Kumar,,password,amitp10@gmail.com,"ORG_MEMBER",id111,provider111,idType111,"[{"id":"id111","idType": "idType111","provider":"provider111","operation":"add"},{"id":"id110","idType": "idType110","provider":"provider110","operation":"add"}]"

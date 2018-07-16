@@ -1,0 +1,14 @@
+{
+  "id": "api.issuer.badge.create",
+  "ver": "v1",
+  "ts": "@ignore@",
+  "params": {
+    "resmsgid": null,
+    "msgid": "@ignore@",
+    "err": "INVALID ROOT ORGANIZATION",
+    "status": "INVALID ROOT ORGANIZATION",
+    "errmsg": "Root organization id is invalid"
+  },
+  "responseCode": "CLIENT_ERROR",
+  "result": {}
+}

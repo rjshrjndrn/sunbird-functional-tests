@@ -36,6 +36,11 @@ public class Constant {
   public static final String RESPONSE = "response";
   public static final String ES_REST_API_PORT = "9200";
   public static final String MULTIPART_FILE_NAME = "file";
+  public static final String REQUEST_FORM_DATA = "request.params";
+  public static final String REQUEST_JSON = "request.json";
+  public static final String RESPONSE_JSON = "response.json";
+  public static final String LMS_ENDPOINT = "restTestClient";
+  public static final String KEYCLOAK_ENDPOINT = "keycloakTestClient";
   public static final String IS_ROOT_ORG = "isRootOrg";
   public static final String FILTERS = "filters";
   public static final String LIMIT = "limit";

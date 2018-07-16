@@ -28,19 +28,17 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-/**
- * Class contains functional test cases for location APIs.
- *
- * @author arvind.
- */
 public class LocationTest extends BaseCitrusTest {
 
+  private static final String CREATE_LOCATION_SERVER_URI ="/api/data/v1/location/create";
+  private static final String CREATE_LOCATION_LOCAL_URI = "/v1/location/create";
+  private static final String UPDATE_LOCATION_SERVER_URI ="/api/data/v1/location/update";
+  private static final String UPDATE_LOCATION_LOCAL_URI = "/v1/location/update";
+  private static final String DELETE_LOCATION_SERVER_URI ="/api/data/v1/location/delete";
+  private static final String DELETE_LOCATION_LOCAL_URI = "/v1/location/delete";
   private static String stateLocationId = null;
 
   private static String districtLocationId = null;
-  private static final String CREATE_LOCATION_URI = "/api/data/v1/location/create";
-  private static final String UPDATE_LOCATION_URI = "/api/data/v1/location/update";
-  private static final String DELETE_LOCATION_URI = "/api/data/v1/location/delete";
   private static final String LOCATION_TEMPLATE_PATH = "templates/location/create/";
   private static final String LOCATION_TEMPLATE_PATH_UPDATE = "templates/location/update/";
   private static final String LOCATION_TEMPLATE_PATH_DELETE = "templates/location/delete/";
@@ -163,7 +161,7 @@ public class LocationTest extends BaseCitrusTest {
     http()
         .client(restTestClient)
         .send()
-        .post(CREATE_LOCATION_URI)
+        .post(getCreateLocationUrl())
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson);
@@ -198,7 +196,7 @@ public class LocationTest extends BaseCitrusTest {
     http()
         .client(restTestClient)
         .send()
-        .patch(UPDATE_LOCATION_URI)
+        .patch(getUpdateLocationUrl())
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson);
@@ -239,7 +237,7 @@ public class LocationTest extends BaseCitrusTest {
     http()
         .client(restTestClient)
         .send()
-        .post(CREATE_LOCATION_URI)
+        .post(getCreateLocationUrl())
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson);
@@ -273,7 +271,7 @@ public class LocationTest extends BaseCitrusTest {
     http()
         .client(restTestClient)
         .send()
-        .patch(UPDATE_LOCATION_URI)
+        .patch(getUpdateLocationUrl())
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson);
@@ -307,7 +305,7 @@ public class LocationTest extends BaseCitrusTest {
     http()
         .client(restTestClient)
         .send()
-        .delete(DELETE_LOCATION_URI + "/" + stateLocationId)
+        .delete(getDeleteLocationUrl() + "/" + stateLocationId)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey());
     http()
         .client(restTestClient)
@@ -332,7 +330,7 @@ public class LocationTest extends BaseCitrusTest {
       http()
           .client(restTestClient)
           .send()
-          .delete(DELETE_LOCATION_URI + "/" + districtLocationId)
+          .delete(getDeleteLocationUrl() + "/" + districtLocationId)
           .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey());
       http()
           .client(restTestClient)
@@ -343,7 +341,7 @@ public class LocationTest extends BaseCitrusTest {
       http()
           .client(restTestClient)
           .send()
-          .delete(DELETE_LOCATION_URI + "/" + districtLocationId + "invalid")
+          .delete(getDeleteLocationUrl() + "/" + districtLocationId + "invalid")
           .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey());
       http()
           .client(restTestClient)
@@ -492,5 +490,17 @@ public class LocationTest extends BaseCitrusTest {
 
     elasticSearchCleanUp.deleteFromElasticSearch(toDeleteEsRecordsMap);
     cassandraCleanUp.deleteFromCassandra(toDeleteCassandraRecordsMap);
+  }
+
+  private String getCreateLocationUrl() {
+    return getLmsApiUriPath(CREATE_LOCATION_SERVER_URI, CREATE_LOCATION_LOCAL_URI);
+  }
+
+  private String getUpdateLocationUrl() {
+    return getLmsApiUriPath(UPDATE_LOCATION_SERVER_URI, UPDATE_LOCATION_LOCAL_URI);
+  }
+
+  private String getDeleteLocationUrl() {
+    return getLmsApiUriPath(DELETE_LOCATION_SERVER_URI, DELETE_LOCATION_LOCAL_URI);
   }
 }

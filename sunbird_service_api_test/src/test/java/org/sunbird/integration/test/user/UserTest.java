@@ -3,7 +3,6 @@ package org.sunbird.integration.test.user;
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.context.TestContext;
 import com.consol.citrus.dsl.builder.HttpClientActionBuilder.HttpClientReceiveActionBuilder;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestDesigner;
 import com.consol.citrus.http.client.HttpClient;
 import com.consol.citrus.testng.CitrusParameters;
 import com.consol.citrus.validation.json.JsonMappingValidationCallback;
@@ -13,12 +12,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.sunbird.common.models.response.Response;
 import org.sunbird.common.models.response.ResponseCode;
 import org.sunbird.common.util.Constant;
+import org.sunbird.integration.test.common.BaseCitrusTest;
 import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -30,14 +31,19 @@ import org.testng.annotations.Test;
  *
  * @author Manzarul
  */
-public class UserTest extends TestNGCitrusTestDesigner {
+public class UserTest extends BaseCitrusTest {
 
   private static String userId = null;
   private static String user_auth_token = null;
   private static String admin_token = null;
   public static Map<String, List<String>> deletedRecordsMap = new HashMap<String, List<String>>();
-  private static final String CREATE_USER_URI = "/api/user/v1/create";
-  private static final String UPDATE_USER_URI = "/api/user/v1/update";
+  public static final String CREATE_USER_SERVER_URI = "/api/user/v1/create";
+  private static final String UPDATE_USER_SERVER_URI = "/api/user/v1/update";
+  private static final String GET_USER_BY_ID_SERVER_URI = "/api/user/v1/profile/read";
+  private static final String GET_USER_BY_ID_LOCAL_URI = "/v1/user/getuser";
+  public static final String CREATE_USER_LOCAL_URI = "/v1/user/create";
+  private static final String UPDATE_USER_LOCAL_URI = "/v1/user/update";
+  public static final String TEMPLATE_DIR = "templates/user/create";
   private static volatile String USER_NAME = "userName";
   private static String externalId = String.valueOf(System.currentTimeMillis());
   private static String provider = String.valueOf(System.currentTimeMillis() + 10);
@@ -52,31 +58,16 @@ public class UserTest extends TestNGCitrusTestDesigner {
   @DataProvider(name = "createUserDataProvider")
   public Object[][] createUserDataProvider() {
     return new Object[][] {
-      new Object[] {
-        Constant.USER_TEMPLATE_LOCATION + "user_first_name_mandatory.json",
-        Constant.USER_TEMPLATE_LOCATION + "user_first_name_mandatory_response.json",
-        "firstNameMandatoryTest"
-      },
-      new Object[] {
-        Constant.USER_TEMPLATE_LOCATION + "user_name_mandatory.json",
-        Constant.USER_TEMPLATE_LOCATION + "user_name_mandatory_response.json",
-        "UserNameMandatory"
-      },
-      new Object[] {
-        Constant.USER_TEMPLATE_LOCATION + "user_invalid_role_type.json",
-        Constant.USER_TEMPLATE_LOCATION + "user_invalid_role_type_response.json",
-        "invalidRoleType"
-      },
-      new Object[] {
-        Constant.USER_TEMPLATE_LOCATION + "user_invalid_language_type.json",
-        Constant.USER_TEMPLATE_LOCATION + "user_invalid_language_type_response.json",
-        "invalidLanguageType"
-      },
-      new Object[] {
-        Constant.USER_TEMPLATE_LOCATION + "user_invalid_dob_format.json",
-        Constant.USER_TEMPLATE_LOCATION + "user_invalid_dob_response.json",
-        "invalidDobFormat"
-      }
+      new Object[] {"testCreateUserFailureWithoutFirstName"},
+      new Object[] {"testCreateUserFailureWithoutUserName"},
+      new Object[] {"testCreateUserFailureWithInvalidRole"},
+      new Object[] {"testCreateUserFailureWithInvalidLanguageType"},
+      new Object[] {"testCreateUserFailureWithInvalidDOB"},
+      new Object[] {"testCreateUserFailureWithInvalidChannel"},
+      new Object[] {"testCreateUserFailureWithInvalidEmail"},
+      new Object[] {"testCreateUserFailureWithInvalidPhone"},
+      new Object[] {"testCreateUserFailureWithPhoneWithoutPhoneVerified"},
+      new Object[] {"testCreateUserFailureWithPhoneWithPhoneVerified"}
     };
   }
 
@@ -125,6 +116,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
   }
 
   @Autowired private HttpClient restTestClient;
+  @Autowired private HttpClient keycloakTestClient;
   @Autowired private TestGlobalProperty initGlobalValues;
   private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -143,7 +135,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
     http()
         .client(restTestClient)
         .send()
-        .post(CREATE_USER_URI)
+        .post(getCreateUserUrl())
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson);
@@ -162,28 +154,21 @@ public class UserTest extends TestNGCitrusTestDesigner {
   /**
    * Test create user for negative scenario.
    *
-   * @param requestJson
-   * @param responseJson
    * @param testName
    */
   @Test(dataProvider = "createUserDataProvider")
-  @CitrusParameters({"requestJson", "responseJson", "testName"})
+  @CitrusParameters({"testName"})
   @CitrusTest
-  public void testCreateUserFailure(String requestJson, String responseJson, String testName) {
-    getTestCase().setName(testName);
-    System.out.println("testCreateUserFailure method called...");
-    http()
-        .client(restTestClient)
-        .send()
-        .post(CREATE_USER_URI)
-        .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
-        .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
-        .payload(new ClassPathResource(requestJson));
-    http()
-        .client(restTestClient)
-        .receive()
-        .response(HttpStatus.BAD_REQUEST)
-        .payload(new ClassPathResource(responseJson));
+  public void testCreateUserFailure(String testName) {
+    performPostTest(
+        testName,
+        TEMPLATE_DIR,
+        getCreateUserUrl(),
+        REQUEST_JSON,
+        HttpStatus.BAD_REQUEST,
+        RESPONSE_JSON,
+        false,
+        MediaType.APPLICATION_JSON);
   }
 
   /**
@@ -219,9 +204,9 @@ public class UserTest extends TestNGCitrusTestDesigner {
    */
   public void getAdminAuthToken() {
     http()
-        .client(restTestClient)
+        .client(keycloakTestClient)
         .send()
-        .post("/auth/realms/" + initGlobalValues.getRelam() + "/protocol/openid-connect/token")
+        .post("/realms/" + initGlobalValues.getRelam() + "/protocol/openid-connect/token")
         .contentType("application/x-www-form-urlencoded")
         .payload(
             "client_id=admin-cli&username="
@@ -230,7 +215,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
                 + initGlobalValues.getKeycloakAdminPass()
                 + "&grant_type=password");
     http()
-        .client(restTestClient)
+        .client(keycloakTestClient)
         .receive()
         .response(HttpStatus.OK)
         .validationCallback(
@@ -251,22 +236,22 @@ public class UserTest extends TestNGCitrusTestDesigner {
    */
   public void updateUserRequiredLoginActionTest() {
     http()
-        .client(restTestClient)
+        .client(keycloakTestClient)
         .send()
-        .put("/auth/admin/realms/" + initGlobalValues.getRelam() + "/users/" + userId)
+        .put("/admin/realms/" + initGlobalValues.getRelam() + "/users/" + userId)
         .header(Constant.AUTHORIZATION, Constant.BEARER + admin_token)
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .payload("{\"requiredActions\":[]}");
-    http().client(restTestClient).receive().response(HttpStatus.NO_CONTENT);
+    http().client(keycloakTestClient).receive().response(HttpStatus.NO_CONTENT);
   }
 
   @Test(dependsOnMethods = {"updateUserRequiredLoginActionTest"})
   @CitrusTest
   public void getAuthToken() {
     http()
-        .client(restTestClient)
+        .client(keycloakTestClient)
         .send()
-        .post("/auth/realms/" + initGlobalValues.getRelam() + "/protocol/openid-connect/token")
+        .post("/realms/" + initGlobalValues.getRelam() + "/protocol/openid-connect/token")
         .contentType("application/x-www-form-urlencoded")
         .payload(
             "client_id="
@@ -277,7 +262,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
                 + initGlobalValues.getSunbirdDefaultChannel()
                 + "&password=password&grant_type=password");
     http()
-        .client(restTestClient)
+        .client(keycloakTestClient)
         .receive()
         .response(HttpStatus.OK)
         .validationCallback(
@@ -304,7 +289,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
     http()
         .client(restTestClient)
         .send()
-        .patch(UPDATE_USER_URI)
+        .patch(getUpdateUserUrl())
         .contentType(Constant.CONTENT_TYPE_APPLICATION_JSON)
         .header(Constant.AUTHORIZATION, Constant.BEARER + initGlobalValues.getApiKey())
         .payload(requestJson)
@@ -345,6 +330,22 @@ public class UserTest extends TestNGCitrusTestDesigner {
                 Assert.assertEquals(response.getResponseCode(), ResponseCode.OK);
               }
             });
+  }
+
+  @Test(dependsOnMethods = {"testCreateUser"})
+  @CitrusTest
+  public void testGetUserByLoginIdSuccess() {
+    variable("loginIdval", USER_NAME + "@" + initGlobalValues.getSunbirdDefaultChannel());
+    variable("channel", initGlobalValues.getSunbirdDefaultChannel());
+    performPostTest(
+        "testGetUserByLoginIdSuccess",
+        GetUserByLoginIdTest.TEMPLATE_DIR,
+        getUserByIdUrl(),
+        REQUEST_JSON,
+        HttpStatus.OK,
+        RESPONSE_JSON,
+        false,
+        MediaType.APPLICATION_JSON);
   }
 
   /**
@@ -441,7 +442,7 @@ public class UserTest extends TestNGCitrusTestDesigner {
     innerMap.put(Constant.FIRST_NAME, "ft_first_Name_pw12401");
     innerMap.put(Constant.LAST_NAME, "ft_lastName");
     innerMap.put(Constant.PASSWORD, "password");
-    innerMap.put(Constant.CHANNEL,testGlobalProperty.getSunbirdDefaultChannel());
+    innerMap.put(Constant.CHANNEL, testGlobalProperty.getSunbirdDefaultChannel());
     USER_NAME = Constant.USER_NAME_PREFIX + EndpointConfig.val;
     String email = Constant.USER_NAME_PREFIX + EndpointConfig.val + "@gmail.com";
     innerMap.put(Constant.USER_NAME, USER_NAME);
@@ -533,5 +534,17 @@ public class UserTest extends TestNGCitrusTestDesigner {
       e.printStackTrace();
     }
     return null;
+  }
+
+  private String getCreateUserUrl() {
+    return getLmsApiUriPath(CREATE_USER_SERVER_URI, CREATE_USER_LOCAL_URI);
+  }
+
+  private String getUpdateUserUrl() {
+    return getLmsApiUriPath(UPDATE_USER_SERVER_URI, UPDATE_USER_LOCAL_URI);
+  }
+
+  private String getUserByIdUrl() {
+    return getLmsApiUriPath(GET_USER_BY_ID_SERVER_URI, GET_USER_BY_ID_LOCAL_URI);
   }
 }

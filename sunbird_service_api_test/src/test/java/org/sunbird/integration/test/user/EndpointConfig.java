@@ -23,6 +23,11 @@ public class EndpointConfig {
   }
 
   @Bean
+  public HttpClient keycloakTestClient() {
+    return CitrusEndpoints.http().client().requestUrl(System.getenv("sunbird_sso_url")).build();
+  }
+
+  @Bean
   public TestGlobalProperty initGlobalValues() {
     TestGlobalProperty property = new TestGlobalProperty();
     property.setApiKey(System.getenv("sunbird_api_key"));
