@@ -1,0 +1,14 @@
+{
+    "id": "api.user.content.state",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "MULTIPLE_COURSES_FOR_BATCH",
+        "status": "MULTIPLE_COURSES_FOR_BATCH",
+        "errmsg": "For one batch multiple courses not allowed."
+    },
+    "responseCode": "CLIENT_ERROR",
+    "result": {}
+}
