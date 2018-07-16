@@ -115,6 +115,37 @@ public class BaseCitrusTest extends TestNGCitrusTestDesigner {
         .payload(new ClassPathResource(responseFilePath));
   }
 
+  public void performGetTest(
+      String testName,
+      String templateDir,
+      String requestUrl,
+      HttpStatus responseCode,
+      String responseJson,
+      boolean isAuthRequired,
+      String contentType,
+      boolean matchResponseCodeOnly) {
+    List<TestAction> actionList = new ArrayList<>();
+    addAuthActions(actionList, isAuthRequired);
+    actionList.add(
+        TestActionUtil.getGetRequestTestAction(
+            http().client("restTestClient"),
+            getTestCase(),
+            testName,
+            requestUrl,
+            contentType,
+            TestActionUtil.getHeaders(isAuthRequired)));
+    if (matchResponseCodeOnly) {
+      actionList.add(
+          TestActionUtil.getResponseTestAction(
+              http().client("restTestClient"), testName, responseCode));
+    } else {
+      actionList.add(
+          TestActionUtil.getResponseTestAction(
+              http().client("restTestClient"), testName, templateDir, responseCode, responseJson));
+    }
+    sequential().actions(actionList.toArray(new TestAction[0]));
+  }
+
   public String getLmsApiUriPath(String apiGatewayUriPath, String localUriPath) {
     return config.getLmsUrl().contains("localhost") ? localUriPath : apiGatewayUriPath;
   }

@@ -146,6 +146,28 @@ public class TestActionUtil {
         .payload(new ClassPathResource(responseFilePath));
   }
 
+  public static TestAction getGetRequestTestAction(
+      HttpClientActionBuilder builder,
+      TestCase testCase,
+      String testName,
+      String url,
+      String contentType,
+      Map<String, Object> headers) {
+    testCase.setName(testName);
+    HttpClientRequestActionBuilder requestActionBuilder =
+        builder.send().get(url).messageType(MessageType.JSON);
+    if (StringUtils.isNotBlank(contentType)) {
+      requestActionBuilder.contentType(contentType);
+    }
+    addHeaders(requestActionBuilder, headers);
+    return requestActionBuilder;
+  }
+
+  public static TestAction getResponseTestAction(
+      HttpClientActionBuilder builder, String testName, HttpStatus responseCode) {
+    return builder.receive().response(responseCode).validator("defaultJsonMessageValidator");
+  }
+
   public static Map<String, Object> getHeaders(boolean isAuthRequired) {
     Map<String, Object> headers = new HashMap<>();
     if (isAuthRequired) {
