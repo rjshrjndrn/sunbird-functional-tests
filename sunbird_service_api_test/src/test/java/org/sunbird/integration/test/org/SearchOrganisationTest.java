@@ -17,7 +17,7 @@ public class SearchOrganisationTest extends BaseCitrusTest {
 
   private String getSearchOrgUrl() {
 
-    return getLmsApiUriPath("/org/v1/search", "/v1/org/search");
+    return getLmsApiUriPath("/api/org/v1/search", "/v1/org/search");
   }
 
   @DataProvider(name = "searchOrgFailureDataProvider")

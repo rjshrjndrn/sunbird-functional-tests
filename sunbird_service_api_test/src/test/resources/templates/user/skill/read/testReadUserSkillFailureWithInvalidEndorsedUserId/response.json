@@ -1,0 +1,14 @@
+{
+    "id": "api.user.skill.read",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "INVALID_USER_ID",
+        "status": "INVALID_USER_ID",
+        "errmsg": "INVALID_USER_ID"
+    },
+    "responseCode": "CLIENT_ERROR",
+    "result": {}
+}
