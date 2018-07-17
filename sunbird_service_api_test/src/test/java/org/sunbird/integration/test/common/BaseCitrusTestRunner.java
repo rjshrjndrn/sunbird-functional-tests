@@ -1,7 +1,10 @@
 package org.sunbird.integration.test.common;
 
+import com.consol.citrus.TestAction;
 import com.consol.citrus.context.TestContext;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,5 +70,36 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
         builder ->
             TestActionUtil.getResponseTestAction(
                 builder, LMS_ENDPOINT, templateDir, testName, responseCode, responseJson));
+  }
+
+  public void performPostTest(
+          TestNGCitrusTestRunner runner,
+          String testName,
+          String templateDir,
+          String requestUrl,
+          String requestJson,
+          HttpStatus responseCode,
+          String responseJson,
+          boolean isAuthRequired,
+          String contentType) {
+    List<TestAction> actionList = new ArrayList<>();
+    if (isAuthRequired) {
+      runner.http(builder -> TestActionUtil.getTokenRequestTestAction(builder, KEYCLOAK_ENDPOINT));
+      runner.http(builder -> TestActionUtil.getTokenResponseTestAction(builder, KEYCLOAK_ENDPOINT));
+    }
+    runner.http(builder -> TestActionUtil.getPostRequestTestAction(
+            testContext,
+            builder,
+            LMS_ENDPOINT,
+            testName,
+            templateDir,
+            requestUrl,
+            contentType,
+            requestJson,
+            org.sunbird.integration.test.common.TestActionUtil.getHeaders(isAuthRequired)));
+    runner.http(
+            builder ->
+                    TestActionUtil.getResponseTestAction(
+                            builder, LMS_ENDPOINT, templateDir, testName, responseCode, responseJson));
   }
 }

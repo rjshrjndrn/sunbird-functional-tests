@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
@@ -27,8 +29,8 @@ import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 public class TestActionUtil {
   public static TestAction getTokenRequestTestAction(
       HttpActionBuilder builder, String endpointName) {
-    String userName = System.getenv("sunbird_username");
-    String password = System.getenv("sunbird_user_password");
+    String userName = "rajat";//System.getenv("sunbird_username");
+    String password = "rajat";//System.getenv("sunbird_user_password");
     return getTokenRequestTestAction(builder, endpointName, userName, password);
   }
 
@@ -211,5 +213,27 @@ public class TestActionUtil {
       value = variableName;
     }
     return value;
+  }
+  public static TestAction getPostRequestTestAction(
+          TestContext context,
+          HttpActionBuilder builder,
+          String endpointName,
+          String testName,
+          String testTemplateDir,
+          String url,
+          String contentType,
+          String requestFile,
+          Map<String, Object> headers) {
+
+    //testCase.setName(testName);
+    String requestFilePath =
+            MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, requestFile);
+    HttpClientRequestActionBuilder requestActionBuilder =
+            builder.client(endpointName).send().post(url).messageType(MessageType.JSON);
+    if (StringUtils.isNotBlank(contentType)) {
+      requestActionBuilder.contentType(contentType);
+    }
+    addHeaders(requestActionBuilder, headers);
+    return requestActionBuilder.payload(new ClassPathResource(requestFilePath));
   }
 }
