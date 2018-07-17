@@ -1,4 +1,4 @@
-package org.sunbird.integration.test.courseBatch;
+package org.sunbird.integration.test.course.batch;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.testng.CitrusParameters;
@@ -30,9 +30,9 @@ public class SearchCourseBatchTest extends BaseCitrusTest {
     };
   }
 
-  /*@Test(dataProvider = "searchFailureUserDataProvider")
+  @Test(dataProvider = "searchFailureUserDataProvider")
   @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
-  @CitrusTest*/
+  @CitrusTest
   public void testSearchCourseBatchFailure(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
 

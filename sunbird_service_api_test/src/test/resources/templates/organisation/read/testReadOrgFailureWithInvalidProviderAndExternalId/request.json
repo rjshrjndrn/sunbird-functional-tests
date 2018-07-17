@@ -1,6 +1,6 @@
 {
   "request": {
-    "provider": "Invalid",
-    "externalId": "Invalid"
+    "provider": "invalid",
+    "externalId": "invalid"
   }
 }

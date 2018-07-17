@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package org.sunbird.integration.test.user.skills;
 
 import javax.ws.rs.core.MediaType;
@@ -13,10 +11,6 @@ import org.testng.annotations.Test;
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.testng.CitrusParameters;
 
-/**
- * @author RKHema
- *
- */
 public class AddUserSkillTest extends BaseCitrusTest {
 
 	  public static final String TEST_NAME_ADD_USER_SKILL_FAILURE_WITHOUT_ACCESS_TOKEN =
@@ -47,7 +41,7 @@ public class AddUserSkillTest extends BaseCitrusTest {
 	  @Test(dataProvider = "addUserSkillFailureDataProvider")
 	  @CitrusParameters({"testName", "isAccessToken","httpStatusCode"})
 	  @CitrusTest
-	  public void testAddUserSkillFailure(String testName, boolean isAccessToken,HttpStatus httpStatusCode) {
+	  public void testAddUserSkillFailure(String testName, boolean isAuthRequired,HttpStatus httpStatusCode) {
 
 	    performPostTest(
 	        testName,
@@ -56,7 +50,7 @@ public class AddUserSkillTest extends BaseCitrusTest {
 	        REQUEST_JSON,
 	        httpStatusCode,
 	        RESPONSE_JSON,
-	        isAccessToken,
+	        isAuthRequired,
 	        MediaType.APPLICATION_JSON);
 	  }
 	}

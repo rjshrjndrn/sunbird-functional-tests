@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.sunbird.integration.test.org;
 
 import javax.ws.rs.core.MediaType;
@@ -13,10 +10,6 @@ import org.testng.annotations.Test;
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.testng.CitrusParameters;
 
-/**
- * @author RKHema
- *
- */
 public class ReadOrganisationTest extends BaseCitrusTest {
 
 	  public static final String TEST_NAME_READ_ORG_FAILURE_WITHOUT_ORG_ID =
@@ -26,7 +19,7 @@ public class ReadOrganisationTest extends BaseCitrusTest {
 	  public static final String TEST_NAME_READ_ORG_FAILURE_WITH_PROVIDER_WITHOUT_EXTERNAL_ID =
 		      "testReadOrgFailureWithProviderWithoutExternalId";
 	  public static final String TEST_NAME_READ_ORG_FAILURE_WITH_EXTERNAL_ID_WITHOUT_PROVIDER =
-		      "testReadOrgFailureWithProviderWithoutExternalId";
+		      "testReadOrgFailureWithExternalIdWithoutProvider";
 	  public static final String TEST_NAME_READ_ORG_FAILURE_WITH_INVALID_PROVIDER_AND_EXTERNAL_ID =
 		      "testReadOrgFailureWithInvalidProviderAndExternalId";
 	  
