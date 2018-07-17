@@ -4,11 +4,11 @@ import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.testng.CitrusParameters;
 import javax.ws.rs.core.MediaType;
 import org.springframework.http.HttpStatus;
-import org.sunbird.integration.test.common.BaseCitrusTest;
+import org.sunbird.integration.test.common.BaseCitrusTestRunner;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class CreateOrganisationTest extends BaseCitrusTest {
+public class CreateOrganisationTest extends BaseCitrusTestRunner {
 
   public static final String TEST_NAME_CREATE_SUB_ORG_FAILURE_WITHOUT_NAME =
       "testCreateSubOrgFailureWithoutName";
@@ -62,15 +62,16 @@ public class CreateOrganisationTest extends BaseCitrusTest {
   @CitrusTest
   public void testCreateOrganisationFailure(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
-
+    getAuthToken(this, isAuthRequired);
     performPostTest(
-        testName,
+        this,
         TEMPLATE_DIR,
+        testName,
         getCreateOrgUrl(),
         REQUEST_JSON,
-        httpStatusCode,
-        RESPONSE_JSON,
+        MediaType.APPLICATION_JSON,
         isAuthRequired,
-        MediaType.APPLICATION_JSON);
+        httpStatusCode,
+        RESPONSE_JSON);
   }
 }

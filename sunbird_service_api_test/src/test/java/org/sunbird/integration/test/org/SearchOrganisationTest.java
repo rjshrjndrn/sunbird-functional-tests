@@ -4,11 +4,11 @@ import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.testng.CitrusParameters;
 import javax.ws.rs.core.MediaType;
 import org.springframework.http.HttpStatus;
-import org.sunbird.integration.test.common.BaseCitrusTest;
+import org.sunbird.integration.test.common.BaseCitrusTestRunner;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class SearchOrganisationTest extends BaseCitrusTest {
+public class SearchOrganisationTest extends BaseCitrusTestRunner {
 
   public static final String TEST_NAME_SEARCH_ORG_FAILURE_WITHOUT_FILTER =
       "testSearchOrgFailureWithoutFilter";
@@ -32,15 +32,15 @@ public class SearchOrganisationTest extends BaseCitrusTest {
   @CitrusParameters({"testName", "httpStatusCode"})
   @CitrusTest
   public void testSearchOrganisationFailure(String testName, HttpStatus httpStatusCode) {
-
     performPostTest(
-        testName,
+        this,
         TEMPLATE_DIR,
+        testName,
         getSearchOrgUrl(),
         REQUEST_JSON,
-        httpStatusCode,
-        RESPONSE_JSON,
+        MediaType.APPLICATION_JSON,
         false,
-        MediaType.APPLICATION_JSON);
+        httpStatusCode,
+        RESPONSE_JSON);
   }
 }
