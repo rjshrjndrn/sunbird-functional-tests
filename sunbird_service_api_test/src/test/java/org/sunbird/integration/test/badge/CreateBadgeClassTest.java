@@ -91,6 +91,7 @@ public class CreateBadgeClassTest extends BaseCitrusTestRunner {
         BT_CREATE_ORG_TEMPLATE_DIR,
         BT_TEST_NAME_CREATE_ROOT_ORG_SUCCESS,
         HttpStatus.OK);
+    sleep(3000);
   }
 
   private void afterTest() {}
