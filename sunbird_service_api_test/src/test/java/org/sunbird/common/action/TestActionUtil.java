@@ -212,4 +212,35 @@ public class TestActionUtil {
     }
     return value;
   }
+
+  public static TestAction performGetTest(
+      TestContext context,
+      HttpActionBuilder builder,
+      String endpointName,
+      String testName,
+      String requestUrl,
+      Map<String, Object> headers,
+      TestGlobalProperty config) {
+    System.out.println("context = " + context);
+    HttpClientRequestActionBuilder actionBuilder =
+        builder
+            .client(endpointName)
+            .send()
+            .get(requestUrl)
+            .messageType(MessageType.JSON)
+            .header(Constant.AUTHORIZATION, Constant.BEARER + config.getApiKey());
+    if (null != headers) {
+      actionBuilder = addHeaders(actionBuilder, headers);
+    }
+    return actionBuilder;
+  }
+
+  public static TestAction getResponseTestAction(
+      HttpActionBuilder builder, String endpointName, String testName, HttpStatus responseCode) {
+    return builder
+        .client(endpointName)
+        .receive()
+        .response(responseCode)
+        .validator("defaultJsonMessageValidator");
+  }
 }

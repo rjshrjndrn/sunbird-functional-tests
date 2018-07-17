@@ -1,17 +1,22 @@
 package org.sunbird.integration.test.user;
 
 import com.consol.citrus.annotations.CitrusTest;
+import com.consol.citrus.context.TestContext;
 import com.consol.citrus.testng.CitrusParameters;
-import javax.ws.rs.core.MediaType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.sunbird.integration.test.common.BaseCitrusTest;
+import org.sunbird.integration.test.common.BaseCitrusTestRunner;
+import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class GetUserByUserIdTest extends BaseCitrusTest {
+public class GetUserByUserIdTest extends BaseCitrusTestRunner {
   public static final String TEMPLATE_DIR = "templates/user/getbyuserid";
   private static final String GET_USER_BY_ID_SERVER_URI = "/api/user/v1/read/";
   private static final String GET_USER_BY_ID_LOCAL_URI = "/v1/user/read/";
+
+  @Autowired protected TestGlobalProperty config;
+  @Autowired protected TestContext testContext;
 
   @DataProvider(name = "getUserByUserIdFailure")
   public Object[][] getUserByLoginIdFailure() {
@@ -52,14 +57,14 @@ public class GetUserByUserIdTest extends BaseCitrusTest {
       HttpStatus httpStatusCode,
       boolean matchResponseCodeOnly) {
     performGetTest(
-        testName,
+        this,
         TEMPLATE_DIR,
+        testName,
         getLmsApiUriPath(
             GET_USER_BY_ID_SERVER_URI + pathParam, GET_USER_BY_ID_LOCAL_URI + pathParam),
+        isAuthRequired,
         httpStatusCode,
         RESPONSE_JSON,
-        isAuthRequired,
-        MediaType.APPLICATION_JSON,
         matchResponseCodeOnly);
   }
 }

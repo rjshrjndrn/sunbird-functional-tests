@@ -68,4 +68,32 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
             TestActionUtil.getResponseTestAction(
                 builder, LMS_ENDPOINT, templateDir, testName, responseCode, responseJson));
   }
+
+  public void performGetTest(
+      TestNGCitrusTestRunner runner,
+      String templateDir,
+      String testName,
+      String requestUrl,
+      Boolean isAuthRequired,
+      HttpStatus responseCode,
+      String responseJson,
+      boolean matchResponseCodeOnly) {
+    if (isAuthRequired) {
+      runner.http(builder -> TestActionUtil.getTokenRequestTestAction(builder, KEYCLOAK_ENDPOINT));
+      runner.http(builder -> TestActionUtil.getTokenResponseTestAction(builder, KEYCLOAK_ENDPOINT));
+    }
+    runner.http(
+        builder ->
+            TestActionUtil.performGetTest(
+                testContext,
+                builder,
+                LMS_ENDPOINT,
+                testName,
+                requestUrl,
+                TestActionUtil.getHeaders(isAuthRequired),
+                config));
+    runner.http(
+        builder ->
+            TestActionUtil.getResponseTestAction(builder, LMS_ENDPOINT, testName, responseCode));
+  }
 }
