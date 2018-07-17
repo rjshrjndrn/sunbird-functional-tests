@@ -2,7 +2,6 @@ package org.sunbird.integration.test.org;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.testng.CitrusParameters;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.ws.rs.core.MediaType;
 import org.springframework.http.HttpStatus;
 import org.sunbird.integration.test.common.BaseCitrusTestRunner;
@@ -25,8 +24,6 @@ public class CreateOrganisationTest extends BaseCitrusTestRunner {
       "testCreateSubOrgFailureWithoutAccessToken";
 
   public static final String TEMPLATE_DIR = "templates/organisation/create";
-
-  ObjectMapper objectMapper = new ObjectMapper();
 
   private String getCreateOrgUrl() {
 
