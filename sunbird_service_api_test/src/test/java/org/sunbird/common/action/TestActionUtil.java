@@ -1,11 +1,9 @@
 package org.sunbird.common.action;
 
 import com.consol.citrus.TestAction;
-import com.consol.citrus.TestCase;
 import com.consol.citrus.context.TestContext;
 import com.consol.citrus.dsl.builder.HttpActionBuilder;
 import com.consol.citrus.dsl.builder.HttpClientRequestActionBuilder;
-import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
 import com.consol.citrus.exceptions.CitrusRuntimeException;
 import com.consol.citrus.message.MessageType;
 import com.consol.citrus.validation.json.JsonMappingValidationCallback;
@@ -79,7 +77,9 @@ public class TestActionUtil {
     if (StringUtils.isNotBlank(contentType)) {
       requestActionBuilder.contentType(contentType);
     }
-    addHeaders(requestActionBuilder, headers);
+
+    requestActionBuilder = addHeaders(requestActionBuilder, headers);
+
     return requestActionBuilder.payload(new ClassPathResource(requestFilePath));
   }
 
