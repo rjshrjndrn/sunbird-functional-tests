@@ -34,13 +34,13 @@ public class SearchOrganisationTest extends BaseCitrusTestRunner {
   public void testSearchOrganisationFailure(String testName, HttpStatus httpStatusCode) {
     performPostTest(
         this,
-        testName,
         TEMPLATE_DIR,
+        testName,
         getSearchOrgUrl(),
         REQUEST_JSON,
-        httpStatusCode,
-        RESPONSE_JSON,
+        MediaType.APPLICATION_JSON,
         false,
-        MediaType.APPLICATION_JSON);
+        httpStatusCode,
+        RESPONSE_JSON);
   }
 }

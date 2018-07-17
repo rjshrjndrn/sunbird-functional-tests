@@ -65,13 +65,13 @@ public class CreateOrganisationTest extends BaseCitrusTestRunner {
     getAuthToken(this, isAuthRequired);
     performPostTest(
         this,
-        testName,
         TEMPLATE_DIR,
+        testName,
         getCreateOrgUrl(),
         REQUEST_JSON,
-        httpStatusCode,
-        RESPONSE_JSON,
+        MediaType.APPLICATION_JSON,
         isAuthRequired,
-        MediaType.APPLICATION_JSON);
+        httpStatusCode,
+        RESPONSE_JSON);
   }
 }

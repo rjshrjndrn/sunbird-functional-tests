@@ -64,16 +64,14 @@ public class TestActionUtil {
 
   public static TestAction getPostRequestTestAction(
       HttpActionBuilder builder,
-      TestCase testCase,
       String endpointName,
-      String testName,
       String testTemplateDir,
+      String testName,
       String url,
-      String contentType,
       String requestFile,
+      String contentType,
       Map<String, Object> headers) {
 
-    testCase.setName(testName);
     String requestFilePath =
         MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, requestFile);
     HttpClientRequestActionBuilder requestActionBuilder =

@@ -69,24 +69,23 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
 
   public void performPostTest(
       TestNGCitrusTestRunner runner,
-      String testName,
       String templateDir,
+      String testName,
       String requestUrl,
       String requestJson,
-      HttpStatus responseCode,
-      String responseJson,
+      String contentType,
       boolean isAuthRequired,
-      String contentType) {
+      HttpStatus responseCode,
+      String responseJson) {
     runner.http(builder -> TestActionUtil.getPostRequestTestAction(
         builder,
-        getTestCase(),
         LMS_ENDPOINT,
-        testName,
         templateDir,
+        testName,
         requestUrl,
-        contentType,
         requestJson,
-        org.sunbird.integration.test.common.TestActionUtil.getHeaders(isAuthRequired)));
+        contentType,
+        TestActionUtil.getHeaders(isAuthRequired)));
     runner.http(
         builder ->
             TestActionUtil.getResponseTestAction(
