@@ -30,9 +30,9 @@ public class SearchCourseBatchTest extends BaseCitrusTest {
     };
   }
 
-  @Test(dataProvider = "searchFailureUserDataProvider")
+  /*@Test(dataProvider = "searchFailureUserDataProvider")
   @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
-  @CitrusTest
+  @CitrusTest*/
   public void testSearchCourseBatchFailure(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
 

@@ -17,7 +17,7 @@ public class SearchUserTest extends BaseCitrusTest {
 
   private String getSearchUserUrl() {
 
-    return getLmsApiUriPath("/api/user/v1/user/search", "/v1/user/search");
+    return getLmsApiUriPath("/api/user/v1/search", "/v1/user/search");
   }
 
   @DataProvider(name = "searchUserFailureDataProvider")
