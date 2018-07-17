@@ -38,5 +38,6 @@ public class OrgUtil {
                 responseCode,
                 "$.result.organisationId",
                 "organisationId"));
+    runner.sleep(Constant.ES_SYNC_WAIT_TIME);
   }
 }
