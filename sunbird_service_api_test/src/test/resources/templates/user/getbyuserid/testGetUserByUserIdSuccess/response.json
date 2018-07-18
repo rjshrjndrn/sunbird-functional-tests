@@ -1,0 +1,59 @@
+{
+	"id": "api.user.read",
+	"ver": "v1",
+	"ts": "@ignore@",
+	"params": {
+		"resmsgid": null,
+		"msgid": "@ignore@",
+		"err": null,
+		"status": "success",
+		"errmsg": null
+	},
+	"responseCode": "OK",
+	"result": {
+		"response": {
+			"lastName": null,
+			"webPages": [],
+			"tcStatus": null,
+			"education": [],
+			"gender": null,
+			"subject": [],
+			"roles": [
+				"PUBLIC"
+			],
+			"channel": "@ignore@",
+			"language": [],
+			"updatedDate": null,
+			"skills": [],
+			"badgeAssertions": [],
+			"isDeleted": false,
+			"organisations": [],
+			"countryCode": null,
+			"id": "${userId}",
+			"tempPassword": null,
+			"email": "",
+			"phoneverified": null,
+			"rootOrg":"@ignore@",
+			"identifier": "${userId}",
+			"thumbnail": null,
+			"updatedBy": null,
+			"address": [],
+			"jobProfile": [],
+			"profileSummary": null,
+			"tcUpdatedDate": null,
+			"avatar": null,
+			"rootOrgId": "@ignore@",
+			"emailVerified": false,
+			"firstName": "Topic test content",
+			"lastLoginTime": null,
+			"createdDate": "@ignore@",
+			"createdBy": "@ignore@",
+			"phone": null,
+			"dob": null,
+			"grade": "@ignore@",
+			"currentLoginTime": null,
+			"location": null,
+			"status": 1
+		}
+	}
+}

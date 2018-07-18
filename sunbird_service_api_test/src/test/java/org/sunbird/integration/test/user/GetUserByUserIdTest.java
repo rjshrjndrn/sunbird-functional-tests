@@ -3,6 +3,8 @@ package org.sunbird.integration.test.user;
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.testng.CitrusParameters;
 import org.springframework.http.HttpStatus;
+import org.sunbird.common.action.TestActionUtil;
+import org.sunbird.common.action.UserUtil;
 import org.sunbird.integration.test.common.BaseCitrusTestRunner;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -61,4 +63,29 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
         RESPONSE_JSON,
         matchResponseCodeOnly);
   }
+
+  @Test()
+  @CitrusTest
+  public void testGetUserByIdSuccess() {
+    beforeTest();
+    String userId = TestActionUtil.getVariable(testContext, "userId");
+    System.out.println("User Id found==" + userId);
+    performGetTest(
+        this,
+        TEMPLATE_DIR,
+        "testGetUserByUserIdSuccess",
+        getLmsApiUriPath(GET_USER_BY_ID_SERVER_URI + userId, GET_USER_BY_ID_LOCAL_URI + userId),
+        true,
+        HttpStatus.OK,
+        RESPONSE_JSON,
+        false);
+    afterTest();
+  }
+
+  private void beforeTest() {
+    UserUtil.createUser(
+        this, testContext, TEMPLATE_DIR, "testGetUserByUserIdSuccess", HttpStatus.OK);
+  }
+
+  private void afterTest() {}
 }
