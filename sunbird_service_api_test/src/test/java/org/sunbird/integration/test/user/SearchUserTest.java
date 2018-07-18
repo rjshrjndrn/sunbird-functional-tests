@@ -15,10 +15,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class SearchUserTest extends BaseCitrusTestRunner {
-    @Autowired
-    protected TestContext testContext;
-    public static final String BT_CREATE_ISSUER_TEMPLATE_DIR = "templates/user/create";
-    public static final String BT_TEST_NAME_CREATE_ISSUER_SUCCESS = "testCreateUserSuccess";
+
     public static final String TEST_NAME_SEARCH_USER_FAILURE_WITHOUT_ACCESS_TOKEN =
             "testSearchUserFailureWithoutAccessToken";
     public static final String TEST_SEARCH_USER_BY_FIRST_NAME_SUCCESS =
