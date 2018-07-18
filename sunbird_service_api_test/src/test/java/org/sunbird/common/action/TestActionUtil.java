@@ -96,8 +96,6 @@ public class TestActionUtil {
       Map<String, Object> headers,
       ClassLoader classLoader,
       TestGlobalProperty config) {
-    System.out.println("context = " + context);
-
     String formDataFileFolderPath = MessageFormat.format("{0}/{1}", testTemplateDir, testName);
     String formDataFile =
         MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, requestFile);
@@ -211,26 +209,33 @@ public class TestActionUtil {
     }
     return value;
   }
-  public static TestAction getPostRequestTestAction(
-          TestContext context,
-          HttpActionBuilder builder,
-          String endpointName,
-          String testName,
-          String testTemplateDir,
-          String url,
-          String contentType,
-          String requestFile,
-          Map<String, Object> headers) {
 
-    //testCase.setName(testName);
-    String requestFilePath =
-            MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, requestFile);
-    HttpClientRequestActionBuilder requestActionBuilder =
-            builder.client(endpointName).send().post(url).messageType(MessageType.JSON);
-    if (StringUtils.isNotBlank(contentType)) {
-      requestActionBuilder.contentType(contentType);
+  public static TestAction performGetTest(
+      HttpActionBuilder builder,
+      String endpointName,
+      String testName,
+      String requestUrl,
+      Map<String, Object> headers,
+      TestGlobalProperty config) {
+    HttpClientRequestActionBuilder actionBuilder =
+        builder
+            .client(endpointName)
+            .send()
+            .get(requestUrl)
+            .messageType(MessageType.JSON)
+            .header(Constant.AUTHORIZATION, Constant.BEARER + config.getApiKey());
+    if (null != headers) {
+      actionBuilder = addHeaders(actionBuilder, headers);
     }
-    addHeaders(requestActionBuilder, headers);
-    return requestActionBuilder.payload(new ClassPathResource(requestFilePath));
+    return actionBuilder;
+  }
+
+  public static TestAction getResponseTestAction(
+      HttpActionBuilder builder, String endpointName, String testName, HttpStatus responseCode) {
+    return builder
+        .client(endpointName)
+        .receive()
+        .response(responseCode)
+        .validator("defaultJsonMessageValidator");
   }
 }
