@@ -1,0 +1,7 @@
+{
+  "request": {
+    "orgName": "citrus:concat('ft_org_',citrus:randomNumber(10))",
+    "isRootOrg": true,
+    "channel": "citrus:concat('ft_channel_',citrus:randomNumber(10))"
+  }
+}
