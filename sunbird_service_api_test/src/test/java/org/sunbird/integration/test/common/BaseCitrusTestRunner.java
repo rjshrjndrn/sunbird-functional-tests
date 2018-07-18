@@ -106,12 +106,8 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
       String requestUrl,
       Boolean isAuthRequired,
       HttpStatus responseCode,
-      String responseJson,
-      boolean matchResponseCodeOnly) {
-    if (isAuthRequired) {
-      runner.http(builder -> TestActionUtil.getTokenRequestTestAction(builder, KEYCLOAK_ENDPOINT));
-      runner.http(builder -> TestActionUtil.getTokenResponseTestAction(builder, KEYCLOAK_ENDPOINT));
-    }
+      String responseJson) {
+    getAuthToken(runner, isAuthRequired);
     runner.http(
         builder ->
             TestActionUtil.performGetTest(

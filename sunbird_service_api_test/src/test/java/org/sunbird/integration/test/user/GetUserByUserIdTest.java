@@ -46,12 +46,8 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
     "matchResponseCodeOnly"
   })
   @CitrusTest
-  public void testGetUserByIdFailure(
-      String testName,
-      boolean isAuthRequired,
-      String pathParam,
-      HttpStatus httpStatusCode,
-      boolean matchResponseCodeOnly) {
+  public void testGetUserByUserIdFailure(
+      String testName, boolean isAuthRequired, String pathParam, HttpStatus httpStatusCode) {
     performGetTest(
         this,
         TEMPLATE_DIR,
@@ -60,16 +56,14 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
             GET_USER_BY_ID_SERVER_URI + pathParam, GET_USER_BY_ID_LOCAL_URI + pathParam),
         isAuthRequired,
         httpStatusCode,
-        RESPONSE_JSON,
-        matchResponseCodeOnly);
+        RESPONSE_JSON);
   }
 
   @Test()
   @CitrusTest
-  public void testGetUserByIdSuccess() {
+  public void testGetUserByUserIdSuccess() {
     beforeTest();
     String userId = TestActionUtil.getVariable(testContext, "userId");
-    System.out.println("User Id found==" + userId);
     performGetTest(
         this,
         TEMPLATE_DIR,
@@ -77,8 +71,7 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
         getLmsApiUriPath(GET_USER_BY_ID_SERVER_URI + userId, GET_USER_BY_ID_LOCAL_URI + userId),
         true,
         HttpStatus.OK,
-        RESPONSE_JSON,
-        false);
+        RESPONSE_JSON);
     afterTest();
   }
 
