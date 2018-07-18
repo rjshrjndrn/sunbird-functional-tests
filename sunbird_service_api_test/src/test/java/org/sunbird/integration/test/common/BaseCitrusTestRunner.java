@@ -46,10 +46,6 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
       Boolean isAuthRequired,
       HttpStatus responseCode,
       String responseJson) {
-    if (isAuthRequired) {
-      runner.http(builder -> TestActionUtil.getTokenRequestTestAction(builder, KEYCLOAK_ENDPOINT));
-      runner.http(builder -> TestActionUtil.getTokenResponseTestAction(builder, KEYCLOAK_ENDPOINT));
-    }
     runner.http(
         builder ->
             TestActionUtil.getMultipartRequestTestAction(
@@ -67,5 +63,39 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
         builder ->
             TestActionUtil.getResponseTestAction(
                 builder, LMS_ENDPOINT, templateDir, testName, responseCode, responseJson));
+  }
+
+  public void performPostTest(
+      TestNGCitrusTestRunner runner,
+      String templateDir,
+      String testName,
+      String requestUrl,
+      String requestJson,
+      String contentType,
+      boolean isAuthRequired,
+      HttpStatus responseCode,
+      String responseJson) {
+    runner.http(
+        builder ->
+            TestActionUtil.getPostRequestTestAction(
+                builder,
+                LMS_ENDPOINT,
+                templateDir,
+                testName,
+                requestUrl,
+                requestJson,
+                contentType,
+                TestActionUtil.getHeaders(isAuthRequired)));
+    runner.http(
+        builder ->
+            TestActionUtil.getResponseTestAction(
+                builder, LMS_ENDPOINT, templateDir, testName, responseCode, responseJson));
+  }
+
+  public void getAuthToken(TestNGCitrusTestRunner runner, Boolean isAuthRequired) {
+    if (isAuthRequired) {
+      runner.http(builder -> TestActionUtil.getTokenRequestTestAction(builder, KEYCLOAK_ENDPOINT));
+      runner.http(builder -> TestActionUtil.getTokenResponseTestAction(builder, KEYCLOAK_ENDPOINT));
+    }
   }
 }

@@ -1,7 +1,6 @@
 package org.sunbird.common.action;
 
 import com.consol.citrus.TestAction;
-import com.consol.citrus.TestCase;
 import com.consol.citrus.context.TestContext;
 import com.consol.citrus.dsl.builder.HttpActionBuilder;
 import com.consol.citrus.dsl.builder.HttpClientRequestActionBuilder;
@@ -64,15 +63,12 @@ public class TestActionUtil {
   public static TestAction getPostRequestTestAction(
       HttpActionBuilder builder,
       String endpointName,
-      TestCase testCase,
-      String testName,
       String testTemplateDir,
+      String testName,
       String url,
-      String contentType,
       String requestFile,
+      String contentType,
       Map<String, Object> headers) {
-
-    testCase.setName(testName);
 
     String requestFilePath =
         MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, requestFile);
@@ -82,7 +78,6 @@ public class TestActionUtil {
       requestActionBuilder.contentType(contentType);
     }
     addHeaders(requestActionBuilder, headers);
-
     return requestActionBuilder.payload(new ClassPathResource(requestFilePath));
   }
 
