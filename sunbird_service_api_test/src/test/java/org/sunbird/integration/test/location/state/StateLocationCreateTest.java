@@ -13,7 +13,7 @@ import org.testng.annotations.Test;
 public class StateLocationCreateTest extends BaseCitrusTestRunner {
 
   private static final String STATE_CODE =
-      "State-02-fuzzy-" + String.valueOf(System.currentTimeMillis());
+      "FT_State_Code-" + String.valueOf(System.currentTimeMillis());
   private static final String CREATE_LOCATION_SERVER_URI ="/api/data/v1/location/create";
   private static final String CREATE_LOCATION_LOCAL_URI = "/v1/location/create";
 

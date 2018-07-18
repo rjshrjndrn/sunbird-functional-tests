@@ -73,7 +73,7 @@ public class StateLocationUpdateTest extends BaseCitrusTestRunner {
   }
 
   private static String getStateCode(){
-    return "State-02-fuzzy-" + String.valueOf(System.currentTimeMillis());
+    return "FT_State_Code-" + String.valueOf(System.currentTimeMillis());
   }
 
   @CleanUp

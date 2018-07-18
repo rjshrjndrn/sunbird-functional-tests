@@ -14,7 +14,7 @@ import org.testng.annotations.Test;
 public class DistrictLocationCreateTest extends BaseCitrusTestRunner {
 
   private static final String DISTRICT_CODE =
-      "District-02-fuzzy-" + String.valueOf(System.currentTimeMillis());
+      "FT_District_Code-" + String.valueOf(System.currentTimeMillis());
   private static final String CREATE_LOCATION_SERVER_URI ="/api/data/v1/location/create";
   private static final String CREATE_LOCATION_LOCAL_URI = "/v1/location/create";
   private static final String PARENT_ID = "parentId";
@@ -75,6 +75,6 @@ public class DistrictLocationCreateTest extends BaseCitrusTestRunner {
   }
 
   private static String getStateCode(){
-    return "State-02-fuzzy-" + String.valueOf(System.currentTimeMillis());
+    return "FT_State_Code-" + String.valueOf(System.currentTimeMillis());
   }
 }

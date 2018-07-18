@@ -14,10 +14,6 @@ import org.testng.annotations.Test;
 
 public class DistrictLocationDeleteTest extends BaseCitrusTestRunner {
 
-  private static final String STATE_CODE =
-      "State-02-fuzzy-" + String.valueOf(System.currentTimeMillis());
-  private static final String DISTRICT_CODE =
-      "District-02-fuzzy-" + String.valueOf(System.currentTimeMillis());
   private static final String CREATE_LOCATION_SERVER_URI ="/api/data/v1/location/create";
   private static final String CREATE_LOCATION_LOCAL_URI = "/v1/location/create";
   private static final String DELETE_LOCATION_SERVER_URI ="/api/data/v1/location/delete";
@@ -44,7 +40,6 @@ public class DistrictLocationDeleteTest extends BaseCitrusTestRunner {
   public void testDeleteLocation(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
     getAuthToken(this, isAuthRequired);
-    createStateLocation();
     createDistrictLocation();
     performDeleteTest(
         this,
@@ -59,27 +54,12 @@ public class DistrictLocationDeleteTest extends BaseCitrusTestRunner {
     this.sleep(Constant.ES_SYNC_WAIT_TIME);
   }
 
-  public void createStateLocation(){
-    if(StringUtils.isBlank((String)testContext.getVariables().get(STATE_LOCATION_ID))) {
-      variable("locationCode", STATE_CODE);
-      LocationUtil.createStateTypeLocation(this, testContext, "templates/location/state/create/",
-          "testCreateLocationSuccess",
-          getCreateLocationUrl(), REQUEST_JSON, MediaType.APPLICATION_JSON, true, "$.result.id",STATE_LOCATION_ID);
-    }
-  }
-
   public void createDistrictLocation(){
     if(StringUtils.isBlank((String)testContext.getVariables().get(DISTRICT_LOCATION_ID))) {
-      variable("parentId", testContext.getVariables().get(STATE_LOCATION_ID));
-      variable("locationCode", DISTRICT_CODE);
       LocationUtil.createDistrictTypeLocation(this, testContext, "templates/location/district/create/",
           "testCreateLocationSuccess",
           getCreateLocationUrl(), REQUEST_JSON, MediaType.APPLICATION_JSON, true, "$.result.id",DISTRICT_LOCATION_ID);
     }
-  }
-
-  private static String getStateCode(){
-    return "State-02-fuzzy-" + String.valueOf(System.currentTimeMillis());
   }
 
   @CleanUp

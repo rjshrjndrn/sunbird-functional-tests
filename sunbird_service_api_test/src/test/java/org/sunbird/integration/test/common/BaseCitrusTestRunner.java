@@ -117,7 +117,6 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
         builder ->
             TestActionUtil.getResponseTestAction(
                 builder, LMS_ENDPOINT, templateDir, testName, responseCode, responseJson));
-    runner.sleep(Constant.ES_SYNC_WAIT_TIME);
   }
 
   public void performDeleteTest(
@@ -143,7 +142,6 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
         builder ->
             TestActionUtil.getResponseTestAction(
                 builder, LMS_ENDPOINT, templateDir, testName, responseCode, responseJson));
-    runner.sleep(Constant.ES_SYNC_WAIT_TIME);
   }
 
   public void getAuthToken(TestNGCitrusTestRunner runner, Boolean isAuthRequired) {
