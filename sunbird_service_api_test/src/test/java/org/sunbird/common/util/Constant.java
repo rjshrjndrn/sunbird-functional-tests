@@ -40,4 +40,5 @@ public class Constant {
   public static final String RESPONSE_JSON = "response.json";
   public static final String LMS_ENDPOINT = "restTestClient";
   public static final String KEYCLOAK_ENDPOINT = "keycloakTestClient";
+  public static final int ES_SYNC_WAIT_TIME = 3000;
 }

@@ -77,7 +77,9 @@ public class TestActionUtil {
     if (StringUtils.isNotBlank(contentType)) {
       requestActionBuilder.contentType(contentType);
     }
-    addHeaders(requestActionBuilder, headers);
+
+    requestActionBuilder = addHeaders(requestActionBuilder, headers);
+
     return requestActionBuilder.payload(new ClassPathResource(requestFilePath));
   }
 
@@ -92,8 +94,6 @@ public class TestActionUtil {
       Map<String, Object> headers,
       ClassLoader classLoader,
       TestGlobalProperty config) {
-    System.out.println("context = " + context);
-
     String formDataFileFolderPath = MessageFormat.format("{0}/{1}", testTemplateDir, testName);
     String formDataFile =
         MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, requestFile);
@@ -206,5 +206,34 @@ public class TestActionUtil {
       value = variableName;
     }
     return value;
+  }
+
+  public static TestAction performGetTest(
+      HttpActionBuilder builder,
+      String endpointName,
+      String testName,
+      String requestUrl,
+      Map<String, Object> headers,
+      TestGlobalProperty config) {
+    HttpClientRequestActionBuilder actionBuilder =
+        builder
+            .client(endpointName)
+            .send()
+            .get(requestUrl)
+            .messageType(MessageType.JSON)
+            .header(Constant.AUTHORIZATION, Constant.BEARER + config.getApiKey());
+    if (null != headers) {
+      actionBuilder = addHeaders(actionBuilder, headers);
+    }
+    return actionBuilder;
+  }
+
+  public static TestAction getResponseTestAction(
+      HttpActionBuilder builder, String endpointName, String testName, HttpStatus responseCode) {
+    return builder
+        .client(endpointName)
+        .receive()
+        .response(responseCode)
+        .validator("defaultJsonMessageValidator");
   }
 }

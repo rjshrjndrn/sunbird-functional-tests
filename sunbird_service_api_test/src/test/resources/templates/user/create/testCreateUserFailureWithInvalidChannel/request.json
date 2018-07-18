@@ -3,8 +3,8 @@
         "firstName": "ft_testName",
         "lastName": "test",
         "password": "password",
-        "userName": "citrus:concat('ft_username',citrus:randomString(10, MIXED, true))",
-        "email": "citrus:randomString(10, MIXED, true)@gmail.com",
+        "userName": "citrus:concat('ft_username',citrus:randomString(30, MIXED, true))",
+        "email": "citrus:randomString(30, MIXED, true)@gmail.com",
         "channel": "functionalTest#Invalid$Channel@1235123"
     }
 }
