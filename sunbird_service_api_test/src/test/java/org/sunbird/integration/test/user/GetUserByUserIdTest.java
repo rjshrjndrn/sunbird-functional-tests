@@ -21,30 +21,20 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
         "testGetUserByUserIdFailureWithoutAuthToken",
         false,
         "invalidUserId",
-        HttpStatus.UNAUTHORIZED,
-        false
+        HttpStatus.UNAUTHORIZED
       },
       new Object[] {
         "testGetUserByUserIdFailureWithInvalidUserId",
         true,
         "4b981b53-f9eb-44fe",
-        HttpStatus.NOT_FOUND,
-        false
+        HttpStatus.NOT_FOUND
       },
-      new Object[] {
-        "testGetUserByUserIdFailureWithEmptyUserId", true, "", HttpStatus.NOT_FOUND, true
-      }
+      new Object[] {"testGetUserByUserIdFailureWithEmptyUserId", true, "", HttpStatus.NOT_FOUND}
     };
   }
 
   @Test(dataProvider = "getUserByUserIdFailure")
-  @CitrusParameters({
-    "testName",
-    "isAuthRequired",
-    "pathParam",
-    "httpStatusCode",
-    "matchResponseCodeOnly"
-  })
+  @CitrusParameters({"testName", "isAuthRequired", "pathParam", "httpStatusCode"})
   @CitrusTest
   public void testGetUserByUserIdFailure(
       String testName, boolean isAuthRequired, String pathParam, HttpStatus httpStatusCode) {
@@ -63,12 +53,14 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testGetUserByUserIdSuccess() {
     beforeTest();
-    String userId = TestActionUtil.getVariable(testContext, "userId");
     performGetTest(
         this,
         TEMPLATE_DIR,
         "testGetUserByUserIdSuccess",
-        getLmsApiUriPath(GET_USER_BY_ID_SERVER_URI + userId, GET_USER_BY_ID_LOCAL_URI + userId),
+        getLmsApiUriPath(
+            GET_USER_BY_ID_SERVER_URI,
+            GET_USER_BY_ID_LOCAL_URI,
+            TestActionUtil.getVariable(testContext, "userId")),
         true,
         HttpStatus.OK,
         RESPONSE_JSON);

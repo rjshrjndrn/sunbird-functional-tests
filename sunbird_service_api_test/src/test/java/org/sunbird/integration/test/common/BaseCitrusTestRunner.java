@@ -121,4 +121,10 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
         builder ->
             TestActionUtil.getResponseTestAction(builder, LMS_ENDPOINT, testName, responseCode));
   }
+
+  public String getLmsApiUriPath(String apiGatewayUriPath, String localUriPath, String pathParam) {
+    return config.getLmsUrl().contains("localhost")
+        ? localUriPath + pathParam
+        : apiGatewayUriPath + pathParam;
+  }
 }
