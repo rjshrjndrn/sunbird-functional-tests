@@ -42,8 +42,7 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
         this,
         TEMPLATE_DIR,
         testName,
-        getLmsApiUriPath(
-            GET_USER_BY_ID_SERVER_URI + pathParam, GET_USER_BY_ID_LOCAL_URI + pathParam),
+        getLmsApiUriPath(GET_USER_BY_ID_SERVER_URI, GET_USER_BY_ID_LOCAL_URI, pathParam),
         isAuthRequired,
         httpStatusCode,
         RESPONSE_JSON);
