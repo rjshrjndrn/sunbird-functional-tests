@@ -115,7 +115,6 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
     runner.http(
         builder ->
             TestActionUtil.performGetTest(
-                testContext,
                 builder,
                 LMS_ENDPOINT,
                 testName,

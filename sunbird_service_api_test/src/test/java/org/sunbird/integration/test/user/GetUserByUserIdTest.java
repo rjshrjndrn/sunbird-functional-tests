@@ -1,12 +1,9 @@
 package org.sunbird.integration.test.user;
 
 import com.consol.citrus.annotations.CitrusTest;
-import com.consol.citrus.context.TestContext;
 import com.consol.citrus.testng.CitrusParameters;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.sunbird.integration.test.common.BaseCitrusTestRunner;
-import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -15,16 +12,13 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
   private static final String GET_USER_BY_ID_SERVER_URI = "/api/user/v1/read/";
   private static final String GET_USER_BY_ID_LOCAL_URI = "/v1/user/read/";
 
-  @Autowired protected TestGlobalProperty config;
-  @Autowired protected TestContext testContext;
-
   @DataProvider(name = "getUserByUserIdFailure")
-  public Object[][] getUserByLoginIdFailure() {
+  public Object[][] getUserByUserIdFailure() {
     return new Object[][] {
       new Object[] {
         "testGetUserByUserIdFailureWithoutAuthToken",
         false,
-        "4b981b53-f9eb-44fe",
+        "invalidUserId",
         HttpStatus.UNAUTHORIZED,
         false
       },
@@ -32,7 +26,7 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
         "testGetUserByUserIdFailureWithInvalidUserId",
         true,
         "4b981b53-f9eb-44fe",
-        HttpStatus.BAD_REQUEST,
+        HttpStatus.NOT_FOUND,
         false
       },
       new Object[] {
@@ -50,7 +44,7 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
     "matchResponseCodeOnly"
   })
   @CitrusTest
-  public void testGetUserByLoginIdFailure(
+  public void testGetUserByIdFailure(
       String testName,
       boolean isAuthRequired,
       String pathParam,

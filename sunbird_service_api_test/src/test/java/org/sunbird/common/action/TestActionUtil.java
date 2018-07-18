@@ -94,8 +94,6 @@ public class TestActionUtil {
       Map<String, Object> headers,
       ClassLoader classLoader,
       TestGlobalProperty config) {
-    System.out.println("context = " + context);
-
     String formDataFileFolderPath = MessageFormat.format("{0}/{1}", testTemplateDir, testName);
     String formDataFile =
         MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, requestFile);
@@ -211,14 +209,12 @@ public class TestActionUtil {
   }
 
   public static TestAction performGetTest(
-      TestContext context,
       HttpActionBuilder builder,
       String endpointName,
       String testName,
       String requestUrl,
       Map<String, Object> headers,
       TestGlobalProperty config) {
-    System.out.println("context = " + context);
     HttpClientRequestActionBuilder actionBuilder =
         builder
             .client(endpointName)
