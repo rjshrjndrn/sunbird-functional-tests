@@ -1,0 +1,14 @@
+{
+    "id": "api.org.read",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "REQUIRED_DATA_MISSING",
+        "status": "REQUIRED_DATA_MISSING",
+        "errmsg": "Organization Id or Provider with External Id values are required for the operation"
+    },
+    "responseCode": "CLIENT_ERROR",
+    "result": {}
+}
