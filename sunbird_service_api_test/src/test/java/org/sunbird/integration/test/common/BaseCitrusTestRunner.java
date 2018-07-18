@@ -1,9 +1,7 @@
 package org.sunbird.integration.test.common;
 
-import com.consol.citrus.TestAction;
 import com.consol.citrus.context.TestContext;
 import com.consol.citrus.dsl.testng.TestNGCitrusTestRunner;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,25 +75,56 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
       boolean isAuthRequired,
       HttpStatus responseCode,
       String responseJson) {
-    runner.http(builder -> TestActionUtil.getPostRequestTestAction(
-        builder,
-        LMS_ENDPOINT,
-        templateDir,
-        testName,
-        requestUrl,
-        requestJson,
-        contentType,
-        TestActionUtil.getHeaders(isAuthRequired)));
+    runner.http(
+        builder ->
+            TestActionUtil.getPostRequestTestAction(
+                builder,
+                LMS_ENDPOINT,
+                templateDir,
+                testName,
+                requestUrl,
+                requestJson,
+                contentType,
+                TestActionUtil.getHeaders(isAuthRequired)));
     runner.http(
         builder ->
             TestActionUtil.getResponseTestAction(
                 builder, LMS_ENDPOINT, templateDir, testName, responseCode, responseJson));
   }
 
-  public void getAuthToken(TestNGCitrusTestRunner runner, Boolean isAuthRequired){
+  public void getAuthToken(TestNGCitrusTestRunner runner, Boolean isAuthRequired) {
     if (isAuthRequired) {
       runner.http(builder -> TestActionUtil.getTokenRequestTestAction(builder, KEYCLOAK_ENDPOINT));
       runner.http(builder -> TestActionUtil.getTokenResponseTestAction(builder, KEYCLOAK_ENDPOINT));
     }
+  }
+
+  public void performGetTest(
+      TestNGCitrusTestRunner runner,
+      String templateDir,
+      String testName,
+      String requestUrl,
+      Boolean isAuthRequired,
+      HttpStatus responseCode,
+      String responseJson) {
+    getAuthToken(runner, isAuthRequired);
+    runner.http(
+        builder ->
+            TestActionUtil.performGetTest(
+                builder,
+                LMS_ENDPOINT,
+                testName,
+                requestUrl,
+                TestActionUtil.getHeaders(isAuthRequired),
+                config));
+    runner.http(
+        builder ->
+            TestActionUtil.getResponseTestAction(builder, LMS_ENDPOINT, testName, responseCode));
+  }
+
+  public String getLmsApiUriPath(String apiGatewayUriPath, String localUriPath, String pathParam) {
+    return config.getLmsUrl().contains("localhost")
+        ? localUriPath + pathParam
+        : apiGatewayUriPath + pathParam;
   }
 }
