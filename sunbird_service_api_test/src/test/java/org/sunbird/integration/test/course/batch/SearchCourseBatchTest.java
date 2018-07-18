@@ -2,10 +2,10 @@ package org.sunbird.integration.test.course.batch;
 
 import javax.ws.rs.core.MediaType;
 import org.springframework.http.HttpStatus;
-import org.sunbird.integration.test.common.BaseCitrusTest;
+import org.sunbird.integration.test.common.BaseCitrusTestRunner;
 import org.testng.annotations.DataProvider;
 
-public class SearchCourseBatchTest extends BaseCitrusTest {
+public class SearchCourseBatchTest extends BaseCitrusTestRunner {
 
   public static final String TEST_NAME_SEARCH_COURSE_BATCH_FAILURE_WITHOUT_ACCESS_TOKEN =
       "testSearchCourseBatchFailureWithoutAccessToken";
@@ -27,20 +27,21 @@ public class SearchCourseBatchTest extends BaseCitrusTest {
     };
   }
 
-  /*@Test(dataProvider = "searchFailureUserDataProvider")
+  @Test(dataProvider = "searchFailureUserDataProvider")
   @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
-  @CitrusTest*/
+  @CitrusTest
   public void testSearchCourseBatchFailure(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
 
     performPostTest(
-        testName,
+        this,
         TEMPLATE_DIR,
+        testName,
         getSearchCourseBatchUrl(),
         REQUEST_JSON,
-        httpStatusCode,
-        RESPONSE_JSON,
+        MediaType.APPLICATION_JSON,
         isAuthRequired,
-        MediaType.APPLICATION_JSON);
+        httpStatusCode,
+        RESPONSE_JSON);
   }
 }
