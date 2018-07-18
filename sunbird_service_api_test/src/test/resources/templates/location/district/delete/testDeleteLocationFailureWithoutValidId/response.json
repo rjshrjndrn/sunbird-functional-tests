@@ -1,13 +1,13 @@
 {
-  "id": "api.location.update",
+  "id": "api.location.delete",
   "ver": "v1",
   "ts": "@ignore@",
   "params": {
     "resmsgid": null,
     "msgid": "@ignore@",
-    "err": "UPDATE_NOT_ALLOWED",
-    "status": "UPDATE_NOT_ALLOWED",
-    "errmsg": "@ignore@"
+    "err": "INVALID_PARAMETER",
+    "status": "INVALID_PARAMETER",
+    "errmsg": "Please provide valid locationId."
   },
   "responseCode": "CLIENT_ERROR",
   "result": {}

@@ -1,45 +1,49 @@
-package org.sunbird.integration.test.location.state;
+package org.sunbird.integration.test.location.district;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.testng.CitrusParameters;
 import javax.ws.rs.core.MediaType;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
+import org.sunbird.common.action.LocationUtil;
 import org.sunbird.common.annotation.CleanUp;
-import org.sunbird.common.util.Constant;
 import org.sunbird.integration.test.common.BaseCitrusTestRunner;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class StateLocationCreateTest extends BaseCitrusTestRunner {
+public class DistrictLocationCreateTest extends BaseCitrusTestRunner {
 
-  private static final String STATE_CODE =
-      "State-02-fuzzy-" + String.valueOf(System.currentTimeMillis());
+  private static final String DISTRICT_CODE =
+      "District-02-fuzzy-" + String.valueOf(System.currentTimeMillis());
   private static final String CREATE_LOCATION_SERVER_URI ="/api/data/v1/location/create";
   private static final String CREATE_LOCATION_LOCAL_URI = "/v1/location/create";
+  private static final String PARENT_ID = "parentId";
 
-  private static final String TEMPLATE_PATH = "templates/location/state/create";
+  private static final String TEMPLATE_PATH = "templates/location/district/create/";
   private static final String TEST_CREATE_LOCATION_SUCCESS = "testCreateLocationSuccess";
   private static final String TEST_CREATE_LOCATION_FAILURE_DUPLICATE_CODE = "testCreateLocationFailureDuplicateCode";
-  private static final String TEST_CREATE_LOCATION_FAILURE_WITHOUT_MANDATORY_PARAM = "testCreateLocationFailureWithoutMandatoryParam";
-  private static final String TEST_CREATE_LOCATION_FAILURE_WITHOUT_REQUEST_BODY = "testCreateLocationFailureWithoutRequestBody";
+  private static final String TEST_CREATE_LOCATION_FAILURE_WITHOUT_PARENT_ID = "testCreateLocationFailureWithoutParentId";
 
-  @DataProvider(name = "createStateLocationDataProvider")
-  public Object[][] createStateLocationDataProvider() {
+  @DataProvider(name = "createLocationDataProvider")
+  public Object[][] createLocationDataProvider() {
     return new Object[][] {
         new Object[] {TEST_CREATE_LOCATION_SUCCESS, true, HttpStatus.OK},
         new Object[] {TEST_CREATE_LOCATION_FAILURE_DUPLICATE_CODE, true, HttpStatus.BAD_REQUEST},
-        new Object[] {TEST_CREATE_LOCATION_FAILURE_WITHOUT_MANDATORY_PARAM, true, HttpStatus.BAD_REQUEST},
-        new Object[] {TEST_CREATE_LOCATION_FAILURE_WITHOUT_REQUEST_BODY, true, HttpStatus.BAD_REQUEST}
+        new Object[] {TEST_CREATE_LOCATION_FAILURE_WITHOUT_PARENT_ID, true, HttpStatus.BAD_REQUEST}
+
+
     };
   }
 
-  @Test(dataProvider = "createStateLocationDataProvider")
+  @Test(dataProvider = "createLocationDataProvider")
   @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
   @CitrusTest
   public void testCreateLocation(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
     getAuthToken(this, isAuthRequired);
-    variable("locationCode", STATE_CODE);
+    createStateLocation();
+    variable(PARENT_ID , testContext.getVariables().get(PARENT_ID));
+    variable("locationCode", DISTRICT_CODE);
     performPostTest(
         this,
         TEMPLATE_PATH,
@@ -50,7 +54,15 @@ public class StateLocationCreateTest extends BaseCitrusTestRunner {
         isAuthRequired,
         httpStatusCode,
         RESPONSE_JSON);
-    this.sleep(Constant.ES_SYNC_WAIT_TIME);
+  }
+
+  public void createStateLocation(){
+    if(StringUtils.isBlank((String)testContext.getVariables().get("parentId"))) {
+      variable("locationCode", getStateCode());
+      LocationUtil.createStateTypeLocation(this, testContext, "templates/location/state/create/",
+          "testCreateLocationSuccess",
+          getCreateLocationUrl(), REQUEST_JSON, MediaType.APPLICATION_JSON, true, "$.result.id",PARENT_ID);
+    }
   }
 
   @CleanUp
@@ -60,5 +72,9 @@ public class StateLocationCreateTest extends BaseCitrusTestRunner {
 
   private String getCreateLocationUrl() {
     return getLmsApiUriPath(CREATE_LOCATION_SERVER_URI, CREATE_LOCATION_LOCAL_URI);
+  }
+
+  private static String getStateCode(){
+    return "State-02-fuzzy-" + String.valueOf(System.currentTimeMillis());
   }
 }

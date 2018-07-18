@@ -5,9 +5,9 @@
   "params": {
     "resmsgid": null,
     "msgid": "@ignore@",
-    "err": "UPDATE_NOT_ALLOWED",
-    "status": "UPDATE_NOT_ALLOWED",
-    "errmsg": "@ignore@"
+    "err": "INVALID_REQUESTED_DATA",
+    "status": "INVALID_REQUESTED_DATA",
+    "errmsg": "Requested data for this operation is not valid."
   },
   "responseCode": "CLIENT_ERROR",
   "result": {}

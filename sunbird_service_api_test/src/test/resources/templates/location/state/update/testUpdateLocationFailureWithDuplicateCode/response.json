@@ -4,9 +4,9 @@
   "ts": "@ignore@",
   "params": {
     "resmsgid": null,
-    "msgid": "@ignore@",
-    "err": "UPDATE_NOT_ALLOWED",
-    "status": "UPDATE_NOT_ALLOWED",
+    "msgid": "e46d1ed3-b83c-43c6-9bc0-33067f1d5477",
+    "err": "ALREADY_EXISTS",
+    "status": "ALREADY_EXISTS",
     "errmsg": "@ignore@"
   },
   "responseCode": "CLIENT_ERROR",

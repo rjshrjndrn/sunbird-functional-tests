@@ -1,12 +1,12 @@
 {
-  "id": "api.location.update",
+  "id": "api.location.create",
   "ver": "v1",
   "ts": "@ignore@",
   "params": {
     "resmsgid": null,
     "msgid": "@ignore@",
-    "err": "UPDATE_NOT_ALLOWED",
-    "status": "UPDATE_NOT_ALLOWED",
+    "err": "INVALID_REQUESTED_DATA",
+    "status": "INVALID_REQUESTED_DATA",
     "errmsg": "@ignore@"
   },
   "responseCode": "CLIENT_ERROR",
