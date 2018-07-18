@@ -27,7 +27,7 @@ public class CreateUserTest extends BaseCitrusTestRunner {
 
     public static final String TEMPLATE_DIR = "templates/user/create";
 
-    private String getCreateOrgUrl() {
+    private String getCreateUserUrl() {
 
         return getLmsApiUriPath("/api/user/v1/create", "/v1/user/create");
     }
@@ -56,14 +56,14 @@ public class CreateUserTest extends BaseCitrusTestRunner {
 
         performPostTest(
                 this,
-                testName,
                 TEMPLATE_DIR,
-                getCreateOrgUrl(),
+                testName,
+                getCreateUserUrl(),
                 REQUEST_JSON,
-                httpStatusCode,
-                RESPONSE_JSON,
+                MediaType.APPLICATION_JSON,
                 isAuthRequired,
-                MediaType.APPLICATION_JSON);
+                httpStatusCode,
+                RESPONSE_JSON);
     }
 
 }

@@ -1,18 +1,24 @@
 package org.sunbird.integration.test.user;
 
 import com.consol.citrus.annotations.CitrusTest;
+import com.consol.citrus.context.TestContext;
 import com.consol.citrus.testng.CitrusParameters;
 
 import javax.ws.rs.core.MediaType;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.sunbird.common.action.UserUtil;
 import org.sunbird.integration.test.common.BaseCitrusTest;
 import org.sunbird.integration.test.common.BaseCitrusTestRunner;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class SearchUserTest extends BaseCitrusTestRunner {
-
+    @Autowired
+    protected TestContext testContext;
+    public static final String BT_CREATE_ISSUER_TEMPLATE_DIR = "templates/user/create";
+    public static final String BT_TEST_NAME_CREATE_ISSUER_SUCCESS = "testCreateUserSuccess";
     public static final String TEST_NAME_SEARCH_USER_FAILURE_WITHOUT_ACCESS_TOKEN =
             "testSearchUserFailureWithoutAccessToken";
     public static final String TEST_SEARCH_USER_BY_FIRST_NAME_SUCCESS =
@@ -33,7 +39,8 @@ public class SearchUserTest extends BaseCitrusTestRunner {
 
     public static final String TEST_SEARCH_USER_UNKNOWN_FIELDS_SUCCESS =
             "testSearchUserByUnknownFieldsSuccess";
-
+    public static final String TEST_SEARCH_EMPTY_BODY_FAILURE =
+            "testSearchUserByEmptyBodyFailure";
 
     public static final String TEMPLATE_DIR = "templates/user/search";
 
@@ -48,6 +55,9 @@ public class SearchUserTest extends BaseCitrusTestRunner {
         return new Object[][]{
                 new Object[]{
                         TEST_NAME_SEARCH_USER_FAILURE_WITHOUT_ACCESS_TOKEN, false, HttpStatus.UNAUTHORIZED
+                },
+                new Object[]{
+                        TEST_SEARCH_EMPTY_BODY_FAILURE, true, HttpStatus.INTERNAL_SERVER_ERROR
                 },
         };
     }
@@ -77,6 +87,9 @@ public class SearchUserTest extends BaseCitrusTestRunner {
                 new Object[]{
                         TEST_SEARCH_USER_BY_LIMIT_1000_SUCCESS, true, HttpStatus.OK
                 },
+                new Object[]{
+                        TEST_SEARCH_USER_UNKNOWN_FIELDS_SUCCESS, true, HttpStatus.OK
+                },
 
 
         };
@@ -87,17 +100,17 @@ public class SearchUserTest extends BaseCitrusTestRunner {
     @CitrusTest
     public void testSearchUserFailure(
             String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
-
+        getAuthToken(this, isAuthRequired);
         performPostTest(
                 this,
-                testName,
                 TEMPLATE_DIR,
+                testName,
                 getSearchUserUrl(),
                 REQUEST_JSON,
-                httpStatusCode,
-                RESPONSE_JSON,
+                MediaType.APPLICATION_JSON,
                 isAuthRequired,
-                MediaType.APPLICATION_JSON);
+                httpStatusCode,
+                RESPONSE_JSON);
     }
 
     @Test(dataProvider = "searchUserSuccessDataProvider")
@@ -105,16 +118,16 @@ public class SearchUserTest extends BaseCitrusTestRunner {
     @CitrusTest
     public void testSearchUserSuccess(
             String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
-
+        getAuthToken(this, isAuthRequired);
         performPostTest(
                 this,
-                testName,
                 TEMPLATE_DIR,
+                testName,
                 getSearchUserUrl(),
                 REQUEST_JSON,
-                httpStatusCode,
-                RESPONSE_JSON,
+                MediaType.APPLICATION_JSON,
                 isAuthRequired,
-                MediaType.APPLICATION_JSON);
+                httpStatusCode,
+                RESPONSE_JSON);
     }
 }

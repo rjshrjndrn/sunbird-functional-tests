@@ -16,7 +16,7 @@
             {
                 "idType": "citrus:concat('ft_provider_type',citrus:randomString(5, MIXED, true))",
                 "provider": "citrus:concat('ft_provider_id',citrus:randomString(5, MIXED, true))",
-                "id": "citrus:concat('ft_external_id',citrus:randomString(5, MIXED, true))",
+                "id": "citrus:concat('ft_external_id',citrus:randomString(5, MIXED, true))"
             }
         ]
     }

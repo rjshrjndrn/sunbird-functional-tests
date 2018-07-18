@@ -1,0 +1,14 @@
+{
+    "id": "api.user.search",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "INTERNAL_ERROR",
+        "status": "INTERNAL_ERROR",
+        "errmsg": "Process failed,please try again later."
+    },
+    "responseCode": "SERVER_ERROR",
+    "result": {}
+}
