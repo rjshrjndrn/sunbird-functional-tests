@@ -33,7 +33,7 @@ public class CreateUserTest extends BaseCitrusTestRunner {
     }
 
     @DataProvider(name = "createUserFailureDataProvider")
-    public Object[][] createOrgFailureDataProvider() {
+    public Object[][] createUserFailureDataProvider() {
 
         return new Object[][]{
                 new Object[]{TEST_NAME_CREATE_USER_FAILURE_WITH_DUPLICATE_COMBINATION_EXTERNAL_ID_EXTERNAL_ID_TYPE_AND_EXTERNAL_ID_PROVIDER, false, HttpStatus.BAD_REQUEST},
@@ -41,9 +41,6 @@ public class CreateUserTest extends BaseCitrusTestRunner {
                         TEST_NAME_CREATE_USER_FAILURE_WITH_DUPLICATE_COMBINATION_OF_EXTERNAL_ID_TYPE_AND_EXTERNAL_ID_PROVIDER,
                         false,
                         HttpStatus.BAD_REQUEST
-                },
-                new Object[]{
-                        TEST_NAME_CREATE_USER_SUCESS_WITH_VALID_EXTERNAL_ID_EXTERNAL_PROVIDER_ID_AND_EXTERNAL_PROVIDER_TYPE, false, HttpStatus.OK
                 }
         };
     }

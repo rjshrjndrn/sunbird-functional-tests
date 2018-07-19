@@ -1,0 +1,14 @@
+{
+	"id": "api.user.getuser",
+	"ver": "v1",
+	"ts": "@ignore@",
+	"params": {
+		"resmsgid": null,
+		"msgid": "@ignore@",
+		"err": "USER_NOT_FOUND",
+		"status": "USER_NOT_FOUND",
+		"errmsg": "user not found."
+	},
+	"responseCode": "CLIENT_ERROR",
+	"result": {}
+}

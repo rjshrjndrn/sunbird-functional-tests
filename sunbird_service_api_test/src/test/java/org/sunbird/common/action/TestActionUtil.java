@@ -15,8 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
@@ -27,55 +25,55 @@ import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 
 public class TestActionUtil {
   public static TestAction getTokenRequestTestAction(
-      HttpActionBuilder builder, String endpointName) {
-    String userName = System.getenv("sunbird_username");
-    String password = System.getenv("sunbird_user_password");
+          HttpActionBuilder builder, String endpointName) {
+    String userName = "rajat";//System.getenv("sunbird_username");
+    String password = "rajat";//System.getenv("sunbird_user_password");
     return getTokenRequestTestAction(builder, endpointName, userName, password);
   }
 
   public static TestAction getTokenRequestTestAction(
-      HttpActionBuilder builder, String endpointName, String userName, String password) {
+          HttpActionBuilder builder, String endpointName, String userName, String password) {
     String urlPath =
-        "/realms/" + System.getenv("sunbird_sso_realm") + "/protocol/openid-connect/token";
+            "/realms/" + System.getenv("sunbird_sso_realm") + "/protocol/openid-connect/token";
     return builder
-        .client(endpointName)
-        .send()
-        .post(urlPath)
-        .contentType("application/x-www-form-urlencoded")
-        .payload(
-            "client_id="
-                + System.getenv("sunbird_sso_client_id")
-                + "&username="
-                + userName
-                + "&password="
-                + password
-                + "&grant_type=password");
+            .client(endpointName)
+            .send()
+            .post(urlPath)
+            .contentType("application/x-www-form-urlencoded")
+            .payload(
+                    "client_id="
+                            + System.getenv("sunbird_sso_client_id")
+                            + "&username="
+                            + userName
+                            + "&password="
+                            + password
+                            + "&grant_type=password");
   }
 
   public static TestAction getTokenResponseTestAction(
-      HttpActionBuilder builder, String endpointName) {
+          HttpActionBuilder builder, String endpointName) {
     return builder
-        .client(endpointName)
-        .receive()
-        .response(HttpStatus.OK)
-        .messageType(MessageType.JSON)
-        .extractFromPayload("$.access_token", "accessToken");
+            .client(endpointName)
+            .receive()
+            .response(HttpStatus.OK)
+            .messageType(MessageType.JSON)
+            .extractFromPayload("$.access_token", "accessToken");
   }
 
   public static TestAction getPostRequestTestAction(
-      HttpActionBuilder builder,
-      String endpointName,
-      String testTemplateDir,
-      String testName,
-      String url,
-      String requestFile,
-      String contentType,
-      Map<String, Object> headers) {
+          HttpActionBuilder builder,
+          String endpointName,
+          String testTemplateDir,
+          String testName,
+          String url,
+          String requestFile,
+          String contentType,
+          Map<String, Object> headers) {
 
     String requestFilePath =
-        MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, requestFile);
+            MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, requestFile);
     HttpClientRequestActionBuilder requestActionBuilder =
-        builder.client(endpointName).send().post(url).messageType(MessageType.JSON);
+            builder.client(endpointName).send().post(url).messageType(MessageType.JSON);
     if (StringUtils.isNotBlank(contentType)) {
       requestActionBuilder.contentType(contentType);
     }
@@ -86,19 +84,19 @@ public class TestActionUtil {
   }
 
   public static TestAction getMultipartRequestTestAction(
-      TestContext context,
-      HttpActionBuilder builder,
-      String endpointName,
-      String testTemplateDir,
-      String testName,
-      String requestUrl,
-      String requestFile,
-      Map<String, Object> headers,
-      ClassLoader classLoader,
-      TestGlobalProperty config) {
+          TestContext context,
+          HttpActionBuilder builder,
+          String endpointName,
+          String testTemplateDir,
+          String testName,
+          String requestUrl,
+          String requestFile,
+          Map<String, Object> headers,
+          ClassLoader classLoader,
+          TestGlobalProperty config) {
     String formDataFileFolderPath = MessageFormat.format("{0}/{1}", testTemplateDir, testName);
     String formDataFile =
-        MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, requestFile);
+            MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, requestFile);
 
     MultiValueMap<String, Object> formData = new LinkedMultiValueMap<>();
 
@@ -109,8 +107,8 @@ public class TestActionUtil {
         if (param != null && param.length == 2) {
           if (param[0].equalsIgnoreCase(Constant.MULTIPART_FILE_NAME)) {
             formData.add(
-                Constant.MULTIPART_FILE_NAME,
-                new ClassPathResource(formDataFileFolderPath + "/" + param[1]));
+                    Constant.MULTIPART_FILE_NAME,
+                    new ClassPathResource(formDataFileFolderPath + "/" + param[1]));
           } else {
             formData.add(param[0], TestActionUtil.getVariable(context, param[1]));
           }
@@ -122,12 +120,12 @@ public class TestActionUtil {
     }
 
     HttpClientRequestActionBuilder actionBuilder =
-        builder
-            .client(endpointName)
-            .send()
-            .post(requestUrl)
-            .contentType(MediaType.MULTIPART_FORM_DATA)
-            .header(Constant.AUTHORIZATION, Constant.BEARER + config.getApiKey());
+            builder
+                    .client(endpointName)
+                    .send()
+                    .post(requestUrl)
+                    .contentType(MediaType.MULTIPART_FORM_DATA)
+                    .header(Constant.AUTHORIZATION, Constant.BEARER + config.getApiKey());
 
     if (null != headers) {
       actionBuilder = addHeaders(actionBuilder, headers);
@@ -136,49 +134,49 @@ public class TestActionUtil {
   }
 
   public static TestAction getResponseTestAction(
-      HttpActionBuilder builder,
-      String endpointName,
-      String testTemplateDir,
-      String testName,
-      HttpStatus responseCode,
-      String responseFile) {
+          HttpActionBuilder builder,
+          String endpointName,
+          String testTemplateDir,
+          String testName,
+          HttpStatus responseCode,
+          String responseFile) {
     String responseFilePath =
-        MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, responseFile);
+            MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, responseFile);
 
     return builder
-        .client(endpointName)
-        .receive()
-        .response(responseCode)
-        .validator("defaultJsonMessageValidator")
-        .messageType(MessageType.JSON)
-        .payload(new ClassPathResource(responseFilePath));
+            .client(endpointName)
+            .receive()
+            .response(responseCode)
+            .validator("defaultJsonMessageValidator")
+            .messageType(MessageType.JSON)
+            .payload(new ClassPathResource(responseFilePath));
   }
 
   public static TestAction getExtractFromResponseTestAction(
-      TestContext testContext,
-      HttpActionBuilder builder,
-      String endpointName,
-      HttpStatus responseCode,
-      String extractFieldPath,
-      String extractVariable) {
+          TestContext testContext,
+          HttpActionBuilder builder,
+          String endpointName,
+          HttpStatus responseCode,
+          String extractFieldPath,
+          String extractVariable) {
     ObjectMapper mapper = new ObjectMapper();
     return builder
-        .client(endpointName)
-        .receive()
-        .response(responseCode)
-        .validator("defaultJsonMessageValidator")
-        .messageType(MessageType.JSON)
-        .extractFromPayload(extractFieldPath, extractVariable)
-        .validationCallback(
-            new JsonMappingValidationCallback<Map>(Map.class, mapper) {
-              @Override
-              public void validate(Map response, Map<String, Object> headers, TestContext context) {
-                String extractValue =
-                    (String) context.getVariables().getOrDefault(extractVariable, extractVariable);
-                testContext.getVariables().put(extractVariable, extractValue);
-                System.out.println("extractVariable = " + extractValue);
-              }
-            });
+            .client(endpointName)
+            .receive()
+            .response(responseCode)
+            .validator("defaultJsonMessageValidator")
+            .messageType(MessageType.JSON)
+            .extractFromPayload(extractFieldPath, extractVariable)
+            .validationCallback(
+                    new JsonMappingValidationCallback<Map>(Map.class, mapper) {
+                      @Override
+                      public void validate(Map response, Map<String, Object> headers, TestContext context) {
+                        String extractValue =
+                                (String) context.getVariables().getOrDefault(extractVariable, extractVariable);
+                        testContext.getVariables().put(extractVariable, extractValue);
+                        System.out.println("extractVariable = " + extractValue);
+                      }
+                    });
   }
 
   public static Map<String, Object> getHeaders(boolean isAuthRequired) {
@@ -191,7 +189,7 @@ public class TestActionUtil {
   }
 
   private static HttpClientRequestActionBuilder addHeaders(
-      HttpClientRequestActionBuilder actionBuilder, Map<String, Object> headers) {
+          HttpClientRequestActionBuilder actionBuilder, Map<String, Object> headers) {
     if (headers != null) {
       for (Map.Entry<String, Object> entry : headers.entrySet()) {
         actionBuilder = actionBuilder.header(entry.getKey(), entry.getValue());
@@ -211,19 +209,19 @@ public class TestActionUtil {
   }
 
   public static TestAction performGetTest(
-      HttpActionBuilder builder,
-      String endpointName,
-      String testName,
-      String requestUrl,
-      Map<String, Object> headers,
-      TestGlobalProperty config) {
+          HttpActionBuilder builder,
+          String endpointName,
+          String testName,
+          String requestUrl,
+          Map<String, Object> headers,
+          TestGlobalProperty config) {
     HttpClientRequestActionBuilder actionBuilder =
-        builder
-            .client(endpointName)
-            .send()
-            .get(requestUrl)
-            .messageType(MessageType.JSON)
-            .header(Constant.AUTHORIZATION, Constant.BEARER + config.getApiKey());
+            builder
+                    .client(endpointName)
+                    .send()
+                    .get(requestUrl)
+                    .messageType(MessageType.JSON)
+                    .header(Constant.AUTHORIZATION, Constant.BEARER + config.getApiKey());
     if (null != headers) {
       actionBuilder = addHeaders(actionBuilder, headers);
     }
@@ -231,11 +229,11 @@ public class TestActionUtil {
   }
 
   public static TestAction getResponseTestAction(
-      HttpActionBuilder builder, String endpointName, String testName, HttpStatus responseCode) {
+          HttpActionBuilder builder, String endpointName, String testName, HttpStatus responseCode) {
     return builder
-        .client(endpointName)
-        .receive()
-        .response(responseCode)
-        .validator("defaultJsonMessageValidator");
+            .client(endpointName)
+            .receive()
+            .response(responseCode)
+            .validator("defaultJsonMessageValidator");
   }
 }
