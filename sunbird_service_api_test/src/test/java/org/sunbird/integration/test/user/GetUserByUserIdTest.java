@@ -31,7 +31,6 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
       },
       new Object[] {"testGetUserByUserIdFailureWithEmptyUserId", true, "", HttpStatus.NOT_FOUND}
     };
-
   }
 
   @Test(dataProvider = "getUserByUserIdFailure")
@@ -68,14 +67,7 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
   }
 
   private void beforeTest() {
-    UserUtil.createUser(
-        this,
-        testContext,
-        TEMPLATE_DIR,
-        "testGetUserByUserIdSuccess",
-        HttpStatus.OK,
-        "$.result.userId",
-        "userId");
+    UserUtil.createUser(this, testContext, TEMPLATE_DIR, "testGetUserByUserIdSuccess");
   }
 
   private void afterTest() {}

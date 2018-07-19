@@ -18,13 +18,7 @@ public class UserUtil {
   }
 
   public static void createUser(
-      BaseCitrusTestRunner runner,
-      TestContext testContext,
-      String templateDir,
-      String testName,
-      HttpStatus responseCode,
-      String extractParam,
-      String extractVariable) {
+      BaseCitrusTestRunner runner, TestContext testContext, String templateDir, String testName) {
     runner.http(
         builder ->
             TestActionUtil.getPostRequestTestAction(
@@ -44,8 +38,8 @@ public class UserUtil {
                 builder,
                 Constant.LMS_ENDPOINT,
                 HttpStatus.OK,
-                extractParam,
-                extractVariable));
+                "$.result.userId",
+                "userId"));
     runner.sleep(Constant.ES_SYNC_WAIT_TIME);
   }
 

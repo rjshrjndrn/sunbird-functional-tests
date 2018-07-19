@@ -2,8 +2,6 @@ package org.sunbird.integration.test.common;
 
 import com.consol.citrus.TestAction;
 import com.consol.citrus.TestCase;
-import com.consol.citrus.context.TestContext;
-import com.consol.citrus.dsl.builder.HttpActionBuilder;
 import com.consol.citrus.dsl.builder.HttpClientActionBuilder;
 import com.consol.citrus.dsl.builder.HttpClientRequestActionBuilder;
 import com.consol.citrus.message.MessageType;
@@ -24,7 +22,7 @@ import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 
 public class TestActionUtil {
   public static TestAction getTokenRequestTestAction(HttpClientActionBuilder builder) {
-    String userName =System.getenv("sunbird_username");
+    String userName = System.getenv("sunbird_username");
     String password = System.getenv("sunbird_user_password");
     return getTokenRequestTestAction(builder, userName, password);
   }
@@ -166,5 +164,4 @@ public class TestActionUtil {
     }
     return actionBuilder;
   }
-
 }

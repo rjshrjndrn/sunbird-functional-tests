@@ -171,13 +171,7 @@ public class AssignRoleToUserTest extends BaseCitrusTestRunner {
     testContext.setVariable("userName", userName);
     variable("username", userName);
     UserUtil.createUser(
-        this,
-        testContext,
-        TEMPLATE_DIR_USER_CREATE,
-        TEMPLATE_DIR_USER_CREATE_TEST_CASE,
-        HttpStatus.OK,
-        "$.result.userId",
-        "userId");
+        this, testContext, TEMPLATE_DIR_USER_CREATE, TEMPLATE_DIR_USER_CREATE_TEST_CASE);
   }
 
   private void createOrg() {
