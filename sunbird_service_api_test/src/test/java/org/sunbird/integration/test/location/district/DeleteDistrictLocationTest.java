@@ -72,6 +72,6 @@ public class DeleteDistrictLocationTest extends BaseCitrusTestRunner {
   }
 
   private String getDeleteLocationUrl(String locationId) {
-    return getLmsApiUriPath(DELETE_LOCATION_SERVER_URI, DELETE_LOCATION_LOCAL_URI,locationId);
+    return getLmsApiUriPath(DELETE_LOCATION_SERVER_URI, DELETE_LOCATION_LOCAL_URI, locationId);
   }
 }
