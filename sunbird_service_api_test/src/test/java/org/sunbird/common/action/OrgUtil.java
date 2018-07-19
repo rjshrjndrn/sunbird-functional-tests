@@ -1,12 +1,22 @@
 package org.sunbird.common.action;
 
 import com.consol.citrus.context.TestContext;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.sunbird.common.util.Constant;
 import org.sunbird.integration.test.common.BaseCitrusTestRunner;
 
+import java.util.Random;
+
 public class OrgUtil {
+
+  private static String rootOrgId = null;
+
+  public static String rootChannel = "FT_Org_Channel_"+(new Random()).nextInt(100);
+  public static String  rootExternalId = "FT_Org_External_"+(new Random()).nextInt(100);
+
+
 
   public static String getCreateOrgUrl(BaseCitrusTestRunner runner) {
     return runner.getLmsApiUriPath("/api/org/v1/create", "/v1/org/create");
@@ -40,4 +50,18 @@ public class OrgUtil {
                 "organisationId"));
     runner.sleep(Constant.ES_SYNC_WAIT_TIME);
   }
+
+  public static void getRootOrgId(BaseCitrusTestRunner runner, TestContext testContext){
+    if(StringUtils.isBlank(rootOrgId)){
+      createOrg(
+              runner,
+              testContext,
+              "templates/organisation/create",
+              "testCreateRootOrgSuccess",
+              HttpStatus.OK);
+      rootOrgId = testContext.getVariable("organisationId");
+    }
+    testContext.setVariable("rootOrgId",rootOrgId);
+  }
+
 }
