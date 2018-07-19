@@ -49,7 +49,7 @@ public class StateLocationUpdateTest extends BaseCitrusTestRunner {
     getAuthToken(this, isAuthRequired);
     createStateLocation();
     variable("locationCode", STATE_CODE);
-    variable(LOCATION_ID ,testContext.getVariables().get(LOCATION_ID));
+    variable(LOCATION_ID ,testContext.getVariables().get(Constant.STATE_ID));
     performPatchTest(
         this,
         TEMPLATE_PATH,
@@ -64,11 +64,11 @@ public class StateLocationUpdateTest extends BaseCitrusTestRunner {
   }
 
   public void createStateLocation(){
-    if(StringUtils.isBlank((String)testContext.getVariables().get(LOCATION_ID))) {
+    if(StringUtils.isBlank((String)testContext.getVariables().get(Constant.STATE_ID))) {
       variable("locationCode", STATE_CODE);
-      LocationUtil.createStateTypeLocation(this, testContext, "templates/location/state/create/",
+      LocationUtil.createLocation(this, testContext, "templates/location/state/create/",
           "testCreateLocationSuccess",
-          getCreateLocationUrl(), REQUEST_JSON, MediaType.APPLICATION_JSON, true, "$.result.id",LOCATION_ID);
+          getCreateLocationUrl(), REQUEST_JSON, MediaType.APPLICATION_JSON, true, Constant.LOCATION_TYPE_STATE);
     }
   }
 

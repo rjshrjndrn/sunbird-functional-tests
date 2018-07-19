@@ -23,8 +23,8 @@ public class DistrictLocationDeleteTest extends BaseCitrusTestRunner {
   private static final String TEST_DELETE_LOCATION_SUCCESS = "testDeleteLocationSuccess";
   private static final String TEST_DELETE_LOCATION_FAILURE_WITHOUT_VALID_ID = "testDeleteLocationFailureWithoutValidId";
 
-  private static final String STATE_LOCATION_ID = "stateLocationId";
-  private static final String DISTRICT_LOCATION_ID = "districtLocationId";
+  private static final String STATE_ID = "stateId";
+  private static final String DISTRICT_ID = "districtId";
 
   @DataProvider(name = "deleteLocationDataProvider")
   public Object[][] deleteLocationDataProvider() {
@@ -45,7 +45,7 @@ public class DistrictLocationDeleteTest extends BaseCitrusTestRunner {
         this,
         TEMPLATE_PATH,
         testName,
-        getDeleteLocationUrl((String)testContext.getVariables().get(DISTRICT_LOCATION_ID)),
+        getDeleteLocationUrl((String)testContext.getVariables().get(Constant.DISTRICT_ID)),
         null,
         MediaType.APPLICATION_JSON,
         isAuthRequired,
@@ -55,10 +55,10 @@ public class DistrictLocationDeleteTest extends BaseCitrusTestRunner {
   }
 
   public void createDistrictLocation(){
-    if(StringUtils.isBlank((String)testContext.getVariables().get(DISTRICT_LOCATION_ID))) {
-      LocationUtil.createDistrictTypeLocation(this, testContext, "templates/location/district/create/",
+    if(StringUtils.isBlank((String)testContext.getVariables().get(Constant.DISTRICT_ID))) {
+      LocationUtil.createLocation(this, testContext, "templates/location/district/create/",
           "testCreateLocationSuccess",
-          getCreateLocationUrl(), REQUEST_JSON, MediaType.APPLICATION_JSON, true, "$.result.id",DISTRICT_LOCATION_ID);
+          getCreateLocationUrl(), REQUEST_JSON, MediaType.APPLICATION_JSON, true, Constant.LOCATION_TYPE_DISTRICT);
     }
   }
 

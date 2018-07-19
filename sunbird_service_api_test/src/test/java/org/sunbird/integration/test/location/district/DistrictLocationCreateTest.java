@@ -7,6 +7,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.sunbird.common.action.LocationUtil;
 import org.sunbird.common.annotation.CleanUp;
+import org.sunbird.common.util.Constant;
 import org.sunbird.integration.test.common.BaseCitrusTestRunner;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -42,7 +43,7 @@ public class DistrictLocationCreateTest extends BaseCitrusTestRunner {
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
     getAuthToken(this, isAuthRequired);
     createStateLocation();
-    variable(PARENT_ID , testContext.getVariables().get(PARENT_ID));
+    variable(PARENT_ID , testContext.getVariables().get(Constant.STATE_ID));
     variable("locationCode", DISTRICT_CODE);
     performPostTest(
         this,
@@ -57,11 +58,11 @@ public class DistrictLocationCreateTest extends BaseCitrusTestRunner {
   }
 
   public void createStateLocation(){
-    if(StringUtils.isBlank((String)testContext.getVariables().get("parentId"))) {
+    if(StringUtils.isBlank((String)testContext.getVariables().get(Constant.STATE_ID))) {
       variable("locationCode", getStateCode());
-      LocationUtil.createStateTypeLocation(this, testContext, "templates/location/state/create/",
+      LocationUtil.createLocation(this, testContext, "templates/location/state/create/",
           "testCreateLocationSuccess",
-          getCreateLocationUrl(), REQUEST_JSON, MediaType.APPLICATION_JSON, true, "$.result.id",PARENT_ID);
+          getCreateLocationUrl(), REQUEST_JSON, MediaType.APPLICATION_JSON, true, Constant.LOCATION_TYPE_STATE);
     }
   }
 
