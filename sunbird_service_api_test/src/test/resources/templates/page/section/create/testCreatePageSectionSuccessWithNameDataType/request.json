@@ -1,0 +1,6 @@
+{
+  "request": {
+  "name": "citrus:concat('ft_page_section_',citrus:randomNumber(10))",
+  "sectionDataType":"Data Type"
+  }
+}

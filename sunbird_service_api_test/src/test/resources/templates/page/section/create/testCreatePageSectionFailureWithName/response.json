@@ -1,0 +1,14 @@
+{
+    "id": "api.page.section.create",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "SECTION_DATA_TYPE_MISSING",
+        "status": "SECTION_DATA_TYPE_MISSING",
+        "errmsg": "Section data type missing."
+    },
+    "responseCode": "CLIENT_ERROR",
+    "result": {}
+}

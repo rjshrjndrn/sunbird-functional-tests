@@ -1,0 +1,14 @@
+{
+    "id": "api.page.create",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "PAGE_NAME_REQUIRED",
+        "status": "PAGE_NAME_REQUIRED",
+        "errmsg": "Page name is required."
+    },
+    "responseCode": "CLIENT_ERROR",
+    "result": {}
+}

@@ -83,6 +83,29 @@ public class TestActionUtil {
     return requestActionBuilder.payload(new ClassPathResource(requestFilePath));
   }
 
+  public static TestAction getPatchRequestTestAction(
+      HttpActionBuilder builder,
+      String endpointName,
+      String testTemplateDir,
+      String testName,
+      String url,
+      String requestFile,
+      String contentType,
+      Map<String, Object> headers) {
+
+    String requestFilePath =
+        MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, requestFile);
+    HttpClientRequestActionBuilder requestActionBuilder =
+        builder.client(endpointName).send().patch(url).messageType(MessageType.JSON);
+    if (StringUtils.isNotBlank(contentType)) {
+      requestActionBuilder.contentType(contentType);
+    }
+
+    requestActionBuilder = addHeaders(requestActionBuilder, headers);
+
+    return requestActionBuilder.payload(new ClassPathResource(requestFilePath));
+  }
+
   public static TestAction getMultipartRequestTestAction(
       TestContext context,
       HttpActionBuilder builder,
@@ -171,6 +194,7 @@ public class TestActionUtil {
             new JsonMappingValidationCallback<Map>(Map.class, mapper) {
               @Override
               public void validate(Map response, Map<String, Object> headers, TestContext context) {
+                System.out.println("in the Call back function");
                 String extractValue =
                     (String) context.getVariables().getOrDefault(extractVariable, extractVariable);
                 testContext.getVariables().put(extractVariable, extractValue);
