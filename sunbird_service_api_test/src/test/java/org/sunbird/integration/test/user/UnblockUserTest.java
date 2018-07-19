@@ -25,11 +25,16 @@ public class UnblockUserTest extends BaseCitrusTestRunner {
 
     public static final String TEST_UNBLOCK_USER_UNBLOCK_FAILURE_WITH_VALID_USERID =
             "testUnBlockUserUnBlockFailureWithValidUserId";
+
+    public static final String TEST_UNBLOCK_USER_GET_SUCCESS_WITH_VALID_USERID =
+            "testUnBlockUserGetSuccessWithValidUserId";
     public static final String TEMPLATE_DIR_USER_CREATE="templates/user/create";
     public static final String TEMPLATE_DIR_USER_CREATE_TEST_CASE="testCreateUserSuccess";
     public static final String TEMPLATE_DIR_BLOCK = "templates/user/block";
     public static final String TEST_BLOCK_USER_SUCCESS_WITH_VALID_USERID =
             "testBlockUserSuccessWithValidUserId";
+    private static final String GET_USER_BY_ID_SERVER_URI = "/api/user/v1/read/";
+    private static final String GET_USER_BY_ID_LOCAL_URI = "/v1/user/read/";
     private String getUnBlockUserUrl() {
         return getLmsApiUriPath("/api/user/v1/unblock", "/v1/user/unblock");
     }
@@ -116,6 +121,24 @@ public class UnblockUserTest extends BaseCitrusTestRunner {
                 RESPONSE_JSON);
 
     }
+
+    @Test(dependsOnMethods = {"testUnBlockUserSuccess"})
+    @CitrusTest
+    public void testGetBlockUserByUserIdSuccess() {
+        performGetTest(
+                this,
+                TEMPLATE_DIR,
+                "testGetBlockedUserByUserIdFailure",
+                getLmsApiUriPath(
+                        GET_USER_BY_ID_SERVER_URI,
+                        GET_USER_BY_ID_LOCAL_URI,
+                        TestActionUtil.getVariable(testContext, "userId")),
+                true,
+                HttpStatus.OK,
+                RESPONSE_JSON);
+
+    }
+
 
     private void beforeTest() {
         getAuthToken(this, true);
