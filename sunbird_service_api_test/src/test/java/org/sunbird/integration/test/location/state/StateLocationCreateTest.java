@@ -18,10 +18,10 @@ public class StateLocationCreateTest extends BaseCitrusTestRunner {
   private static final String CREATE_LOCATION_LOCAL_URI = "/v1/location/create";
 
   private static final String TEMPLATE_PATH = "templates/location/state/create";
-  private static final String TEST_CREATE_LOCATION_SUCCESS = "testCreateLocationSuccess";
-  private static final String TEST_CREATE_LOCATION_FAILURE_DUPLICATE_CODE = "testCreateLocationFailureDuplicateCode";
-  private static final String TEST_CREATE_LOCATION_FAILURE_WITHOUT_MANDATORY_PARAM = "testCreateLocationFailureWithoutMandatoryParam";
-  private static final String TEST_CREATE_LOCATION_FAILURE_WITHOUT_REQUEST_BODY = "testCreateLocationFailureWithoutRequestBody";
+  private static final String TEST_CREATE_LOCATION_SUCCESS = "testCreateStateLocationSuccess";
+  private static final String TEST_CREATE_LOCATION_FAILURE_DUPLICATE_CODE = "testCreateStateLocationFailureDuplicateCode";
+  private static final String TEST_CREATE_LOCATION_FAILURE_WITHOUT_MANDATORY_PARAM = "testCreateStateLocationFailureWithoutMandatoryParam";
+  private static final String TEST_CREATE_LOCATION_FAILURE_WITHOUT_REQUEST_BODY = "testCreateStateLocationFailureWithoutRequestBody";
 
   @DataProvider(name = "createStateLocationDataProvider")
   public Object[][] createStateLocationDataProvider() {
@@ -36,7 +36,7 @@ public class StateLocationCreateTest extends BaseCitrusTestRunner {
   @Test(dataProvider = "createStateLocationDataProvider")
   @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
   @CitrusTest
-  public void testCreateLocation(
+  public void testCreateStateLocation(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
     getAuthToken(this, isAuthRequired);
     variable("locationCode", STATE_CODE);

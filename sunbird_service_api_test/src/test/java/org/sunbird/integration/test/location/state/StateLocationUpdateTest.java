@@ -22,11 +22,11 @@ public class StateLocationUpdateTest extends BaseCitrusTestRunner {
   private static final String UPDATE_LOCATION_LOCAL_URI = "/v1/location/update";
 
   private static final String TEMPLATE_PATH = "templates/location/state/update";
-  private static final String TEST_UPDATE_LOCATION_CODE_SUCCESS = "testUpdateLocationCodeSuccess";
-  private static final String TEST_UPDATE_LOCATION_FAILURE_WITH_DUPLICATE_CODE = "testUpdateLocationFailureWithDuplicateCode";
-  private static final String TEST_UPDATE_LOCATION_FAILURE_WITHOUT_REQUEST_BODY = "testUpdateLocationFailureWithoutRequestBody";
-  private static final String TEST_UPDATE_LOCATION_NAME_SUCCESS = "testUpdateLocationNameSuccess";
-  private static final String TEST_UPDATE_LOCATION_TYPE_FAILURE = "testUpdateLocationTypeFailure";
+  private static final String TEST_UPDATE_LOCATION_CODE_SUCCESS = "testUpdateStateLocationCodeSuccess";
+  private static final String TEST_UPDATE_LOCATION_FAILURE_WITH_DUPLICATE_CODE = "testUpdateStateLocationFailureWithDuplicateCode";
+  private static final String TEST_UPDATE_LOCATION_FAILURE_WITHOUT_REQUEST_BODY = "testUpdateStateLocationFailureWithoutRequestBody";
+  private static final String TEST_UPDATE_LOCATION_NAME_SUCCESS = "testUpdateStateLocationNameSuccess";
+  private static final String TEST_UPDATE_LOCATION_TYPE_FAILURE = "testUpdateStateLocationTypeFailure";
 
   private static final String LOCATION_ID = "locationId";
 
@@ -44,7 +44,7 @@ public class StateLocationUpdateTest extends BaseCitrusTestRunner {
   @Test(dataProvider = "createStateLocationDataProvider")
   @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
   @CitrusTest
-  public void testUpdateLocation(
+  public void testUpdateStateLocation(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
     getAuthToken(this, isAuthRequired);
     createStateLocation();
@@ -66,9 +66,8 @@ public class StateLocationUpdateTest extends BaseCitrusTestRunner {
   public void createStateLocation(){
     if(StringUtils.isBlank((String)testContext.getVariables().get(Constant.STATE_ID))) {
       variable("locationCode", STATE_CODE);
-      LocationUtil.createLocation(this, testContext, "templates/location/state/create/",
-          "testCreateLocationSuccess",
-          getCreateLocationUrl(), REQUEST_JSON, MediaType.APPLICATION_JSON, true, Constant.LOCATION_TYPE_STATE);
+      LocationUtil.createState(this, testContext,
+          getCreateLocationUrl(), REQUEST_JSON);
     }
   }
 

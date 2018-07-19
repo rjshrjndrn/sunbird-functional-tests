@@ -21,9 +21,9 @@ public class DistrictLocationCreateTest extends BaseCitrusTestRunner {
   private static final String PARENT_ID = "parentId";
 
   private static final String TEMPLATE_PATH = "templates/location/district/create/";
-  private static final String TEST_CREATE_LOCATION_SUCCESS = "testCreateLocationSuccess";
-  private static final String TEST_CREATE_LOCATION_FAILURE_DUPLICATE_CODE = "testCreateLocationFailureDuplicateCode";
-  private static final String TEST_CREATE_LOCATION_FAILURE_WITHOUT_PARENT_ID = "testCreateLocationFailureWithoutParentId";
+  private static final String TEST_CREATE_LOCATION_SUCCESS = "testCreateDistrictLocationSuccess";
+  private static final String TEST_CREATE_LOCATION_FAILURE_DUPLICATE_CODE = "testCreateDistrictLocationFailureDuplicateCode";
+  private static final String TEST_CREATE_LOCATION_FAILURE_WITHOUT_PARENT_ID = "testCreateDistrictLocationFailureWithoutParentId";
 
   @DataProvider(name = "createLocationDataProvider")
   public Object[][] createLocationDataProvider() {
@@ -60,9 +60,8 @@ public class DistrictLocationCreateTest extends BaseCitrusTestRunner {
   public void createStateLocation(){
     if(StringUtils.isBlank((String)testContext.getVariables().get(Constant.STATE_ID))) {
       variable("locationCode", getStateCode());
-      LocationUtil.createLocation(this, testContext, "templates/location/state/create/",
-          "testCreateLocationSuccess",
-          getCreateLocationUrl(), REQUEST_JSON, MediaType.APPLICATION_JSON, true, Constant.LOCATION_TYPE_STATE);
+      LocationUtil.createState(this, testContext,
+          getCreateLocationUrl(), REQUEST_JSON);
     }
   }
 
