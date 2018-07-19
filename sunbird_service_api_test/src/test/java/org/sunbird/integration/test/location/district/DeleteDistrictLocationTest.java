@@ -12,25 +12,23 @@ import org.sunbird.integration.test.common.BaseCitrusTestRunner;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class DistrictLocationDeleteTest extends BaseCitrusTestRunner {
+public class DeleteDistrictLocationTest extends BaseCitrusTestRunner {
 
-  private static final String CREATE_LOCATION_SERVER_URI ="/api/data/v1/location/create";
+  private static final String CREATE_LOCATION_SERVER_URI = "/api/data/v1/location/create";
   private static final String CREATE_LOCATION_LOCAL_URI = "/v1/location/create";
-  private static final String DELETE_LOCATION_SERVER_URI ="/api/data/v1/location/delete";
+  private static final String DELETE_LOCATION_SERVER_URI = "/api/data/v1/location/delete";
   private static final String DELETE_LOCATION_LOCAL_URI = "/v1/location/delete";
 
   private static final String TEMPLATE_PATH = "templates/location/district/delete";
   private static final String TEST_DELETE_LOCATION_SUCCESS = "testDeleteDistrictLocationSuccess";
-  private static final String TEST_DELETE_LOCATION_FAILURE_WITHOUT_VALID_ID = "testDeleteDistrictLocationFailureWithoutValidId";
-
-  private static final String STATE_ID = "stateId";
-  private static final String DISTRICT_ID = "districtId";
+  private static final String TEST_DELETE_LOCATION_FAILURE_WITHOUT_VALID_ID =
+      "testDeleteDistrictLocationFailureWithoutValidId";
 
   @DataProvider(name = "deleteLocationDataProvider")
   public Object[][] deleteLocationDataProvider() {
     return new Object[][] {
-        new Object[] {TEST_DELETE_LOCATION_SUCCESS, true, HttpStatus.OK},
-        new Object[] {TEST_DELETE_LOCATION_FAILURE_WITHOUT_VALID_ID, true, HttpStatus.BAD_REQUEST}
+      new Object[] {TEST_DELETE_LOCATION_SUCCESS, true, HttpStatus.OK},
+      new Object[] {TEST_DELETE_LOCATION_FAILURE_WITHOUT_VALID_ID, true, HttpStatus.BAD_REQUEST}
     };
   }
 
@@ -45,33 +43,37 @@ public class DistrictLocationDeleteTest extends BaseCitrusTestRunner {
         this,
         TEMPLATE_PATH,
         testName,
-        getDeleteLocationUrl((String)testContext.getVariables().get(Constant.DISTRICT_ID)),
+        getDeleteLocationUrl((String) testContext.getVariables().get(Constant.DISTRICT_ID)),
         null,
         MediaType.APPLICATION_JSON,
         isAuthRequired,
         httpStatusCode,
         RESPONSE_JSON);
-    this.sleep(Constant.ES_SYNC_WAIT_TIME);
   }
 
-  public void createDistrictLocation(){
-    if(StringUtils.isBlank((String)testContext.getVariables().get(Constant.DISTRICT_ID))) {
-      LocationUtil.createDistrict(this, testContext, "templates/location/district/create/",
+  public void createDistrictLocation() {
+    if (StringUtils.isBlank((String) testContext.getVariables().get(Constant.DISTRICT_ID))) {
+      LocationUtil.createDistrict(
+          this,
+          testContext,
+          "templates/location/district/create/",
           "testCreateDistrictLocationSuccess",
-          getCreateLocationUrl(), REQUEST_JSON);
+          getCreateLocationUrl(),
+          REQUEST_JSON);
     }
   }
 
   @CleanUp
   /** Method to perform the cleanup after test suite completion. */
-  public static void cleanUp() {
-  }
+  public static void cleanUp() {}
 
   private String getCreateLocationUrl() {
     return getLmsApiUriPath(CREATE_LOCATION_SERVER_URI, CREATE_LOCATION_LOCAL_URI);
   }
 
   private String getDeleteLocationUrl(String locationId) {
-    return (getLmsApiUriPath(DELETE_LOCATION_SERVER_URI, DELETE_LOCATION_LOCAL_URI)+"/"+locationId);
+    return (getLmsApiUriPath(DELETE_LOCATION_SERVER_URI, DELETE_LOCATION_LOCAL_URI)
+        + "/"
+        + locationId);
   }
 }

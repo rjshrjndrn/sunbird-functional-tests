@@ -1,6 +1,6 @@
 {
   "request":{
-    "code": "${locationCode}",
+    "code": "${districtLocationCode}",
     "name": "citrus:concat('state_location_name',citrus:randomString(10, MIXED, true))",
     "type": "district"
   }

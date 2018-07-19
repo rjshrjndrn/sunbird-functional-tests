@@ -43,6 +43,7 @@ public class Constant {
   public static final int ES_SYNC_WAIT_TIME = 3000;
   public static final String LOCATION_TYPE_STATE = "state";
   public static final String LOCATION_TYPE_DISTRICT = "district";
+  public static final String LOCATION_TYPE_BLOCK = "block";
   public static final String STATE_ID = "stateId";
   public static final String DISTRICT_ID = "districtId";
 }

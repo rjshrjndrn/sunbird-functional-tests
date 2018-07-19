@@ -104,15 +104,17 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
       boolean isAuthRequired,
       HttpStatus responseCode,
       String responseJson) {
-    runner.http(builder -> TestActionUtil.getPatchRequestTestAction(
-        builder,
-        LMS_ENDPOINT,
-        templateDir,
-        testName,
-        requestUrl,
-        requestJson,
-        contentType,
-        TestActionUtil.getHeaders(isAuthRequired)));
+    runner.http(
+        builder ->
+            TestActionUtil.getPatchRequestTestAction(
+                builder,
+                LMS_ENDPOINT,
+                templateDir,
+                testName,
+                requestUrl,
+                requestJson,
+                contentType,
+                TestActionUtil.getHeaders(isAuthRequired)));
     runner.http(
         builder ->
             TestActionUtil.getResponseTestAction(
@@ -129,15 +131,17 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
       boolean isAuthRequired,
       HttpStatus responseCode,
       String responseJson) {
-    runner.http(builder -> TestActionUtil.getDeleteRequestTestAction(
-        builder,
-        LMS_ENDPOINT,
-        templateDir,
-        testName,
-        requestUrl,
-        requestJson,
-        contentType,
-        TestActionUtil.getHeaders(isAuthRequired)));
+    runner.http(
+        builder ->
+            TestActionUtil.getDeleteRequestTestAction(
+                builder,
+                LMS_ENDPOINT,
+                templateDir,
+                testName,
+                requestUrl,
+                requestJson,
+                contentType,
+                TestActionUtil.getHeaders(isAuthRequired)));
     runner.http(
         builder ->
             TestActionUtil.getResponseTestAction(

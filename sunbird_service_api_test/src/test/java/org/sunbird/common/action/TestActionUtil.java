@@ -124,7 +124,7 @@ public class TestActionUtil {
 
     requestActionBuilder = addHeaders(requestActionBuilder, headers);
 
-    if(StringUtils.isNotBlank(requestFile)){
+    if (StringUtils.isNotBlank(requestFile)) {
       String requestFilePath =
           MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, requestFile);
       return requestActionBuilder.payload(new ClassPathResource(requestFilePath));
