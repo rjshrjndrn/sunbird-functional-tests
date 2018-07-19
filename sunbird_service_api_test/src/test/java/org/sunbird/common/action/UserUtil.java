@@ -61,18 +61,5 @@ public class UserUtil {
                 Constant.REQUEST_JSON,
                 MediaType.APPLICATION_JSON.toString(),
                 TestActionUtil.getHeaders(true)));
-    //    runner.http(
-    //        builder ->
-    //            TestActionUtil.getExtractFromResponseTestAction(
-    //                testContext,
-    //                builder,
-    //                Constant.LMS_ENDPOINT,
-    //                responseCode,
-    //                "$.result.userId",
-    //                "userId"));
-    //
-    //    runner.http(builder -> TestActionUtil.getExtractFromResponseTestAction(testContext,
-    // builder, Constant.LMS_ENDPOINT, HttpStatus.OK, extractParam, extractVariable));
-    runner.sleep(Constant.ES_SYNC_WAIT_TIME);
   }
 }

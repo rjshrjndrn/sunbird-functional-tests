@@ -57,7 +57,6 @@ public class UserTest extends BaseCitrusTest {
    */
   @DataProvider(name = "createUserDataProvider")
   public Object[][] createUserDataProvider() {
-
     return new Object[][] {
       new Object[] {"testCreateUserFailureWithoutFirstName"},
       new Object[] {"testCreateUserFailureWithoutUserName"},

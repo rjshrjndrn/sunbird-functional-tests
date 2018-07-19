@@ -16,16 +16,6 @@ public class CreateUserTest extends BaseCitrusTestRunner {
   public static final String
       TEST_NAME_CREATE_USER_FAILURE_WITH_DUPLICATE_COMBINATION_OF_EXTERNAL_ID_TYPE_AND_EXTERNAL_ID_PROVIDER =
           "testCreateUserFailureWithDuplicateCombinationOfExternalIdTypeAndExternalIdProvider";
-  public static final String
-      TEST_NAME_CREATE_USER_SUCESS_WITH_VALID_EXTERNAL_ID_EXTERNAL_PROVIDER_ID_AND_EXTERNAL_PROVIDER_TYPE =
-          "testCreateUserSucessWithUniqueExternalIdExternalProviderIdExternalProviderType";
-  //    public static final String TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_INVALID_CHANNEL =
-  //            "testCreateSubOrgFailureWithInvalidChannel";
-  //    public static final String
-  // TEST_NAME_CREATE_SUB_ORG_FAILURE_WITH_EXTERNAL_ID_WITHOUT_PROVIDER =
-  //            "testCreateSubOrgFailureWithExternalIdWithoutProvider";
-  //    public static final String TEST_NAME_CREATE_SUB_ORG_FAILURE_WITHOUT_ACCESS_TOKEN =
-  //            "testCreateSubOrgFailureWithoutAccessToken";
 
   public static final String TEMPLATE_DIR = "templates/user/create";
 

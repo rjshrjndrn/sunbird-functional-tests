@@ -31,6 +31,7 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
       },
       new Object[] {"testGetUserByUserIdFailureWithEmptyUserId", true, "", HttpStatus.NOT_FOUND}
     };
+
   }
 
   @Test(dataProvider = "getUserByUserIdFailure")
