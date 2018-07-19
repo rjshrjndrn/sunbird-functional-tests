@@ -47,6 +47,7 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
       Boolean isAuthRequired,
       HttpStatus responseCode,
       String responseJson) {
+    getAuthToken(runner, isAuthRequired);
     runner.http(
         builder ->
             TestActionUtil.getMultipartRequestTestAction(
@@ -57,7 +58,7 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
                 testName,
                 requestUrl,
                 requestFile,
-                requestHeaders,
+                TestActionUtil.getHeaders(isAuthRequired, requestHeaders),
                 runner.getClass().getClassLoader(),
                 config));
     runner.http(

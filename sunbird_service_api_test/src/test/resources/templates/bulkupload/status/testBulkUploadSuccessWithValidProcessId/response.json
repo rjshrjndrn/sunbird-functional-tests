@@ -1,0 +1,23 @@
+{
+  "id": "api.upload.status",
+  "ver": "v1",
+  "ts": "@ignore@",
+  "params": {
+    "resmsgid": null,
+    "msgid": "@ignore@",
+    "err": null,
+    "status": "success",
+    "errmsg": null
+  },
+  "responseCode": "OK",
+  "result": {
+    "response": [
+      {
+        "failureResult":"@ignore@",
+        "processId": "@ignore@",
+        "successResult": "@ignore@",
+        "objectType": "@ignore@"
+      }
+    ]
+  }
+}

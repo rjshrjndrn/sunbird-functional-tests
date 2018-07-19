@@ -5,11 +5,12 @@ import com.consol.citrus.testng.CitrusParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.sunbird.integration.test.common.BaseCitrusTest;
+import org.sunbird.integration.test.common.BaseCitrusTestRunner;
 import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class OrganisationBulkUploadTest extends BaseCitrusTest {
+public class OrganisationBulkUploadTest extends BaseCitrusTestRunner {
 
   private static final String  TEMPLATE_DIR = "templates/bulkupload/organisation";
   private static final String BULK_UPLOAD_ORGANISATION_SERVER_URI="/api/org/v1/upload";
@@ -49,12 +50,15 @@ public class OrganisationBulkUploadTest extends BaseCitrusTest {
   @CitrusTest
   public void testOrgBulkUploadSuccess(String testName) {
     performMultipartTest(
-        testName,
+        this,
         TEMPLATE_DIR,
+        testName,
         getOrgBulkUploadUrl(),
         REQUEST_FORM_DATA,
+        null,
+        true,
         HttpStatus.OK,
-        RESPONSE_JSON, true);
+        RESPONSE_JSON);
   }
 
   @Test(
@@ -64,12 +68,15 @@ public class OrganisationBulkUploadTest extends BaseCitrusTest {
   @CitrusTest
   public void testOrgBulkUploadFailure(String testName, HttpStatus status) {
     performMultipartTest(
-        testName,
+        this,
         TEMPLATE_DIR,
+        testName,
         getOrgBulkUploadUrl(),
         REQUEST_FORM_DATA,
+        null,
+        true,
         status,
-        RESPONSE_JSON, true);
+        RESPONSE_JSON);
 
   }
 
