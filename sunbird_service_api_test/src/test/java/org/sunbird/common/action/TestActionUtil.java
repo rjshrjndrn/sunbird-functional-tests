@@ -193,8 +193,7 @@ public class TestActionUtil {
         .validationCallback(
             new JsonMappingValidationCallback<Map>(Map.class, mapper) {
               @Override
-              public void validate(Map response, Map<String, Object> headers, TestContext context) {
-                System.out.println("in the Call back function");
+              public void validate(Map response, Map<String, Object> headers, TestContext context) {                
                 String extractValue =
                     (String) context.getVariables().getOrDefault(extractVariable, extractVariable);
                 testContext.getVariables().put(extractVariable, extractValue);
