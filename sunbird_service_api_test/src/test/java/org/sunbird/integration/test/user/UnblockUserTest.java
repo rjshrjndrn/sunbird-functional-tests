@@ -124,11 +124,11 @@ public class UnblockUserTest extends BaseCitrusTestRunner {
 
     @Test(dependsOnMethods = {"testUnBlockUserSuccess"})
     @CitrusTest
-    public void testGetBlockUserByUserIdSuccess() {
+    public void testGetUnBlockUserByUserIdSuccess() {
         performGetTest(
                 this,
                 TEMPLATE_DIR,
-                "testGetBlockedUserByUserIdFailure",
+                TEST_UNBLOCK_USER_GET_SUCCESS_WITH_VALID_USERID,
                 getLmsApiUriPath(
                         GET_USER_BY_ID_SERVER_URI,
                         GET_USER_BY_ID_LOCAL_URI,

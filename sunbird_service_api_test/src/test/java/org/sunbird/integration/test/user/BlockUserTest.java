@@ -24,22 +24,7 @@ public class BlockUserTest extends BaseCitrusTestRunner {
             "testBlockUserFailureWithInvalidUserId";
     public static final String TEST_BLOCK_USER_SUCCESS_WITH_VALID_USERID =
             "testBlockUserSuccessWithValidUserId";
-    public static final String TEST_SEARCH_USER_BY_PHONE_SUCCESS =
-            "testSearchUserByPhoneSuccess";
-    public static final String TEST_SEARCH_USER_BY_EMAIL_SUCCESS =
-            "testSearchUserByEmailSuccess";
-    public static final String TEST_SEARCH_USER_BY_USER_NAME_SUCCESS =
-            "testSearchUserByUserNameSuccess";
-    public static final String TEST_SEARCH_USER_BY_EMPTY_FILTER_SUCCESS =
-            "testSearchUserByEmptyFilterSuccess";
 
-    public static final String TEST_SEARCH_USER_BY_LIMIT_1000_SUCCESS =
-            "testSearchUserBylimit1000Success";
-
-    public static final String TEST_SEARCH_USER_UNKNOWN_FIELDS_SUCCESS =
-            "testSearchUserByUnknownFieldsSuccess";
-    public static final String TEST_SEARCH_EMPTY_BODY_FAILURE =
-            "testSearchUserByEmptyBodyFailure";
 
     public static final String TEMPLATE_DIR = "templates/user/block";
     public static final String TEMPLATE_DIR_USER_CREATE="templates/user/create";
