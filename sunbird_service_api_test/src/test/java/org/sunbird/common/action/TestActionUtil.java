@@ -24,6 +24,7 @@ import org.sunbird.common.util.Constant;
 import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 
 public class TestActionUtil {
+
   public static TestAction getTokenRequestTestAction(
       HttpActionBuilder builder, String endpointName) {
     String userName = System.getenv("sunbird_username");
@@ -104,6 +105,32 @@ public class TestActionUtil {
     requestActionBuilder = addHeaders(requestActionBuilder, headers);
 
     return requestActionBuilder.payload(new ClassPathResource(requestFilePath));
+  }
+
+  public static TestAction getDeleteRequestTestAction(
+      HttpActionBuilder builder,
+      String endpointName,
+      String testTemplateDir,
+      String testName,
+      String url,
+      String requestFile,
+      String contentType,
+      Map<String, Object> headers) {
+
+    HttpClientRequestActionBuilder requestActionBuilder =
+        builder.client(endpointName).send().delete(url).messageType(MessageType.JSON);
+    if (StringUtils.isNotBlank(contentType)) {
+      requestActionBuilder.contentType(contentType);
+    }
+
+    requestActionBuilder = addHeaders(requestActionBuilder, headers);
+
+    if (StringUtils.isNotBlank(requestFile)) {
+      String requestFilePath =
+          MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, requestFile);
+      return requestActionBuilder.payload(new ClassPathResource(requestFilePath));
+    }
+    return requestActionBuilder;
   }
 
   public static TestAction getMultipartRequestTestAction(
@@ -193,7 +220,7 @@ public class TestActionUtil {
         .validationCallback(
             new JsonMappingValidationCallback<Map>(Map.class, mapper) {
               @Override
-              public void validate(Map response, Map<String, Object> headers, TestContext context) {                
+              public void validate(Map response, Map<String, Object> headers, TestContext context) {
                 String extractValue =
                     (String) context.getVariables().getOrDefault(extractVariable, extractVariable);
                 testContext.getVariables().put(extractVariable, extractValue);
