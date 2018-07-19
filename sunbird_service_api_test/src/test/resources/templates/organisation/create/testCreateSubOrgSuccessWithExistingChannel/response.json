@@ -1,0 +1,17 @@
+{
+    "id": "api.org.create",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": null,
+        "status": "success",
+        "errmsg": null
+    },
+    "responseCode": "OK",
+    "result": {
+        "organisationId": "@ignore@",
+        "response": "SUCCESS"
+    }
+}
