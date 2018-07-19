@@ -73,6 +73,7 @@ public class AssignRoleToUserTest extends BaseCitrusTestRunner {
   @Test()
   @CitrusTest
   public void testAssignRoleToUserFailureWithInvalidUserId() {
+
     createOrg();
     variable("organisationId", testContext.getVariable("organisationId"));
     getAuthToken(this, true);

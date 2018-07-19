@@ -10,10 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.sunbird.common.action.TestActionUtil;
 import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
 
   @Autowired protected TestGlobalProperty config;
