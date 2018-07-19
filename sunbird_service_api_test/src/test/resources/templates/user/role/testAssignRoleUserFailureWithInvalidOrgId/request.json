@@ -1,0 +1,9 @@
+{
+
+    "request":{
+        "userId":"${userId}",
+        "organisationId":"${organisationId}",
+        "roles": ["CONTENT_CURATION","CONTENT_CREATION","CONTENT_REVIEW"]
+
+    }
+}

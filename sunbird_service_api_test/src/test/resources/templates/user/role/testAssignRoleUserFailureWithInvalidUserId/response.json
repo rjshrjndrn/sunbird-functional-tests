@@ -1,0 +1,14 @@
+{
+    "id": "api.user.assign.role",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "INVALID_USR_ORG_DATA",
+        "status": "INVALID_USR_ORG_DATA",
+        "errmsg": "Given User Data doesn't belongs to this organization. Please provide a valid one."
+    },
+    "responseCode": "CLIENT_ERROR",
+    "result": {}
+}
