@@ -9,42 +9,70 @@ import org.testng.annotations.Test;
 
 public class ReadPageTest extends BaseCitrusTestRunner {
 
-  public static final String TEST_NAME_READ_PAGE_FAILURE_WITHOUT_ACCESS_TOKEN =
-      "testReadPageFailureWithoutAccessToken";
+	public static final String TEST_NAME_READ_PAGE_SETTINGS_FAILURE_WITHOUT_ACCESS_TOKEN =
+			"testReadPageSettingsFailureWithoutAccessToken";
 
-  public static final String TEMPLATE_DIR = "templates/page/read";
+	public static final String TEST_NAME_READ_PAGE_SETTING_FAILURE_WITHOUT_ACCESS_TOKEN =
+			"testReadPageSettingFailureWithoutAccessToken";
+	public static final String TEST_NAME_READ_PAGE_SETTING_SUCCESS_WITH_INVALID_PAGE_ID =
+			"testReadPageSettingSuccessWithInvalidPageId";
 
-  private String getReadPageUrl() {
-    return getLmsApiUriPath("/api/data/v1/page/read", "/v1/page/read");
-  }
+	public static final String TEMPLATE_DIR = "templates/page/read";
 
-  private String getAllReadPageUrl() {
-    return getLmsApiUriPath("/api/data/v1/page/read", "/v1/page/all/settings");
-  }
+	private String getReadPageUrl() {
+		return getLmsApiUriPath("/api/data/v1/page/read", "/v1/page/read");
+	}
 
-  @DataProvider(name = "readPageFailureDataProvider")
-  public Object[][] readPageFailureDataProvider() {
+	private String getReadPageSettingUrl() {
+		return getLmsApiUriPath("/api/data/v1/page/read", "/v1/page/read");
+	}
 
-    return new Object[][] {
-      new Object[] {
-        TEST_NAME_READ_PAGE_FAILURE_WITHOUT_ACCESS_TOKEN, false, HttpStatus.UNAUTHORIZED
-      },
-    };
-  }
+	private String getReadPageSettingsUrl() {
+		return getLmsApiUriPath("/api/data/v1/page/read", "/v1/page/all/settings");
+	}
 
-  @Test(dataProvider = "readPageFailureDataProvider")
-  @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
-  @CitrusTest
-  public void testReadPageFailure(
-      String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
-    getAuthToken(this, isAuthRequired);
-    performGetTest(
-        this,
-        TEMPLATE_DIR,
-        testName,
-        getAllReadPageUrl(),
-        isAuthRequired,
-        httpStatusCode,
-        RESPONSE_JSON);
-  }
+	@DataProvider(name = "readPageFailureDataProvider")
+	public Object[][] readPageFailureDataProvider() {
+
+		return new Object[][] {
+
+			new Object[] {
+					TEST_NAME_READ_PAGE_SETTINGS_FAILURE_WITHOUT_ACCESS_TOKEN, false, HttpStatus.UNAUTHORIZED,        
+			},
+			new Object[] {
+					TEST_NAME_READ_PAGE_SETTING_FAILURE_WITHOUT_ACCESS_TOKEN, false, HttpStatus.UNAUTHORIZED,        
+			},
+			new Object[] {
+					TEST_NAME_READ_PAGE_SETTING_SUCCESS_WITH_INVALID_PAGE_ID, false, HttpStatus.NOT_FOUND,        
+			},
+			
+		};
+	}
+
+	@Test(dataProvider = "readPageFailureDataProvider")
+	@CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
+	@CitrusTest
+	public void testReadPageFailure(
+			String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+		getAuthToken(this, isAuthRequired);
+
+		String url = getReadPageUrl();
+
+		if(testName.equalsIgnoreCase(TEST_NAME_READ_PAGE_SETTINGS_FAILURE_WITHOUT_ACCESS_TOKEN)) {
+			url = getReadPageSettingsUrl();
+		}
+		if(testName.equalsIgnoreCase(TEST_NAME_READ_PAGE_SETTING_FAILURE_WITHOUT_ACCESS_TOKEN)) {
+			url = getReadPageSettingUrl()+"/id";
+		}
+
+
+		performGetTest(
+				this,
+				TEMPLATE_DIR,
+				testName,
+				url,
+				isAuthRequired,
+				httpStatusCode,
+				RESPONSE_JSON);
+	}
 }
