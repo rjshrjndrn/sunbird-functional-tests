@@ -46,6 +46,7 @@ public class CreateBadgeClassTest extends BaseCitrusTestRunner {
   @CitrusParameters({"testName"})
   @CitrusTest(name = "testName")
   public void testCreateBadgeClassSuccess(String testName) {
+    variable("rootChannel", OrgUtil.getRootChannel());
     beforeTest();
     performMultipartTest(
         this,
@@ -85,12 +86,7 @@ public class CreateBadgeClassTest extends BaseCitrusTestRunner {
         BT_CREATE_ISSUER_TEMPLATE_DIR,
         BT_TEST_NAME_CREATE_ISSUER_SUCCESS,
         HttpStatus.OK);
-    OrgUtil.createOrg(
-        this,
-        testContext,
-        BT_CREATE_ORG_TEMPLATE_DIR,
-        BT_TEST_NAME_CREATE_ROOT_ORG_SUCCESS,
-        HttpStatus.OK);
+    OrgUtil.getRootOrgId(this, testContext);
   }
 
   private void afterTest() {}
