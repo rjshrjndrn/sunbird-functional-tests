@@ -1,9 +1,9 @@
 {
-  "id": "api.location.delete",
+  "id": "api.location.update",
   "ver": "v1",
   "ts": "@ignore@",
   "params": {
-    "resmsgid": "@ignore@",
+    "resmsgid": null,
     "msgid": "@ignore@",
     "err": null,
     "status": "success",

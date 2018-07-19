@@ -1,12 +1,12 @@
 {
-  "id": "api.location.delete",
+  "id": "api.location.create",
   "ver": "v1",
   "ts": "@ignore@",
   "params": {
-    "resmsgid": "@ignore@",
+    "resmsgid": null,
     "msgid": "@ignore@",
-    "err": "INVALID_PARAMETER",
-    "status": "INVALID_PARAMETER",
+    "err": "INVALID_REQUESTED_DATA",
+    "status": "INVALID_REQUESTED_DATA",
     "errmsg": "@ignore@"
   },
   "responseCode": "CLIENT_ERROR",

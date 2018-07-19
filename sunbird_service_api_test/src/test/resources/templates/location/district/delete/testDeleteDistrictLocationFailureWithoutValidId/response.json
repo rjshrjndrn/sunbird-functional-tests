@@ -3,11 +3,11 @@
   "ver": "v1",
   "ts": "@ignore@",
   "params": {
-    "resmsgid": "@ignore@",
+    "resmsgid": null,
     "msgid": "@ignore@",
-    "err": "INVALID_LOCATION_DELETE_REQUEST",
-    "status": "INVALID_LOCATION_DELETE_REQUEST",
-    "errmsg": "@ignore@"
+    "err": "INVALID_PARAMETER",
+    "status": "INVALID_PARAMETER",
+    "errmsg": "Please provide valid locationId."
   },
   "responseCode": "CLIENT_ERROR",
   "result": {}

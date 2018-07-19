@@ -1,0 +1,7 @@
+{
+  "request":{
+    "id": "citrus:concat('state_location_id',citrus:randomString(10, MIXED, true))",
+    "name": "citrus:concat('state_location_name',citrus:randomString(10, MIXED, true))",
+    "code": "${stateLocationCode}"
+  }
+}
