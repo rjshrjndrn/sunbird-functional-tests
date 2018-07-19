@@ -2,8 +2,6 @@
     "request": {
         "orgName": "citrus:concat('FT_Org_Name_', citrus:randomNumber(10))",
         "channel": "${rootChannel}",
-        "provider":"FT_provider",
-        "externalId":"${rootExternalId}",
         "isRootOrg": true
     }
 }

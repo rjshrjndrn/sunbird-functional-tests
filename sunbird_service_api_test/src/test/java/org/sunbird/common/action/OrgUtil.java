@@ -13,10 +13,16 @@ public class OrgUtil {
 
   private static String rootOrgId = null;
 
-  public static String rootChannel = "FT_Org_Channel_"+(new Random()).nextInt(100);
-  public static String  rootExternalId = "FT_Org_External_"+(new Random()).nextInt(100);
+  private final static String rootChannel = "FT_Org_Channel_"+(new Random()).nextInt(100);
+  private final static String  rootExternalId = "FT_Org_External_"+(new Random()).nextInt(100);
 
+  public static String getRootChannel() {
+    return rootChannel;
+  }
 
+  public static String getRootExternalId() {
+    return rootExternalId;
+  }
 
   public static String getCreateOrgUrl(BaseCitrusTestRunner runner) {
     return runner.getLmsApiUriPath("/api/org/v1/create", "/v1/org/create");
@@ -60,8 +66,9 @@ public class OrgUtil {
               "testCreateRootOrgSuccess",
               HttpStatus.OK);
       rootOrgId = testContext.getVariable("organisationId");
+    }else {
+      testContext.setVariable("organisationId",rootOrgId);
     }
-    testContext.setVariable("rootOrgId",rootOrgId);
   }
 
 }

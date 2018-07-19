@@ -35,12 +35,12 @@ public class CreateOrganisationTest extends BaseCitrusTestRunner {
 	      "testCreateSubOrgSuccessWithExistingChannel";
   public static final String TEST_NAME_CREATE_ORG_SUCCESS_WITH_ORG_NAME_AND_NEW_CHANNEL =
           "testCreateOrgSuccessWithOrgNameAndNewChannel";
+  private static final Object TEST_NAME_CREATE_ORG_SUCCESS_WITH_PROVIDER_AND_EXTERNALID = "testCreateOrgSuccessWithProviderAndExternalId";
   public static final String TEST_NAME_CREATE_ORG_FAILURE_WITH_ORG_NAME_AND_EXISTING_CHANNEL =
           "testCreateOrgFailureWithOrgNameAndExistingChannel";
   private static final Object TEST_NAME_CREATE_ORG_FAILURE_WITH_ORG_NAME_AND_EXISTING_EXTERNAL_ID = "testCreateOrgFailureWithOrgNameAndExistingExternalId";
 
   public static final String TEMPLATE_DIR = "templates/organisation/create";
-  private static final String localExternalId = "ft_pdr_"+(new Random()).nextInt(20);
 
   private String getCreateOrgUrl() {
 
@@ -109,7 +109,7 @@ public class CreateOrganisationTest extends BaseCitrusTestRunner {
   public void testCreateOrganisationSuccess(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
     getAuthToken(this, isAuthRequired);
-    variable("rootChannel", OrgUtil.rootChannel);
+    variable("rootChannel", OrgUtil.getRootChannel());
     performPostTest(
         this,
         TEMPLATE_DIR,
@@ -127,9 +127,9 @@ public class CreateOrganisationTest extends BaseCitrusTestRunner {
 
     return new Object[][] {
             new Object[] {TEST_NAME_CREATE_ORG_SUCCESS_WITH_ORG_NAME_AND_NEW_CHANNEL, true, HttpStatus.OK},
+            new Object[] {TEST_NAME_CREATE_ORG_SUCCESS_WITH_PROVIDER_AND_EXTERNALID, true, HttpStatus.OK},
             new Object[] {TEST_NAME_CREATE_ORG_FAILURE_WITH_ORG_NAME_AND_EXISTING_CHANNEL, true, HttpStatus.BAD_REQUEST},
             new Object[] {TEST_NAME_CREATE_ORG_FAILURE_WITH_ORG_NAME_AND_EXISTING_EXTERNAL_ID, true, HttpStatus.BAD_REQUEST}
-
     };
   }
 
@@ -141,8 +141,8 @@ public class CreateOrganisationTest extends BaseCitrusTestRunner {
           String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
     getAuthToken(this, isAuthRequired);
 
-    variable("rootChannel", OrgUtil.rootChannel);
-    variable("rootExternalId", OrgUtil.rootExternalId);
+    variable("rootChannel", OrgUtil.getRootChannel());
+    variable("rootExternalId", OrgUtil.getRootExternalId());
     beforeTest();
 
     performPostTest(
