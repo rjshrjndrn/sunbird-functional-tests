@@ -16,8 +16,8 @@ public class DeleteDistrictLocationTest extends BaseCitrusTestRunner {
 
   private static final String CREATE_LOCATION_SERVER_URI = "/api/data/v1/location/create";
   private static final String CREATE_LOCATION_LOCAL_URI = "/v1/location/create";
-  private static final String DELETE_LOCATION_SERVER_URI = "/api/data/v1/location/delete";
-  private static final String DELETE_LOCATION_LOCAL_URI = "/v1/location/delete";
+  private static final String DELETE_LOCATION_SERVER_URI = "/api/data/v1/location/delete/";
+  private static final String DELETE_LOCATION_LOCAL_URI = "/v1/location/delete/";
 
   private static final String TEMPLATE_PATH = "templates/location/district/delete";
   private static final String TEST_DELETE_LOCATION_SUCCESS = "testDeleteDistrictLocationSuccess";
@@ -72,8 +72,6 @@ public class DeleteDistrictLocationTest extends BaseCitrusTestRunner {
   }
 
   private String getDeleteLocationUrl(String locationId) {
-    return (getLmsApiUriPath(DELETE_LOCATION_SERVER_URI, DELETE_LOCATION_LOCAL_URI)
-        + "/"
-        + locationId);
+    return getLmsApiUriPath(DELETE_LOCATION_SERVER_URI, DELETE_LOCATION_LOCAL_URI,locationId);
   }
 }
