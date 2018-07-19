@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.sunbird.common.action.TestActionUtil;
+import org.sunbird.common.util.Constant;
 import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 
 public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
@@ -78,6 +79,60 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
     runner.http(
         builder ->
             TestActionUtil.getPostRequestTestAction(
+                builder,
+                LMS_ENDPOINT,
+                templateDir,
+                testName,
+                requestUrl,
+                requestJson,
+                contentType,
+                TestActionUtil.getHeaders(isAuthRequired)));
+    runner.http(
+        builder ->
+            TestActionUtil.getResponseTestAction(
+                builder, LMS_ENDPOINT, templateDir, testName, responseCode, responseJson));
+  }
+
+  public void performPatchTest(
+      TestNGCitrusTestRunner runner,
+      String templateDir,
+      String testName,
+      String requestUrl,
+      String requestJson,
+      String contentType,
+      boolean isAuthRequired,
+      HttpStatus responseCode,
+      String responseJson) {
+    runner.http(
+        builder ->
+            TestActionUtil.getPatchRequestTestAction(
+                builder,
+                LMS_ENDPOINT,
+                templateDir,
+                testName,
+                requestUrl,
+                requestJson,
+                contentType,
+                TestActionUtil.getHeaders(isAuthRequired)));
+    runner.http(
+        builder ->
+            TestActionUtil.getResponseTestAction(
+                builder, LMS_ENDPOINT, templateDir, testName, responseCode, responseJson));
+  }
+
+  public void performDeleteTest(
+      TestNGCitrusTestRunner runner,
+      String templateDir,
+      String testName,
+      String requestUrl,
+      String requestJson,
+      String contentType,
+      boolean isAuthRequired,
+      HttpStatus responseCode,
+      String responseJson) {
+    runner.http(
+        builder ->
+            TestActionUtil.getDeleteRequestTestAction(
                 builder,
                 LMS_ENDPOINT,
                 templateDir,
