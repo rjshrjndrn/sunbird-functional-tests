@@ -64,7 +64,6 @@ public class UserUtil {
 
   public static void getUserId(BaseCitrusTestRunner runner, TestContext testContext) {
     if (StringUtils.isBlank((String) testContext.getVariables().get("userId"))) {
-      runner.getAuthToken(runner, true);
       String userName = Constant.USER_NAME_PREFIX + UUID.randomUUID().toString();
       testContext.setVariable("userName", userName);
       runner.variable("username", userName);
