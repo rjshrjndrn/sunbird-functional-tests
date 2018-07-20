@@ -14,10 +14,10 @@ public class GetUserByLoginIdTest extends BaseCitrusTestRunner {
   public static final String TEMPLATE_DIR = "templates/user/getbyloginid";
   private static final String GET_USER_BY_ID_SERVER_URI = "/api/user/v1/profile/read";
   private static final String GET_USER_BY_ID_LOCAL_URI = "/v1/user/getuser";
-  public static final String TEST_GET_BLOCKED_USER_FAILURE_WITH_LOGINID =
-      "testGetBlockedUserByLoginIdFailure";
+  public static final String TEST_GET_USER_BY_LOGIN_ID_FAILURE_WITH_BLOCKED_USER =
+      "testGetUserByLoginIdFailureWithBlockedUser";
   public static final String TEMPLATE_DIR_BLOCK = "templates/user/block";
-  public static final String TEST_BLOCK_USER_SUCCESS_WITH_VALID_USERID =
+  public static final String TEST_BA_BLOCK_USER_SUCCESS_WITH_VALID_USERID =
       "testBlockUserSuccessWithValidUserId";
 
   @DataProvider(name = "getUserByLoginIdFailure")
@@ -55,7 +55,7 @@ public class GetUserByLoginIdTest extends BaseCitrusTestRunner {
     performPostTest(
         this,
         TEMPLATE_DIR,
-        TEST_GET_BLOCKED_USER_FAILURE_WITH_LOGINID,
+            TEST_GET_USER_BY_LOGIN_ID_FAILURE_WITH_BLOCKED_USER,
         getLmsApiUriPath(GET_USER_BY_ID_SERVER_URI, GET_USER_BY_ID_LOCAL_URI),
         REQUEST_JSON,
         MediaType.APPLICATION_JSON,
@@ -66,6 +66,6 @@ public class GetUserByLoginIdTest extends BaseCitrusTestRunner {
 
   private void beforeTest() {
     UserUtil.getUserId(this, testContext);
-    UserUtil.blockUser(this, TEMPLATE_DIR_BLOCK, TEST_BLOCK_USER_SUCCESS_WITH_VALID_USERID);
+    UserUtil.blockUser(this, TEMPLATE_DIR_BLOCK, TEST_BA_BLOCK_USER_SUCCESS_WITH_VALID_USERID);
   }
 }

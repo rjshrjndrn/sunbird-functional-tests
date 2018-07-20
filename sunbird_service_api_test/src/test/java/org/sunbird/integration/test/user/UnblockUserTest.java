@@ -37,8 +37,8 @@ public class UnblockUserTest extends BaseCitrusTestRunner {
 
   public static final String TEMPLATE_DIR = "templates/user/unblock";
 
-  @DataProvider(name = "UnblockUserFailureDataProvider")
-  public Object[][] UnblockUserFailureDataProvider() {
+  @DataProvider(name = "unblockUserFailureDataProvider")
+  public Object[][] unblockUserFailureDataProvider() {
 
     return new Object[][] {
       new Object[] {TEST_UNBLOCK_USER_FAILURE_WITHOUT_ACCESS_TOKEN, false, HttpStatus.UNAUTHORIZED},
@@ -46,15 +46,15 @@ public class UnblockUserTest extends BaseCitrusTestRunner {
     };
   }
 
-  @DataProvider(name = "UnblockUserSuccessDataProvider")
-  public Object[][] UnblockUserSuccessDataProvider() {
+  @DataProvider(name = "unblockUserSuccessDataProvider")
+  public Object[][] unblockUserSuccessDataProvider() {
 
     return new Object[][] {
       new Object[] {TEST_UNBLOCK_USER_SUCCESS_WITH_VALID_USERID, true, HttpStatus.OK},
     };
   }
 
-  @Test(dataProvider = "UnblockUserFailureDataProvider")
+  @Test(dataProvider = "unblockUserFailureDataProvider")
   @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
   @CitrusTest
   public void testUnblockUserFailure(
@@ -72,7 +72,7 @@ public class UnblockUserTest extends BaseCitrusTestRunner {
         RESPONSE_JSON);
   }
 
-  @Test(dataProvider = "UnblockUserSuccessDataProvider")
+  @Test(dataProvider = "unblockUserSuccessDataProvider")
   @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
   @CitrusTest
   public void testUnblockUserSuccess(

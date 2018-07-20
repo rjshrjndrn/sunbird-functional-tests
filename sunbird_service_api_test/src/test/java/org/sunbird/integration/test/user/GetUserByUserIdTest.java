@@ -14,7 +14,7 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
   private static final String GET_USER_BY_ID_SERVER_URI = "/api/user/v1/read/";
   private static final String GET_USER_BY_ID_LOCAL_URI = "/v1/user/read/";
   public static final String TEMPLATE_DIR_BLOCK = "templates/user/block";
-  public static final String TEST_BLOCK_USER_SUCCESS_WITH_VALID_USERID =
+  public static final String TEST_BA_BLOCK_USER_SUCCESS_WITH_VALID_USERID =
       "testBlockUserSuccessWithValidUserId";
 
   @DataProvider(name = "getUserByUserIdFailure")
@@ -78,7 +78,7 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
     performGetTest(
         this,
         TEMPLATE_DIR,
-        "testGetBlockedUserByUserIdFailure",
+        "testGetUserByUserIdFailureWithBlockUser",
         getLmsApiUriPath(
             GET_USER_BY_ID_SERVER_URI,
             GET_USER_BY_ID_LOCAL_URI,
@@ -89,7 +89,7 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
   }
 
   private void blockUser() {
-    UserUtil.blockUser(this, TEMPLATE_DIR_BLOCK, TEST_BLOCK_USER_SUCCESS_WITH_VALID_USERID);
+    UserUtil.blockUser(this, TEMPLATE_DIR_BLOCK, TEST_BA_BLOCK_USER_SUCCESS_WITH_VALID_USERID);
   }
 
   private void beforeTest() {
