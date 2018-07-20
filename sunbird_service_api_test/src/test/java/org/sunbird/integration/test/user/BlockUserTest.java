@@ -4,7 +4,6 @@ import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.testng.CitrusParameters;
 import javax.ws.rs.core.MediaType;
 import org.springframework.http.HttpStatus;
-import org.sunbird.common.action.TestActionUtil;
 import org.sunbird.common.action.UserUtil;
 import org.sunbird.integration.test.common.BaseCitrusTestRunner;
 import org.testng.annotations.DataProvider;
@@ -85,21 +84,5 @@ public class BlockUserTest extends BaseCitrusTestRunner {
 
   private void beforeTest() {
     UserUtil.getUserId(this, testContext);
-  }
-
-  @Test()
-  @CitrusTest
-  public void testGetBlockUserByUserIdFailure() {
-    performGetTest(
-        this,
-        TEMPLATE_DIR,
-        "testGetBlockedUserByUserIdFailure",
-        getLmsApiUriPath(
-            GET_USER_BY_ID_SERVER_URI,
-            GET_USER_BY_ID_LOCAL_URI,
-            TestActionUtil.getVariable(testContext, "userId")),
-        true,
-        HttpStatus.BAD_REQUEST,
-        RESPONSE_JSON);
   }
 }

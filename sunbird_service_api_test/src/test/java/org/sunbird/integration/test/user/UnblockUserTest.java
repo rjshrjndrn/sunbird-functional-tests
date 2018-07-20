@@ -46,8 +46,8 @@ public class UnblockUserTest extends BaseCitrusTestRunner {
     };
   }
 
-  @DataProvider(name = "blockUserSuccessDataProvider")
-  public Object[][] blockUserSuccessDataProvider() {
+  @DataProvider(name = "UnblockUserSuccessDataProvider")
+  public Object[][] UnblockUserSuccessDataProvider() {
 
     return new Object[][] {
       new Object[] {TEST_UNBLOCK_USER_SUCCESS_WITH_VALID_USERID, true, HttpStatus.OK},
@@ -72,7 +72,7 @@ public class UnblockUserTest extends BaseCitrusTestRunner {
         RESPONSE_JSON);
   }
 
-  @Test(dataProvider = "blockUserSuccessDataProvider")
+  @Test(dataProvider = "UnblockUserSuccessDataProvider")
   @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
   @CitrusTest
   public void testUnblockUserSuccess(
