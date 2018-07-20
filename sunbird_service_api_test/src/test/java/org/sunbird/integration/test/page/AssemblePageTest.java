@@ -12,10 +12,10 @@ public class AssemblePageTest extends BaseCitrusTestRunner {
 
   public static final String TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITHOUT_SOURCE =
       "testAssemblePageFailureWithoutSource";
-  public static final String TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_SOURCE =
-      "testAssemblePageFailureWithSource";
-  public static final String TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_SOURCE_INVALID_PAGE =
-      "testAssemblePageFailureWithSourceInvalidPage";
+  public static final String TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITHOUT_NAME =
+      "testAssemblePageFailureWithoutName";
+  public static final String TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_INVALID_PAGE =
+      "testAssemblePageFailureWithInvalidPage";
   public static final String TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_INVALID_SOURCE =
       "testAssemblePageFailureWithInvalidSource";
 
@@ -31,8 +31,8 @@ public class AssemblePageTest extends BaseCitrusTestRunner {
 
     return new Object[][] {
       new Object[] {TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITHOUT_SOURCE, HttpStatus.BAD_REQUEST},
-      new Object[] {TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_SOURCE, HttpStatus.BAD_REQUEST},
-      new Object[] {TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_SOURCE_INVALID_PAGE, HttpStatus.NOT_FOUND},
+      new Object[] {TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITHOUT_NAME, HttpStatus.BAD_REQUEST},
+      new Object[] {TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_INVALID_PAGE, HttpStatus.NOT_FOUND},
       new Object[] {TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_INVALID_SOURCE, HttpStatus.BAD_REQUEST},
     };
   }

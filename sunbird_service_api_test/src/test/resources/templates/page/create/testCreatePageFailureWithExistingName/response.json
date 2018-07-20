@@ -1,0 +1,14 @@
+{
+    "id": "api.page.create",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "PAGE_ALREADY_EXIST",
+        "status": "PAGE_ALREADY_EXIST",
+        "errmsg": "page already exist with this Page Name and Org Code."
+    },
+    "responseCode": "CLIENT_ERROR",
+    "result": {}
+}

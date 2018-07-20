@@ -5,9 +5,9 @@
     "params": {
         "resmsgid": null,
         "msgid": "@ignore@",
-        "err": "PAGE_NAME_REQUIRED",
-        "status": "PAGE_NAME_REQUIRED",
-        "errmsg": "Page name is required."
+        "err": "INVALID_PAGE_SOURCE",
+        "status": "INVALID_PAGE_SOURCE",
+        "errmsg": "Invalid page source."
     },
     "responseCode": "CLIENT_ERROR",
     "result": {}

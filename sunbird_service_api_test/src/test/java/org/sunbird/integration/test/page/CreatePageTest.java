@@ -5,6 +5,7 @@ import com.consol.citrus.testng.CitrusParameters;
 import javax.ws.rs.core.MediaType;
 import org.springframework.http.HttpStatus;
 import org.sunbird.common.action.OrgUtil;
+import org.sunbird.common.action.PageUtil;
 import org.sunbird.integration.test.common.BaseCitrusTestRunner;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -13,10 +14,15 @@ public class CreatePageTest extends BaseCitrusTestRunner {
 
   public static final String PAGE_TEST_NAME_CREATE_ROOT_ORG_SUCCESS = "testCreateRootOrgSuccess";
 
+  private static final String PAGE_NAME =
+      "FT_Page_Name-" + String.valueOf(System.currentTimeMillis());
+
   public static final String TEST_NAME_CREATE_PAGE_FAILURE_WITHOUT_ACCESS_TOKEN =
       "testCreatePageFailureWithoutAccessToken";
   public static final String TEST_NAME_CREATE_PAGE_FAILURE_WITHOUT_NAME =
       "testCreatePageFailureWithoutName";
+  public static final String TEST_NAME_CREATE_PAGE_FAILURE_WITH_EXISTING_NAME =
+      "testCreatePageFailureWithExistingName";
 
   public static final String TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME =
       "testCreatePageSuccessWithName";
@@ -39,6 +45,7 @@ public class CreatePageTest extends BaseCitrusTestRunner {
         TEST_NAME_CREATE_PAGE_FAILURE_WITHOUT_ACCESS_TOKEN, false, HttpStatus.UNAUTHORIZED
       },
       new Object[] {TEST_NAME_CREATE_PAGE_FAILURE_WITHOUT_NAME, true, HttpStatus.BAD_REQUEST},
+      new Object[] {TEST_NAME_CREATE_PAGE_FAILURE_WITH_EXISTING_NAME, true, HttpStatus.BAD_REQUEST},
     };
   }
 
@@ -48,6 +55,12 @@ public class CreatePageTest extends BaseCitrusTestRunner {
   public void testCreatePageFailure(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
     getAuthToken(this, isAuthRequired);
+
+    if (testName.equalsIgnoreCase(TEST_NAME_CREATE_PAGE_FAILURE_WITH_EXISTING_NAME)) {
+      variable("pageName", PAGE_NAME);
+      beforeTestCreatePage();
+      variable("pageName", PAGE_NAME);
+    }
     performPostTest(
         this,
         TEMPLATE_DIR,
@@ -74,8 +87,12 @@ public class CreatePageTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testCreatePageSuccess(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+
     getAuthToken(this, true);
-    beforeTest();
+    if (testName.equalsIgnoreCase(TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME_AND_ORG_ID)) {
+      beforeTestCreateOrg();
+    }
+
     performPostTest(
         this,
         TEMPLATE_DIR,
@@ -88,13 +105,22 @@ public class CreatePageTest extends BaseCitrusTestRunner {
         RESPONSE_JSON);
   }
 
-  private void beforeTest() {
-    getAuthToken(this, true);
+  private void beforeTestCreateOrg() {
+
     OrgUtil.createOrg(
         this,
         testContext,
         ORG_CREATE_ORG_TEMPLATE_DIR,
         PAGE_TEST_NAME_CREATE_ROOT_ORG_SUCCESS,
+        HttpStatus.OK);
+  }
+
+  private void beforeTestCreatePage() {
+    PageUtil.createPage(
+        this,
+        testContext,
+        TEMPLATE_DIR,
+        TEST_NAME_CREATE_PAGE_FAILURE_WITH_EXISTING_NAME,
         HttpStatus.OK);
   }
 }

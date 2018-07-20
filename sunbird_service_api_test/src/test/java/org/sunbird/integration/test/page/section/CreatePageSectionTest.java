@@ -16,8 +16,8 @@ public class CreatePageSectionTest extends BaseCitrusTestRunner {
       "testCreatePageSectionFailureWithoutAccessToken";
   public static final String TEST_NAME_CREATE_PAGE_SECTION_FAILURE_WITHOUT_NAME =
       "testCreatePageSectionFailureWithoutName";
-  public static final String TEST_NAME_CREATE_PAGE_SECTION_FAILURE_WITH_NAME =
-      "testCreatePageSectionFailureWithName";
+  public static final String TEST_NAME_CREATE_PAGE_SECTION_FAILURE_WITHOUT_SECTION_DATA_TYPE =
+      "testCreatePageSectionFailureWithoutSectionDataType";
 
   public static final String TEST_NAME_CREATE_PAGE_SECTION_SUCCESS_WITH_NAME_DATA_TYPE =
       "testCreatePageSectionSuccessWithNameDataType";
@@ -40,7 +40,11 @@ public class CreatePageSectionTest extends BaseCitrusTestRunner {
       new Object[] {
         TEST_NAME_CREATE_PAGE_SECTION_FAILURE_WITHOUT_NAME, true, HttpStatus.BAD_REQUEST
       },
-      new Object[] {TEST_NAME_CREATE_PAGE_SECTION_FAILURE_WITH_NAME, true, HttpStatus.BAD_REQUEST},
+      new Object[] {
+        TEST_NAME_CREATE_PAGE_SECTION_FAILURE_WITHOUT_SECTION_DATA_TYPE,
+        true,
+        HttpStatus.BAD_REQUEST
+      },
     };
   }
 
