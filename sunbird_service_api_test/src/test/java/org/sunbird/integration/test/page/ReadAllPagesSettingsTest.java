@@ -33,7 +33,7 @@ public class ReadAllPagesSettingsTest extends BaseCitrusTestRunner {
   @Test(dataProvider = "readAllPageSettingsFailureDataProvider")
   @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
   @CitrusTest
-  public void testAllReadPageSettingsFailure(
+  public void testReadAllPageSettingsFailure(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
     getAuthToken(this, isAuthRequired);
 

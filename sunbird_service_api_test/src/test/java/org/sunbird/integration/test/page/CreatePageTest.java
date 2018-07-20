@@ -58,8 +58,7 @@ public class CreatePageTest extends BaseCitrusTestRunner {
 
     if (testName.equalsIgnoreCase(TEST_NAME_CREATE_PAGE_FAILURE_WITH_EXISTING_NAME)) {
       variable("pageName", PAGE_NAME);
-      beforeTestCreatePage();
-      variable("pageName", PAGE_NAME);
+      beforeTestCreatePage();    
     }
     performPostTest(
         this,

@@ -40,7 +40,7 @@ public class AssemblePageTest extends BaseCitrusTestRunner {
   @Test(dataProvider = "assemblePageFailureDataProvider")
   @CitrusParameters({"testName", "httpStatusCode"})
   @CitrusTest
-  public void testAssamblePageFailure(String testName, HttpStatus httpStatusCode) {
+  public void testAssemblePageFailure(String testName, HttpStatus httpStatusCode) {
 
     performPostTest(
         this,

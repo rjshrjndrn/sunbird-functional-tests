@@ -40,6 +40,5 @@ public class PageUtil {
                 "$.result.pageId",
                 "pageId"));
 
-    runner.sleep(Constant.ES_SYNC_WAIT_TIME);
   }
 }

@@ -20,8 +20,8 @@ public class ReadPageSettingsTest extends BaseCitrusTestRunner {
     return getLmsApiUriPath("/api/data/v1/page/read", "/v1/page/read");
   }
 
-  @DataProvider(name = "readPageFailureDataProvider")
-  public Object[][] readPageFailureDataProvider() {
+  @DataProvider(name = "readPageSettingsFailureDataProvider")
+  public Object[][] readPageSettingsFailureDataProvider() {
 
     return new Object[][] {
       new Object[] {
@@ -33,10 +33,10 @@ public class ReadPageSettingsTest extends BaseCitrusTestRunner {
     };
   }
 
-  @Test(dataProvider = "readPageFailureDataProvider")
+  @Test(dataProvider = "readPageSettingsFailureDataProvider")
   @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
   @CitrusTest
-  public void testReadPageFailure(
+  public void testReadPageSettingsFailure(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
     getAuthToken(this, isAuthRequired);
 
