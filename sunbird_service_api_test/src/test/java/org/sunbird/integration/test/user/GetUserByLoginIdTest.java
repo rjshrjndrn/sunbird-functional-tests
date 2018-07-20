@@ -55,7 +55,7 @@ public class GetUserByLoginIdTest extends BaseCitrusTestRunner {
     performPostTest(
         this,
         TEMPLATE_DIR,
-            TEST_GET_USER_BY_LOGIN_ID_FAILURE_WITH_BLOCKED_USER,
+        TEST_GET_USER_BY_LOGIN_ID_FAILURE_WITH_BLOCKED_USER,
         getLmsApiUriPath(GET_USER_BY_ID_SERVER_URI, GET_USER_BY_ID_LOCAL_URI),
         REQUEST_JSON,
         MediaType.APPLICATION_JSON,

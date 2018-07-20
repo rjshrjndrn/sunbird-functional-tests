@@ -38,7 +38,7 @@ public class AssignRoleToUserTest extends BaseCitrusTestRunner {
     return getLmsApiUriPath("/org/v1/role/assign", "/v1/user/assign/role");
   }
 
-  @DataProvider(name = "AssignRoleToUserFailureDataProvider")
+  @DataProvider(name = "assignRoleToUserFailureDataProvider")
   public Object[][] assignRoleToUserFailureDataProvider() {
 
     return new Object[][] {
@@ -58,7 +58,7 @@ public class AssignRoleToUserTest extends BaseCitrusTestRunner {
     };
   }
 
-  @Test(dataProvider = "AssignRoleToUserFailureDataProvider")
+  @Test(dataProvider = "assignRoleToUserFailureDataProvider")
   @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
   @CitrusTest
   public void testAssignRoleToUserFailure(
