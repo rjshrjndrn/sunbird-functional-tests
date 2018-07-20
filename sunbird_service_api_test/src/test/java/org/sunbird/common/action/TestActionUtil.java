@@ -237,8 +237,9 @@ public class TestActionUtil {
     return headers;
   }
 
-  public static Map<String, Object> getHeaders(boolean isAuthRequired , Map<String, Object> additionalHeaders){
-    if(null == additionalHeaders){
+  public static Map<String, Object> getHeaders(
+      boolean isAuthRequired, Map<String, Object> additionalHeaders) {
+    if (null == additionalHeaders) {
       additionalHeaders = new HashMap<>();
     }
     additionalHeaders.putAll(getHeaders(isAuthRequired));
