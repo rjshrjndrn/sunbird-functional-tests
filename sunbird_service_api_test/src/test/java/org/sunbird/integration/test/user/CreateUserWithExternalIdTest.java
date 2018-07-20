@@ -10,12 +10,11 @@ import org.testng.annotations.Test;
 
 public class CreateUserWithExternalIdTest extends BaseCitrusTestRunner {
 
+  public static final String TEST_NAME_CREATE_USER_FAILURE_WITH_DUPLICATE_EXTERNAL_ID =
+      "testCreateUserFailureWithDuplicateExternalId";
   public static final String
-      TEST_NAME_CREATE_USER_FAILURE_WITH_DUPLICATE_COMBINATION_EXTERNAL_ID_EXTERNAL_ID_TYPE_AND_EXTERNAL_ID_PROVIDER =
-          "testCreateUserFailureWithDuplicateExternalIdExternalIdTypeExternalIdProvider";
-  public static final String
-      TEST_NAME_CREATE_USER_FAILURE_WITH_DUPLICATE_COMBINATION_OF_EXTERNAL_ID_TYPE_AND_EXTERNAL_ID_PROVIDER =
-          "testCreateUserFailureWithDuplicateCombinationOfExternalIdTypeAndExternalIdProvider";
+      TEST_NAME_CREATE_USER_FAILURE_WITH_DUPLICATE_EXTERNAL_TYPE_AND_PROVIDER =
+          "testCreateUserFailureWithDuplicateExternalIdTypeAndProvider";
 
   public static final String TEMPLATE_DIR = "templates/user/create";
 
@@ -29,12 +28,10 @@ public class CreateUserWithExternalIdTest extends BaseCitrusTestRunner {
 
     return new Object[][] {
       new Object[] {
-        TEST_NAME_CREATE_USER_FAILURE_WITH_DUPLICATE_COMBINATION_EXTERNAL_ID_EXTERNAL_ID_TYPE_AND_EXTERNAL_ID_PROVIDER,
-        false,
-        HttpStatus.BAD_REQUEST
+        TEST_NAME_CREATE_USER_FAILURE_WITH_DUPLICATE_EXTERNAL_ID, false, HttpStatus.BAD_REQUEST
       },
       new Object[] {
-        TEST_NAME_CREATE_USER_FAILURE_WITH_DUPLICATE_COMBINATION_OF_EXTERNAL_ID_TYPE_AND_EXTERNAL_ID_PROVIDER,
+        TEST_NAME_CREATE_USER_FAILURE_WITH_DUPLICATE_EXTERNAL_TYPE_AND_PROVIDER,
         false,
         HttpStatus.BAD_REQUEST
       }
@@ -44,8 +41,8 @@ public class CreateUserWithExternalIdTest extends BaseCitrusTestRunner {
   @Test(dataProvider = "createUserFailureDataProvider")
   @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
   @CitrusTest
-  public void testCreateUser(String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
-
+  public void testCreateUserFailure(
+      String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
     performPostTest(
         this,
         TEMPLATE_DIR,

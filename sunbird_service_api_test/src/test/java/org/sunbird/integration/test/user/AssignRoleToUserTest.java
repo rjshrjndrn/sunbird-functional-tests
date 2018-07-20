@@ -63,12 +63,12 @@ public class AssignRoleToUserTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testAssignRoleToUserFailure(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
-
+    getAuthToken(this, isAuthRequired);
     createUser();
     createOrg();
     variable("userId", testContext.getVariable("userId"));
     variable("organisationId", testContext.getVariable("organisationId"));
-    getAuthToken(this, isAuthRequired);
+
     performPostTest(
         this,
         TEMPLATE_DIR,
@@ -84,8 +84,9 @@ public class AssignRoleToUserTest extends BaseCitrusTestRunner {
   @Test()
   @CitrusTest
   public void testAssignRoleToUserSuccessWithUserAlreadyBelongToOrg() {
-    addUserToOrg();
     getAuthToken(this, true);
+    addUserToOrg();
+
     performPostTest(
         this,
         TEMPLATE_DIR,
@@ -104,7 +105,6 @@ public class AssignRoleToUserTest extends BaseCitrusTestRunner {
 
   private void createOrg() {
     if (StringUtils.isBlank((String) testContext.getVariables().get("organisationId"))) {
-      getAuthToken(this, true);
       OrgUtil.createOrg(
           this,
           testContext,
@@ -119,7 +119,6 @@ public class AssignRoleToUserTest extends BaseCitrusTestRunner {
     createUser();
     variable("userId", testContext.getVariable("userId"));
     variable("organisationId", testContext.getVariable("organisationId"));
-    getAuthToken(this, true);
     OrgUtil.addUserToOrg(this, TEMPLATE_ORG_DIR, TEST_ASSIGN_USER_TO_ORG_SUCCESS);
   }
 }

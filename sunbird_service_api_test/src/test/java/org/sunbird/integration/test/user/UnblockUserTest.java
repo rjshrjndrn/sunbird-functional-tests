@@ -13,17 +13,17 @@ import org.testng.annotations.Test;
 public class UnblockUserTest extends BaseCitrusTestRunner {
 
   public static final String TEST_UNBLOCK_USER_FAILURE_WITHOUT_ACCESS_TOKEN =
-      "testUnBlockUserFailureWithoutAccessToken";
+      "testUnblockUserFailureWithoutAccessToken";
   public static final String TEST_UNBLOCK_USER_FAILURE_WITH_INVALID_USERID =
-      "testUnBlockUserFailureWithInvalidUserId";
+      "testUnblockUserFailureWithInvalidUserId";
   public static final String TEST_UNBLOCK_USER_SUCCESS_WITH_VALID_USERID =
-      "testUnBlockUserSuccessWithValidUserId";
+      "testUnblockUserSuccessWithValidUserId";
 
   public static final String TEST_UNBLOCK_USER_UNBLOCK_FAILURE_WITH_VALID_USERID =
-      "testUnBlockUserUnBlockFailureWithValidUserId";
+      "testUnblockUserUnblockFailureWithValidUserId";
 
   public static final String TEST_UNBLOCK_USER_GET_SUCCESS_WITH_VALID_USERID =
-      "testUnBlockUserGetSuccessWithValidUserId";
+      "testUnblockUserGetSuccessWithValidUserId";
 
   public static final String TEMPLATE_DIR_BLOCK = "templates/user/block";
   public static final String TEST_BLOCK_USER_SUCCESS_WITH_VALID_USERID =
@@ -31,7 +31,7 @@ public class UnblockUserTest extends BaseCitrusTestRunner {
   private static final String GET_USER_BY_ID_SERVER_URI = "/api/user/v1/read/";
   private static final String GET_USER_BY_ID_LOCAL_URI = "/v1/user/read/";
 
-  private String getUnBlockUserUrl() {
+  private String getUnblockUserUrl() {
     return getLmsApiUriPath("/api/user/v1/unblock", "/v1/user/unblock");
   }
 
@@ -57,14 +57,14 @@ public class UnblockUserTest extends BaseCitrusTestRunner {
   @Test(dataProvider = "UnblockUserFailureDataProvider")
   @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
   @CitrusTest
-  public void testUnBlockUserFailure(
+  public void testUnblockUserFailure(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
     getAuthToken(this, isAuthRequired);
     performPostTest(
         this,
         TEMPLATE_DIR,
         testName,
-        getUnBlockUserUrl(),
+        getUnblockUserUrl(),
         REQUEST_JSON,
         MediaType.APPLICATION_JSON,
         isAuthRequired,
@@ -75,7 +75,7 @@ public class UnblockUserTest extends BaseCitrusTestRunner {
   @Test(dataProvider = "blockUserSuccessDataProvider")
   @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
   @CitrusTest
-  public void testUnBlockUserSuccess(
+  public void testUnblockUserSuccess(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
     getAuthToken(this, isAuthRequired);
     beforeTest();
@@ -84,7 +84,7 @@ public class UnblockUserTest extends BaseCitrusTestRunner {
         this,
         TEMPLATE_DIR,
         testName,
-        getUnBlockUserUrl(),
+        getUnblockUserUrl(),
         REQUEST_JSON,
         MediaType.APPLICATION_JSON,
         isAuthRequired,
@@ -92,16 +92,16 @@ public class UnblockUserTest extends BaseCitrusTestRunner {
         RESPONSE_JSON);
   }
 
-  @Test(dependsOnMethods = {"testUnBlockUserSuccess"})
+  @Test(dependsOnMethods = {"testUnblockUserSuccess"})
   @CitrusTest
-  public void testUnBlockUnblockUserByUserIdFailure() {
+  public void testUnblockUnblockUserByUserIdFailure() {
     getAuthToken(this, true);
     variable("userId", testContext.getVariable("userId"));
     performPostTest(
         this,
         TEMPLATE_DIR,
         TEST_UNBLOCK_USER_UNBLOCK_FAILURE_WITH_VALID_USERID,
-        getUnBlockUserUrl(),
+        getUnblockUserUrl(),
         REQUEST_JSON,
         MediaType.APPLICATION_JSON,
         true,
@@ -109,9 +109,9 @@ public class UnblockUserTest extends BaseCitrusTestRunner {
         RESPONSE_JSON);
   }
 
-  @Test(dependsOnMethods = {"testUnBlockUserSuccess"})
+  @Test(dependsOnMethods = {"testUnblockUserSuccess"})
   @CitrusTest
-  public void testGetUnBlockUserByUserIdSuccess() {
+  public void testGetUnblockUserByUserIdSuccess() {
     performGetTest(
         this,
         TEMPLATE_DIR,

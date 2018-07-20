@@ -5,8 +5,8 @@
     "params": {
         "resmsgid": null,
         "msgid": "@ignore@",
-        "err": "USER_ALREADY_EXISTS",
-        "status": "USER_ALREADY_EXISTS",
+        "err": "DUPLICATE_EXTERNAL_IDS",
+        "status": "DUPLICATE_EXTERNAL_IDS",
         "errmsg": "@ignore@"
     },
     "responseCode": "CLIENT_ERROR",

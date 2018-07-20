@@ -23,8 +23,7 @@ public class SearchUserTest extends BaseCitrusTestRunner {
   public static final String TEST_SEARCH_USER_BY_EMPTY_FILTER_SUCCESS =
       "testSearchUserByEmptyFilterSuccess";
 
-  public static final String TEST_SEARCH_USER_BY_LIMIT_1000_SUCCESS =
-      "testSearchUserBylimit1000Success";
+  public static final String TEST_SEARCH_USER_BY_LIMIT_SUCCESS = "testSearchUserByLimitSuccess";
 
   public static final String TEST_SEARCH_USER_UNKNOWN_FIELDS_SUCCESS =
       "testSearchUserByUnknownFieldsSuccess";
@@ -58,7 +57,7 @@ public class SearchUserTest extends BaseCitrusTestRunner {
       new Object[] {TEST_SEARCH_USER_BY_EMAIL_SUCCESS, true, HttpStatus.OK},
       new Object[] {TEST_SEARCH_USER_BY_USER_NAME_SUCCESS, true, HttpStatus.OK},
       new Object[] {TEST_SEARCH_USER_BY_EMPTY_FILTER_SUCCESS, true, HttpStatus.OK},
-      new Object[] {TEST_SEARCH_USER_BY_LIMIT_1000_SUCCESS, true, HttpStatus.OK},
+      new Object[] {TEST_SEARCH_USER_BY_LIMIT_SUCCESS, true, HttpStatus.OK},
       new Object[] {TEST_SEARCH_USER_UNKNOWN_FIELDS_SUCCESS, true, HttpStatus.OK},
     };
   }

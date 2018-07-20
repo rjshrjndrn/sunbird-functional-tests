@@ -13,6 +13,9 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
   public static final String TEMPLATE_DIR = "templates/user/getbyuserid";
   private static final String GET_USER_BY_ID_SERVER_URI = "/api/user/v1/read/";
   private static final String GET_USER_BY_ID_LOCAL_URI = "/v1/user/read/";
+  public static final String TEMPLATE_DIR_BLOCK = "templates/user/block";
+  public static final String TEST_BLOCK_USER_SUCCESS_WITH_VALID_USERID =
+      "testBlockUserSuccessWithValidUserId";
 
   @DataProvider(name = "getUserByUserIdFailure")
   public Object[][] getUserByUserIdFailure() {
@@ -27,7 +30,7 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
         "testGetUserByUserIdFailureWithInvalidUserId",
         true,
         "4b981b53-f9eb-44fe",
-        HttpStatus.NOT_FOUND
+        HttpStatus.BAD_REQUEST
       },
       new Object[] {"testGetUserByUserIdFailureWithEmptyUserId", true, "", HttpStatus.NOT_FOUND}
     };
@@ -64,6 +67,29 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
         HttpStatus.OK,
         RESPONSE_JSON);
     afterTest();
+  }
+
+  @Test()
+  @CitrusTest
+  public void testGetBlockUserByUserIdFailure() {
+    getAuthToken(this, true);
+    beforeTest();
+    blockUser();
+    performGetTest(
+        this,
+        TEMPLATE_DIR,
+        "testGetBlockedUserByUserIdFailure",
+        getLmsApiUriPath(
+            GET_USER_BY_ID_SERVER_URI,
+            GET_USER_BY_ID_LOCAL_URI,
+            TestActionUtil.getVariable(testContext, "userId")),
+        true,
+        HttpStatus.BAD_REQUEST,
+        RESPONSE_JSON);
+  }
+
+  private void blockUser() {
+    UserUtil.blockUser(this, TEMPLATE_DIR_BLOCK, TEST_BLOCK_USER_SUCCESS_WITH_VALID_USERID);
   }
 
   private void beforeTest() {
