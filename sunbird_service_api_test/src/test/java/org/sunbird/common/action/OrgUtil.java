@@ -27,6 +27,10 @@ public class OrgUtil {
     return runner.getLmsApiUriPath("/api/org/v1/create", "/v1/org/create");
   }
 
+  public static String getAddUserToOrgUrl(BaseCitrusTestRunner runner) {
+    return runner.getLmsApiUriPath("/api/org/v1/member/add", "/v1/org/member/add");
+  }
+
   public static void createOrg(
       BaseCitrusTestRunner runner,
       TestContext testContext,
@@ -54,6 +58,21 @@ public class OrgUtil {
                 "$.result.organisationId",
                 "organisationId"));
     runner.sleep(Constant.ES_SYNC_WAIT_TIME);
+  }
+
+  public static void addUserToOrg(
+      BaseCitrusTestRunner runner, String templateDir, String testName) {
+    runner.http(
+        builder ->
+            TestActionUtil.getPostRequestTestAction(
+                builder,
+                Constant.LMS_ENDPOINT,
+                templateDir,
+                testName,
+                getAddUserToOrgUrl(runner),
+                Constant.REQUEST_JSON,
+                MediaType.APPLICATION_JSON.toString(),
+                TestActionUtil.getHeaders(true)));
   }
 
   public static void getRootOrgId(BaseCitrusTestRunner runner, TestContext testContext) {

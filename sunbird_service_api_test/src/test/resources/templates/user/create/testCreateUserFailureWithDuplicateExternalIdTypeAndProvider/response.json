@@ -1,0 +1,14 @@
+{
+    "id": "api.user.create",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "DUPLICATE_EXTERNAL_IDS",
+        "status": "DUPLICATE_EXTERNAL_IDS",
+        "errmsg": "@ignore@"
+    },
+    "responseCode": "CLIENT_ERROR",
+    "result": {}
+}

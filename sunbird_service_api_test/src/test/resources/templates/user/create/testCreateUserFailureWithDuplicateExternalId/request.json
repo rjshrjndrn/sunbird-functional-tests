@@ -1,0 +1,23 @@
+{
+    "params": { },
+    "request":{
+        "firstName": "Amit",
+        "lastName": "Kumar",
+        "password": "password",
+        "email": "citrus:randomString(10, MIXED, true)@gmail.com",
+        "userName":"citrus:concat('ft_username',citrus:randomString(10, MIXED, true))",
+        "externalIds": [
+            {
+                "idType": "idtype5",
+                "provider": "provider5",
+                "id": "id5",
+                "operation":"add"
+            },
+            {
+                "idType": "idtype5",
+                "provider": "provider5",
+                "id": "id5"
+            }
+        ]
+    }
+}
