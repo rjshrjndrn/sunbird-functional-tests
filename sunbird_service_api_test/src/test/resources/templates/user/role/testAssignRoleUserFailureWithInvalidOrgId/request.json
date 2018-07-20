@@ -2,7 +2,7 @@
 
     "request":{
         "userId":"${userId}",
-        "organisationId":"${organisationId}",
+        "organisationId":"#INVALID_VALUE",
         "roles": ["CONTENT_CURATION","CONTENT_CREATION","CONTENT_REVIEW"]
 
     }

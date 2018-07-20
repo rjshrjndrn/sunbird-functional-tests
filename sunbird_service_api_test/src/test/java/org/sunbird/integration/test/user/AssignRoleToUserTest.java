@@ -4,6 +4,7 @@ import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.testng.CitrusParameters;
 import java.util.UUID;
 import javax.ws.rs.core.MediaType;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.sunbird.common.action.OrgUtil;
 import org.sunbird.common.action.UserUtil;
@@ -22,10 +23,10 @@ public class AssignRoleToUserTest extends BaseCitrusTestRunner {
 
   private static final String TEST_ASSIGN_ROLE_USER_FAILURE_WITH_INVALID_ROLE =
       "testAssignRoleUserFailureWithInvalidRole";
-  private static final String TEST_ASSIGN_ROLE_USER_FAILURE_WITH_USER_NOT_BELONG_TO_ORG =
-      "testAssignRoleUserFailureWithUserNotBelongToOrg";
-  private static final String TEST_ASSIGN_ROLE_USER_FAILURE_WITH_USER_ALREADY_BELONG_TO_ORG =
-      "testAssignRoleUserFailureWithUserAlreadyBelongToOrg";
+  private static final String TEST_ASSIGN_ROLE_USER_FAILURE_WITH_USER_NOT_ADDED_TO_ORG =
+      "testAssignRoleUserFailureWithUserNotAddedToOrg";
+  private static final String TEST_ASSIGN_ROLE_USER_SUCCESS_WITH_USER_ALREADY_ADDED_TO_ORG =
+      "testAssignRoleUserFailureWithUserAlreadyAddedToOrg";
 
   public static final String TEMPLATE_DIR_USER_CREATE = "templates/user/create";
   public static final String TEMPLATE_DIR_USER_CREATE_TEST_CASE = "testCreateUserSuccess";
@@ -49,6 +50,16 @@ public class AssignRoleToUserTest extends BaseCitrusTestRunner {
       new Object[] {
         TEST_ASSIGN_ROLE_USER_FAILURE_WITHOUT_ACCESS_TOKEN, false, HttpStatus.UNAUTHORIZED
       },
+      new Object[] {
+        TEST_ASSIGN_ROLE_USER_FAILURE_WITH_USER_NOT_ADDED_TO_ORG, true, HttpStatus.BAD_REQUEST
+      },
+      new Object[] {TEST_ASSIGN_ROLE_USER_FAILURE_WITH_INVALID_ROLE, true, HttpStatus.BAD_REQUEST},
+      new Object[] {
+        TEST_ASSIGN_ROLE_USER_FAILURE_WITH_INVALID_USER_ID, true, HttpStatus.BAD_REQUEST
+      },
+      new Object[] {
+        TEST_ASSIGN_ROLE_USER_FAILURE_WITH_INVALID_ORG_ID, true, HttpStatus.BAD_REQUEST
+      },
     };
   }
 
@@ -57,6 +68,11 @@ public class AssignRoleToUserTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testAssignRoleToUserFailure(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+
+    createUser();
+    createOrg();
+    variable("userId", testContext.getVariable("userId"));
+    variable("organisationId", testContext.getVariable("organisationId"));
     getAuthToken(this, isAuthRequired);
     performPostTest(
         this,
@@ -72,71 +88,13 @@ public class AssignRoleToUserTest extends BaseCitrusTestRunner {
 
   @Test()
   @CitrusTest
-  public void testAssignRoleToUserFailureWithInvalidUserId() {
-
-    createOrg();
-    variable("organisationId", testContext.getVariable("organisationId"));
-    getAuthToken(this, true);
-    performPostTest(
-        this,
-        TEMPLATE_DIR,
-        TEST_ASSIGN_ROLE_USER_FAILURE_WITH_INVALID_USER_ID,
-        getAssignRoleToUserUrl(),
-        REQUEST_JSON,
-        MediaType.APPLICATION_JSON,
-        true,
-        HttpStatus.BAD_REQUEST,
-        RESPONSE_JSON);
-  }
-
-  @Test()
-  @CitrusTest
-  public void testAssignRoleToUserFailureWithInvalidOrgId() {
-    createUser();
-    variable("organisationId", "#Invalid_Value");
-    variable("userId", testContext.getVariable("userId"));
-    getAuthToken(this, true);
-    performPostTest(
-        this,
-        TEMPLATE_DIR,
-        TEST_ASSIGN_ROLE_USER_FAILURE_WITH_INVALID_ORG_ID,
-        getAssignRoleToUserUrl(),
-        REQUEST_JSON,
-        MediaType.APPLICATION_JSON,
-        true,
-        HttpStatus.BAD_REQUEST,
-        RESPONSE_JSON);
-  }
-
-  @Test()
-  @CitrusTest
-  public void testAssignRoleToUserFailureWithInvalidRole() {
-    createOrg();
-    createUser();
-    variable("organisationId", testContext.getVariable("organisationId"));
-    variable("userId", testContext.getVariable("userId"));
-    getAuthToken(this, true);
-    performPostTest(
-        this,
-        TEMPLATE_DIR,
-        TEST_ASSIGN_ROLE_USER_FAILURE_WITH_INVALID_ROLE,
-        getAssignRoleToUserUrl(),
-        REQUEST_JSON,
-        MediaType.APPLICATION_JSON,
-        true,
-        HttpStatus.BAD_REQUEST,
-        RESPONSE_JSON);
-  }
-
-  @Test()
-  @CitrusTest
-  public void testAssignRoleToUserFailureWithUserAlreadyBelongToOrg() {
+  public void testAssignRoleToUserSuccessWithUserAlreadyBelongToOrg() {
     addUserToOrg();
     getAuthToken(this, true);
     performPostTest(
         this,
         TEMPLATE_DIR,
-        TEST_ASSIGN_ROLE_USER_FAILURE_WITH_USER_ALREADY_BELONG_TO_ORG,
+        TEST_ASSIGN_ROLE_USER_SUCCESS_WITH_USER_ALREADY_ADDED_TO_ORG,
         getAssignRoleToUserUrl(),
         REQUEST_JSON,
         MediaType.APPLICATION_JSON,
@@ -145,43 +103,28 @@ public class AssignRoleToUserTest extends BaseCitrusTestRunner {
         RESPONSE_JSON);
   }
 
-  @Test()
-  @CitrusTest
-  public void testAssignRoleToUserFailureWithUserNotBelongToOrg() {
-    createOrg();
-    createUser();
-    variable("organisationId", testContext.getVariable("organisationId"));
-    variable("userId", testContext.getVariable("userId"));
-    getAuthToken(this, true);
-    performPostTest(
-        this,
-        TEMPLATE_DIR,
-        TEST_ASSIGN_ROLE_USER_FAILURE_WITH_USER_NOT_BELONG_TO_ORG,
-        getAssignRoleToUserUrl(),
-        REQUEST_JSON,
-        MediaType.APPLICATION_JSON,
-        true,
-        HttpStatus.BAD_REQUEST,
-        RESPONSE_JSON);
-  }
-
   private void createUser() {
-    getAuthToken(this, true);
-    String userName = Constant.USER_NAME_PREFIX + UUID.randomUUID().toString();
-    testContext.setVariable("userName", userName);
-    variable("username", userName);
-    UserUtil.createUser(
-        this, testContext, TEMPLATE_DIR_USER_CREATE, TEMPLATE_DIR_USER_CREATE_TEST_CASE);
+
+    if (StringUtils.isBlank((String) testContext.getVariables().get("userId"))) {
+      getAuthToken(this, true);
+      String userName = Constant.USER_NAME_PREFIX + UUID.randomUUID().toString();
+      testContext.setVariable("userName", userName);
+      variable("username", userName);
+      UserUtil.createUser(
+          this, testContext, TEMPLATE_DIR_USER_CREATE, TEMPLATE_DIR_USER_CREATE_TEST_CASE);
+    }
   }
 
   private void createOrg() {
-    getAuthToken(this, true);
-    OrgUtil.createOrg(
-        this,
-        testContext,
-        BT_CREATE_ORG_TEMPLATE_DIR,
-        BT_TEST_NAME_CREATE_ROOT_ORG_SUCCESS,
-        HttpStatus.OK);
+    if (StringUtils.isBlank((String) testContext.getVariables().get("organisationId"))) {
+      getAuthToken(this, true);
+      OrgUtil.createOrg(
+          this,
+          testContext,
+          BT_CREATE_ORG_TEMPLATE_DIR,
+          BT_TEST_NAME_CREATE_ROOT_ORG_SUCCESS,
+          HttpStatus.OK);
+    }
   }
 
   private void addUserToOrg() {
@@ -189,6 +132,7 @@ public class AssignRoleToUserTest extends BaseCitrusTestRunner {
     createUser();
     variable("userId", testContext.getVariable("userId"));
     variable("organisationId", testContext.getVariable("organisationId"));
+    getAuthToken(this, true);
     OrgUtil.addUserToOrg(this, TEMPLATE_ORG_DIR, TEST_ASSIGN_USER_TO_ORG_SUCCESS);
   }
 }

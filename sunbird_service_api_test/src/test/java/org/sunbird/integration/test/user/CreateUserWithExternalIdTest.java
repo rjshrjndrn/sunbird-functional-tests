@@ -8,7 +8,7 @@ import org.sunbird.integration.test.common.BaseCitrusTestRunner;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class CreateUserTest extends BaseCitrusTestRunner {
+public class CreateUserWithExternalIdTest extends BaseCitrusTestRunner {
 
   public static final String
       TEST_NAME_CREATE_USER_FAILURE_WITH_DUPLICATE_COMBINATION_EXTERNAL_ID_EXTERNAL_ID_TYPE_AND_EXTERNAL_ID_PROVIDER =
