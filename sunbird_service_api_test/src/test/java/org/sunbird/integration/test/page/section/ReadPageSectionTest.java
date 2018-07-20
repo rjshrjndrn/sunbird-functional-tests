@@ -13,7 +13,7 @@ public class ReadPageSectionTest extends BaseCitrusTestRunner {
       "testReadPageSectionsFailureWithoutAccessToken";
 
   public static final String TEST_NAME_READ_PAGE_SECTIONS_FAILURE_WITH_INVALID_ID =
-      "testReadPageSectionsFailureWithInvalideId";
+      "testReadPageSectionsFailureWithInvalidId";
 
   public static final String TEMPLATE_DIR = "templates/page/read";
 
