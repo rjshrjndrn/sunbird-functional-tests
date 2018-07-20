@@ -46,4 +46,5 @@ public class Constant {
   public static final String LOCATION_TYPE_BLOCK = "block";
   public static final String STATE_ID = "stateId";
   public static final String DISTRICT_ID = "districtId";
+  public static final String BULK_UPLOAD_PROCESS_ID = "bulkUploadProcessId";
 }

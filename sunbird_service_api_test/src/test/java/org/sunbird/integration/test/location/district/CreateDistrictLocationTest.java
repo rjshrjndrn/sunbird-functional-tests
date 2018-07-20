@@ -55,6 +55,7 @@ public class CreateDistrictLocationTest extends BaseCitrusTestRunner {
         isAuthRequired,
         httpStatusCode,
         RESPONSE_JSON);
+    this.sleep(Constant.ES_SYNC_WAIT_TIME);
   }
 
   public void createStateLocation() {

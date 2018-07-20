@@ -5,6 +5,7 @@ import com.consol.citrus.testng.CitrusParameters;
 import javax.ws.rs.core.MediaType;
 import org.springframework.http.HttpStatus;
 import org.sunbird.common.annotation.CleanUp;
+import org.sunbird.common.util.Constant;
 import org.sunbird.integration.test.common.BaseCitrusTestRunner;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -55,6 +56,7 @@ public class CreateStateLocationTest extends BaseCitrusTestRunner {
         isAuthRequired,
         httpStatusCode,
         RESPONSE_JSON);
+    this.sleep(Constant.ES_SYNC_WAIT_TIME);
   }
 
   @CleanUp

@@ -56,7 +56,7 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
                 testName,
                 requestUrl,
                 requestFile,
-                requestHeaders,
+                TestActionUtil.getHeaders(isAuthRequired, requestHeaders),
                 runner.getClass().getClassLoader(),
                 config));
     runner.http(
