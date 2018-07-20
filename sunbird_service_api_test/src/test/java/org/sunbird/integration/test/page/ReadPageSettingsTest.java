@@ -40,13 +40,9 @@ public class ReadPageSettingsTest extends BaseCitrusTestRunner {
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
     getAuthToken(this, isAuthRequired);
 
+    String url = getReadPageUrl() + "/invalid";
+
     performGetTest(
-        this,
-        TEMPLATE_DIR,
-        testName,
-        getReadPageUrl(),
-        isAuthRequired,
-        httpStatusCode,
-        RESPONSE_JSON);
+        this, TEMPLATE_DIR, testName, url, isAuthRequired, httpStatusCode, RESPONSE_JSON);
   }
 }
