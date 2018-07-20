@@ -10,15 +10,15 @@ import org.testng.annotations.Test;
 public class ReadPageSectionTest extends BaseCitrusTestRunner {
 
   public static final String TEST_NAME_READ_PAGE_SECTIONS_FAILURE_WITHOUT_ACCESS_TOKEN =
-      "testReadPageSectionsFailureWithoutAccessToken";
+      "testReadPageSectionFailureWithoutAccessToken";
 
   public static final String TEST_NAME_READ_PAGE_SECTIONS_FAILURE_WITH_INVALID_ID =
-      "testReadPageSectionsFailureWithInvalidId";
+      "testReadPageSectionFailureWithInvalidId";
 
   public static final String TEMPLATE_DIR = "templates/page/read";
 
-  private String getReadPageSectionUrl() {
-    return getLmsApiUriPath("/api/data/v1/page/section/read", "/v1/page/section/read");
+  private String getReadPageSectionUrl(String param) {
+    return getLmsApiUriPath("/api/data/v1/page/section/read/"+param , "/v1/page/section/read/" + param);
   }
 
   @DataProvider(name = "readPageSectionFailureDataProvider")
@@ -41,9 +41,13 @@ public class ReadPageSectionTest extends BaseCitrusTestRunner {
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
     getAuthToken(this, isAuthRequired);
 
-    String url = getReadPageSectionUrl() + "/invalid";
+    String param = "";
+    if(testName.equalsIgnoreCase(TEST_NAME_READ_PAGE_SECTIONS_FAILURE_WITHOUT_ACCESS_TOKEN) || testName.equalsIgnoreCase(TEST_NAME_READ_PAGE_SECTIONS_FAILURE_WITH_INVALID_ID)) {
+    	param = "invalid";
+    }
+   
 
     performGetTest(
-        this, TEMPLATE_DIR, testName, url, isAuthRequired, httpStatusCode, RESPONSE_JSON);
+        this, TEMPLATE_DIR, testName, getReadPageSectionUrl(param), isAuthRequired, httpStatusCode, RESPONSE_JSON);
   }
 }
