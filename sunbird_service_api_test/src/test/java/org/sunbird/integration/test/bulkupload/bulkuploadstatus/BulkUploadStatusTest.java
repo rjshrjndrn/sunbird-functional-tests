@@ -15,9 +15,9 @@ public class BulkUploadStatusTest extends BaseCitrusTestRunner {
   private static final String BULK_UPLOAD_STATUS_SERVER_URI = "/api/data/v1/upload/status/";
   private static final String BULK_UPLOAD_STATUS_LOCAL_URI = "/v1/upload/status/";
   private static final String TEST_BULK_UPLOAD_STATUS_SUCCESS_WITH_VALID_PROCESS_ID =
-      "testBulkUploadSuccessWithValidProcessId";
-  private static final String TEST_BULK_UPLOAD_FAILURE_WITH_INVALID_PROCESS_ID =
-      "testBulkUploadFailureWithInvalidProcessId";
+      "testBulkUploadStatusSuccessWithValidProcessId";
+  private static final String TEST_BULK_UPLOAD_STATUS_FAILURE_WITH_INVALID_PROCESS_ID =
+      "testBulkUploadStatusFailureWithInvalidProcessId";
 
   @DataProvider(name = "bulkUploadStatusSuccessDataProvider")
   public Object[][] bulkUploadStatusSuccessDataProvider() {
@@ -29,7 +29,7 @@ public class BulkUploadStatusTest extends BaseCitrusTestRunner {
   @DataProvider(name = "bulkUploadStatusDataFailureProvider")
   public Object[][] bulkUploadStatusDataFailureProvider() {
     return new Object[][] {
-      new Object[] {TEST_BULK_UPLOAD_FAILURE_WITH_INVALID_PROCESS_ID, HttpStatus.NOT_FOUND}
+      new Object[] {TEST_BULK_UPLOAD_STATUS_FAILURE_WITH_INVALID_PROCESS_ID, HttpStatus.NOT_FOUND}
     };
   }
 
