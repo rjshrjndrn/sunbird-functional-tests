@@ -56,7 +56,7 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
                 testName,
                 requestUrl,
                 requestFile,
-                requestHeaders,
+                TestActionUtil.getHeaders(isAuthRequired, requestHeaders),
                 runner.getClass().getClassLoader(),
                 config));
     runner.http(
@@ -78,6 +78,60 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
     runner.http(
         builder ->
             TestActionUtil.getPostRequestTestAction(
+                builder,
+                LMS_ENDPOINT,
+                templateDir,
+                testName,
+                requestUrl,
+                requestJson,
+                contentType,
+                TestActionUtil.getHeaders(isAuthRequired)));
+    runner.http(
+        builder ->
+            TestActionUtil.getResponseTestAction(
+                builder, LMS_ENDPOINT, templateDir, testName, responseCode, responseJson));
+  }
+
+  public void performPatchTest(
+      TestNGCitrusTestRunner runner,
+      String templateDir,
+      String testName,
+      String requestUrl,
+      String requestJson,
+      String contentType,
+      boolean isAuthRequired,
+      HttpStatus responseCode,
+      String responseJson) {
+    runner.http(
+        builder ->
+            TestActionUtil.getPatchRequestTestAction(
+                builder,
+                LMS_ENDPOINT,
+                templateDir,
+                testName,
+                requestUrl,
+                requestJson,
+                contentType,
+                TestActionUtil.getHeaders(isAuthRequired)));
+    runner.http(
+        builder ->
+            TestActionUtil.getResponseTestAction(
+                builder, LMS_ENDPOINT, templateDir, testName, responseCode, responseJson));
+  }
+
+  public void performDeleteTest(
+      TestNGCitrusTestRunner runner,
+      String templateDir,
+      String testName,
+      String requestUrl,
+      String requestJson,
+      String contentType,
+      boolean isAuthRequired,
+      HttpStatus responseCode,
+      String responseJson) {
+    runner.http(
+        builder ->
+            TestActionUtil.getDeleteRequestTestAction(
                 builder,
                 LMS_ENDPOINT,
                 templateDir,

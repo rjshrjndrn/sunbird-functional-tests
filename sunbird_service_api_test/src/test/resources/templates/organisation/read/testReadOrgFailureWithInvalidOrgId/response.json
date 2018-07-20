@@ -1,0 +1,14 @@
+{
+    "id": "api.org.read",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "ORG_NOT_EXIST",
+        "status": "ORG_NOT_EXIST",
+        "errmsg": "Requested organisation does not exist."
+    },
+    "responseCode": "RESOURCE_NOT_FOUND",
+    "result": {}
+}

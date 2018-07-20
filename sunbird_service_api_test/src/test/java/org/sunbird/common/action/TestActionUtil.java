@@ -84,6 +84,55 @@ public class TestActionUtil {
     return requestActionBuilder.payload(new ClassPathResource(requestFilePath));
   }
 
+  public static TestAction getPatchRequestTestAction(
+      HttpActionBuilder builder,
+      String endpointName,
+      String testTemplateDir,
+      String testName,
+      String url,
+      String requestFile,
+      String contentType,
+      Map<String, Object> headers) {
+
+    String requestFilePath =
+        MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, requestFile);
+    HttpClientRequestActionBuilder requestActionBuilder =
+        builder.client(endpointName).send().patch(url).messageType(MessageType.JSON);
+    if (StringUtils.isNotBlank(contentType)) {
+      requestActionBuilder.contentType(contentType);
+    }
+
+    requestActionBuilder = addHeaders(requestActionBuilder, headers);
+
+    return requestActionBuilder.payload(new ClassPathResource(requestFilePath));
+  }
+
+  public static TestAction getDeleteRequestTestAction(
+      HttpActionBuilder builder,
+      String endpointName,
+      String testTemplateDir,
+      String testName,
+      String url,
+      String requestFile,
+      String contentType,
+      Map<String, Object> headers) {
+
+    HttpClientRequestActionBuilder requestActionBuilder =
+        builder.client(endpointName).send().delete(url).messageType(MessageType.JSON);
+    if (StringUtils.isNotBlank(contentType)) {
+      requestActionBuilder.contentType(contentType);
+    }
+
+    requestActionBuilder = addHeaders(requestActionBuilder, headers);
+
+    if (StringUtils.isNotBlank(requestFile)) {
+      String requestFilePath =
+          MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, requestFile);
+      return requestActionBuilder.payload(new ClassPathResource(requestFilePath));
+    }
+    return requestActionBuilder;
+  }
+
   public static TestAction getMultipartRequestTestAction(
       TestContext context,
       HttpActionBuilder builder,
@@ -187,6 +236,15 @@ public class TestActionUtil {
     }
     headers.put(Constant.AUTHORIZATION, Constant.BEARER + System.getenv("sunbird_api_key"));
     return headers;
+  }
+
+  public static Map<String, Object> getHeaders(
+      boolean isAuthRequired, Map<String, Object> additionalHeaders) {
+    if (null == additionalHeaders) {
+      additionalHeaders = new HashMap<>();
+    }
+    additionalHeaders.putAll(getHeaders(isAuthRequired));
+    return additionalHeaders;
   }
 
   private static HttpClientRequestActionBuilder addHeaders(
