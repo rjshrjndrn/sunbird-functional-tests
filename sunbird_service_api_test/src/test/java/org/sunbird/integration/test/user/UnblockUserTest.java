@@ -2,12 +2,10 @@ package org.sunbird.integration.test.user;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.testng.CitrusParameters;
-import java.util.UUID;
 import javax.ws.rs.core.MediaType;
 import org.springframework.http.HttpStatus;
 import org.sunbird.common.action.TestActionUtil;
 import org.sunbird.common.action.UserUtil;
-import org.sunbird.common.util.Constant;
 import org.sunbird.integration.test.common.BaseCitrusTestRunner;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -26,8 +24,7 @@ public class UnblockUserTest extends BaseCitrusTestRunner {
 
   public static final String TEST_UNBLOCK_USER_GET_SUCCESS_WITH_VALID_USERID =
       "testUnBlockUserGetSuccessWithValidUserId";
-  public static final String TEMPLATE_DIR_USER_CREATE = "templates/user/create";
-  public static final String TEMPLATE_DIR_USER_CREATE_TEST_CASE = "testCreateUserSuccess";
+
   public static final String TEMPLATE_DIR_BLOCK = "templates/user/block";
   public static final String TEST_BLOCK_USER_SUCCESS_WITH_VALID_USERID =
       "testBlockUserSuccessWithValidUserId";
@@ -129,12 +126,7 @@ public class UnblockUserTest extends BaseCitrusTestRunner {
   }
 
   private void beforeTest() {
-    getAuthToken(this, true);
-    String userName = Constant.USER_NAME_PREFIX + UUID.randomUUID().toString();
-    testContext.setVariable("userName", userName);
-    variable("username", userName);
-    UserUtil.createUser(
-        this, testContext, TEMPLATE_DIR_USER_CREATE, TEMPLATE_DIR_USER_CREATE_TEST_CASE);
+    UserUtil.getUserId(this, testContext);
     variable("userId", testContext.getVariable("userId"));
     UserUtil.blockUser(this, TEMPLATE_DIR_BLOCK, TEST_BLOCK_USER_SUCCESS_WITH_VALID_USERID);
   }

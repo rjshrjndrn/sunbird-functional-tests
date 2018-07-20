@@ -2,13 +2,11 @@ package org.sunbird.integration.test.user;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.testng.CitrusParameters;
-import java.util.UUID;
 import javax.ws.rs.core.MediaType;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.sunbird.common.action.OrgUtil;
 import org.sunbird.common.action.UserUtil;
-import org.sunbird.common.util.Constant;
 import org.sunbird.integration.test.common.BaseCitrusTestRunner;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -27,9 +25,6 @@ public class AssignRoleToUserTest extends BaseCitrusTestRunner {
       "testAssignRoleUserFailureWithUserNotAddedToOrg";
   private static final String TEST_ASSIGN_ROLE_USER_SUCCESS_WITH_USER_ALREADY_ADDED_TO_ORG =
       "testAssignRoleUserFailureWithUserAlreadyAddedToOrg";
-
-  public static final String TEMPLATE_DIR_USER_CREATE = "templates/user/create";
-  public static final String TEMPLATE_DIR_USER_CREATE_TEST_CASE = "testCreateUserSuccess";
 
   public static final String TEMPLATE_DIR = "templates/user/role";
 
@@ -104,15 +99,7 @@ public class AssignRoleToUserTest extends BaseCitrusTestRunner {
   }
 
   private void createUser() {
-
-    if (StringUtils.isBlank((String) testContext.getVariables().get("userId"))) {
-      getAuthToken(this, true);
-      String userName = Constant.USER_NAME_PREFIX + UUID.randomUUID().toString();
-      testContext.setVariable("userName", userName);
-      variable("username", userName);
-      UserUtil.createUser(
-          this, testContext, TEMPLATE_DIR_USER_CREATE, TEMPLATE_DIR_USER_CREATE_TEST_CASE);
-    }
+    UserUtil.getUserId(this, testContext);
   }
 
   private void createOrg() {
