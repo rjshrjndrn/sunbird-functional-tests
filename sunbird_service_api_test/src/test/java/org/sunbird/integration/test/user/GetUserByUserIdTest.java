@@ -78,7 +78,7 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
     performGetTest(
         this,
         TEMPLATE_DIR,
-        "testGetUserByUserIdFailureWithBlockUser",
+        "testGetUserByUserIdFailureWithBlockedUser",
         getLmsApiUriPath(
             GET_USER_BY_ID_SERVER_URI,
             GET_USER_BY_ID_LOCAL_URI,
