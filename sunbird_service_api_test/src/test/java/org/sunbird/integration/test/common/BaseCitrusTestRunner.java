@@ -8,7 +8,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.sunbird.common.action.TestActionUtil;
-import org.sunbird.common.util.Constant;
 import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 
 public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
@@ -57,7 +56,7 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
                 testName,
                 requestUrl,
                 requestFile,
-                requestHeaders,
+                TestActionUtil.getHeaders(isAuthRequired, requestHeaders),
                 runner.getClass().getClassLoader(),
                 config));
     runner.http(
