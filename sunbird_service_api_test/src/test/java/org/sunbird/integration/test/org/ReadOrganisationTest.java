@@ -85,7 +85,7 @@ public class ReadOrganisationTest extends BaseCitrusTestRunner {
   @CitrusParameters({"testName", "httpStatusCode"})
   @CitrusTest
   public void testReadOrganisationSuccess(String testName, HttpStatus httpStatusCode) {
-    variable("rootExternalId", externalId);
+    variable("rootOrgExternalId", externalId);
     beforeTest();
     performPostTest(
         this,
@@ -106,7 +106,7 @@ public class ReadOrganisationTest extends BaseCitrusTestRunner {
           this,
           testContext,
           "templates/organisation/create",
-          "testCreateOrgSuccessWithProviderAndExternalId",
+          "testCreateRootOrgSuccessWithProviderAndExternalId",
           HttpStatus.OK);
       orgId = testContext.getVariable("organisationId");
     } else {

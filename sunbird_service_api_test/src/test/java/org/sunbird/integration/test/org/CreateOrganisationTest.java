@@ -29,14 +29,15 @@ public class CreateOrganisationTest extends BaseCitrusTestRunner {
       "testCreateSubOrgSuccessWithProviderAndExternalId";
   public static final String TEST_NAME_CREATE_SUB_ORG_SUCCESS_WITH_EXISTING_CHANNEL =
       "testCreateSubOrgSuccessWithExistingChannel";
-  public static final String TEST_NAME_CREATE_ORG_SUCCESS_WITH_ORG_NAME_AND_NEW_CHANNEL =
-      "testCreateOrgSuccessWithOrgNameAndNewChannel";
-  private static final Object TEST_NAME_CREATE_ORG_SUCCESS_WITH_PROVIDER_AND_EXTERNALID =
-      "testCreateOrgSuccessWithProviderAndExternalId";
-  public static final String TEST_NAME_CREATE_ORG_FAILURE_WITH_ORG_NAME_AND_EXISTING_CHANNEL =
-      "testCreateOrgFailureWithOrgNameAndExistingChannel";
-  private static final Object TEST_NAME_CREATE_ORG_FAILURE_WITH_ORG_NAME_AND_EXISTING_EXTERNAL_ID =
-      "testCreateOrgFailureWithOrgNameAndExistingExternalId";
+  public static final String TEST_NAME_CREATE_ROOT_ORG_SUCCESS_WITH_ORG_NAME_AND_NEW_CHANNEL =
+      "testCreateRootOrgSuccessWithOrgNameAndNewChannel";
+  private static final Object TEST_NAME_CREATE_ROOT_ORG_SUCCESS_WITH_PROVIDER_AND_EXTERNALID =
+      "testCreateRootOrgSuccessWithProviderAndExternalId";
+  public static final String TEST_NAME_CREATE_ROOT_ORG_FAILURE_WITH_ORG_NAME_AND_EXISTING_CHANNEL =
+      "testCreateRootOrgFailureWithOrgNameAndExistingChannel";
+  private static final Object
+      TEST_NAME_CREATE_ROOT_ORG_FAILURE_WITH_ORG_NAME_AND_EXISTING_EXTERNAL_ID =
+          "testCreateRootOrgFailureWithOrgNameAndExistingExternalId";
 
   public static final String TEMPLATE_DIR = "templates/organisation/create";
 
@@ -110,7 +111,7 @@ public class CreateOrganisationTest extends BaseCitrusTestRunner {
   public void testCreateOrganisationSuccess(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
     getAuthToken(this, isAuthRequired);
-    variable("rootChannel", OrgUtil.getRootChannel());
+    variable("rootOrgChannel", OrgUtil.getRootOrgChannel());
     performPostTest(
         this,
         TEMPLATE_DIR,
@@ -128,16 +129,18 @@ public class CreateOrganisationTest extends BaseCitrusTestRunner {
 
     return new Object[][] {
       new Object[] {
-        TEST_NAME_CREATE_ORG_SUCCESS_WITH_ORG_NAME_AND_NEW_CHANNEL, true, HttpStatus.OK
+        TEST_NAME_CREATE_ROOT_ORG_SUCCESS_WITH_ORG_NAME_AND_NEW_CHANNEL, true, HttpStatus.OK
       },
-      new Object[] {TEST_NAME_CREATE_ORG_SUCCESS_WITH_PROVIDER_AND_EXTERNALID, true, HttpStatus.OK},
       new Object[] {
-        TEST_NAME_CREATE_ORG_FAILURE_WITH_ORG_NAME_AND_EXISTING_CHANNEL,
+        TEST_NAME_CREATE_ROOT_ORG_SUCCESS_WITH_PROVIDER_AND_EXTERNALID, true, HttpStatus.OK
+      },
+      new Object[] {
+        TEST_NAME_CREATE_ROOT_ORG_FAILURE_WITH_ORG_NAME_AND_EXISTING_CHANNEL,
         true,
         HttpStatus.BAD_REQUEST
       },
       new Object[] {
-        TEST_NAME_CREATE_ORG_FAILURE_WITH_ORG_NAME_AND_EXISTING_EXTERNAL_ID,
+        TEST_NAME_CREATE_ROOT_ORG_FAILURE_WITH_ORG_NAME_AND_EXISTING_EXTERNAL_ID,
         true,
         HttpStatus.BAD_REQUEST
       }
@@ -151,8 +154,8 @@ public class CreateOrganisationTest extends BaseCitrusTestRunner {
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
     getAuthToken(this, isAuthRequired);
 
-    variable("rootChannel", OrgUtil.getRootChannel());
-    variable("rootExternalId", OrgUtil.getRootExternalId());
+    variable("rootOrgChannel", OrgUtil.getRootOrgChannel());
+    variable("rootOrgExternalId", OrgUtil.getRootOrgExternalId());
     beforeTest();
 
     performPostTest(
