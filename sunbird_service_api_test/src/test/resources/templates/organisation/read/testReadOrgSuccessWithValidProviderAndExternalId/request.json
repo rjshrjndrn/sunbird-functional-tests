@@ -1,0 +1,6 @@
+{
+  "request": {
+    "externalId": "${rootExternalId}",
+    "provider": "FT_provider"
+  }
+}
