@@ -1,0 +1,12 @@
+{
+  "request": {
+    "name": "citrus:concat('ft_page_section',citrus:randomNumber(10))",
+    "portalMap": [
+      {
+        "id": "any page sec id",
+        "index": 1,
+        "group": 1
+      }
+    ]
+  }
+}

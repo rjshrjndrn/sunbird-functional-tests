@@ -28,6 +28,10 @@ public class CreatePageTest extends BaseCitrusTestRunner {
       "testCreatePageSuccessWithName";
   public static final String TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME_AND_ORG_ID =
       "testCreatePageSuccessWithNameAndOrgId";
+  public static final String TEST_NAME_CREATE_PAGE_SUCCESS_WITH_PORTAL_MAP =
+      "testCreatePageSuccessWithPortalMap";
+  public static final String TEST_NAME_CREATE_PAGE_SUCCESS_WITH_APP_MAP =
+      "testCreatePageSuccessWithAppMap";
 
   public static final String TEMPLATE_DIR = "templates/page/create";
   public static final String ORG_CREATE_ORG_TEMPLATE_DIR = "templates/organisation/create";
@@ -58,8 +62,9 @@ public class CreatePageTest extends BaseCitrusTestRunner {
 
     if (testName.equalsIgnoreCase(TEST_NAME_CREATE_PAGE_FAILURE_WITH_EXISTING_NAME)) {
       variable("pageName", PAGE_NAME);
-      beforeTestCreatePage();    
+      beforeTestCreatePage();
     }
+
     performPostTest(
         this,
         TEMPLATE_DIR,
@@ -78,6 +83,8 @@ public class CreatePageTest extends BaseCitrusTestRunner {
     return new Object[][] {
       new Object[] {TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME, true, HttpStatus.OK},
       new Object[] {TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME_AND_ORG_ID, true, HttpStatus.OK},
+      new Object[] {TEST_NAME_CREATE_PAGE_SUCCESS_WITH_PORTAL_MAP, true, HttpStatus.OK},
+      new Object[] {TEST_NAME_CREATE_PAGE_SUCCESS_WITH_APP_MAP, true, HttpStatus.OK},
     };
   }
 

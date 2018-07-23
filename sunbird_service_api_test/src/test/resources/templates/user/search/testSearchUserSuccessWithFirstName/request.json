@@ -1,0 +1,7 @@
+{
+  "request": {
+    "filters": {
+     "firstName" : "some name"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "request": {
+    "id": "${pageId}",
+    "appMap": [
+      {
+        "id": "any page sec id",
+        "index": 1,
+        "group": 1
+      }
+    ]
+  }
+}
