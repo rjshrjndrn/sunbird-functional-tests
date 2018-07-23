@@ -12,15 +12,15 @@ public class OrgUtil {
 
   private static String rootOrgId = null;
 
-  private static final String rootChannel = "FT_Org_Channel_" + (new Random()).nextInt(100);
-  private static final String rootExternalId = "FT_Org_External_" + (new Random()).nextInt(100);
+  private static final String rootOrgChannel = "FT_Org_Channel_" + (new Random()).nextInt(100);
+  private static final String rootOrgExternalId = "FT_Org_External_" + (new Random()).nextInt(100);
 
-  public static String getRootChannel() {
-    return rootChannel;
+  public static String getRootOrgChannel() {
+    return rootOrgChannel;
   }
 
-  public static String getRootExternalId() {
-    return rootExternalId;
+  public static String getRootOrgExternalId() {
+    return rootOrgExternalId;
   }
 
   public static String getCreateOrgUrl(BaseCitrusTestRunner runner) {
