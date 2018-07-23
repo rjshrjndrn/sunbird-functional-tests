@@ -2,16 +2,14 @@ package org.sunbird.integration.test.org;
 
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.testng.CitrusParameters;
+import java.util.Random;
 import javax.ws.rs.core.MediaType;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.sunbird.common.action.OrgUtil;
 import org.sunbird.integration.test.common.BaseCitrusTestRunner;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import java.util.Random;
 
 public class ReadOrganisationTest extends BaseCitrusTestRunner {
 
@@ -26,9 +24,9 @@ public class ReadOrganisationTest extends BaseCitrusTestRunner {
   public static final String TEST_NAME_READ_ORG_FAILURE_WITH_INVALID_PROVIDER_AND_EXTERNAL_ID =
       "testReadOrgFailureWithInvalidProviderAndExternalId";
   public static final String TEST_NAME_READ_ORG_SUCCESS_WITH_VALID_ORG_ID =
-          "testReadOrgSuccessWithValidOrgId";
+      "testReadOrgSuccessWithValidOrgId";
   public static final String TEST_NAME_READ_ORG_SUCCESS_WITH_VALID_PROVIDER_AND_EXTERNAL_ID =
-          "testReadOrgSuccessWithValidProviderAndExternalId";
+      "testReadOrgSuccessWithValidProviderAndExternalId";
 
   public static final String TEMPLATE_DIR = "templates/organisation/read";
   private static String orgId = null;
@@ -74,15 +72,15 @@ public class ReadOrganisationTest extends BaseCitrusTestRunner {
         RESPONSE_JSON);
   }
 
-
   @DataProvider(name = "readOrgSuccessDataProvider")
   public Object[][] readOrgSuccessDataProvider() {
 
     return new Object[][] {
-            new Object[] {TEST_NAME_READ_ORG_SUCCESS_WITH_VALID_ORG_ID, HttpStatus.OK},
-            new Object[] {TEST_NAME_READ_ORG_SUCCESS_WITH_VALID_PROVIDER_AND_EXTERNAL_ID, HttpStatus.OK}
+      new Object[] {TEST_NAME_READ_ORG_SUCCESS_WITH_VALID_ORG_ID, HttpStatus.OK},
+      new Object[] {TEST_NAME_READ_ORG_SUCCESS_WITH_VALID_PROVIDER_AND_EXTERNAL_ID, HttpStatus.OK}
     };
   }
+
   @Test(dataProvider = "readOrgSuccessDataProvider")
   @CitrusParameters({"testName", "httpStatusCode"})
   @CitrusTest
@@ -90,28 +88,28 @@ public class ReadOrganisationTest extends BaseCitrusTestRunner {
     variable("rootExternalId", externalId);
     beforeTest();
     performPostTest(
-            this,
-            TEMPLATE_DIR,
-            testName,
-            getSearchOrgUrl(),
-            REQUEST_JSON,
-            MediaType.APPLICATION_JSON,
-            false,
-            httpStatusCode,
-            RESPONSE_JSON);
+        this,
+        TEMPLATE_DIR,
+        testName,
+        getSearchOrgUrl(),
+        REQUEST_JSON,
+        MediaType.APPLICATION_JSON,
+        false,
+        httpStatusCode,
+        RESPONSE_JSON);
   }
 
   private void beforeTest() {
-    if(StringUtils.isBlank(orgId)){
+    if (StringUtils.isBlank(orgId)) {
       getAuthToken(this, true);
       OrgUtil.createOrg(
-              this,
-              testContext,
-              "templates/organisation/create",
-              "testCreateOrgSuccessWithProviderAndExternalId",
-              HttpStatus.OK);
+          this,
+          testContext,
+          "templates/organisation/create",
+          "testCreateOrgSuccessWithProviderAndExternalId",
+          HttpStatus.OK);
       orgId = testContext.getVariable("organisationId");
-    }else {
+    } else {
       variable("organisationId", orgId);
     }
   }
