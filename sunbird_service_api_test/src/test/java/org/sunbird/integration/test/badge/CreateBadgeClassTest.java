@@ -46,7 +46,7 @@ public class CreateBadgeClassTest extends BaseCitrusTestRunner {
   @CitrusParameters({"testName"})
   @CitrusTest(name = "testName")
   public void testCreateBadgeClassSuccess(String testName) {
-    variable("rootChannel", OrgUtil.getRootChannel());
+    variable("rootOrgChannel", OrgUtil.getRootOrgChannel());
     beforeTest();
     performMultipartTest(
         this,
