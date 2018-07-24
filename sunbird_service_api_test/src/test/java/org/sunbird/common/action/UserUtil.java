@@ -22,6 +22,11 @@ public class UserUtil {
     return runner.getLmsApiUriPath("/api/user/v1/block", "/v1/user/block");
   }
 
+  private static String getUserProfileVisibilityUrl(BaseCitrusTestRunner runner) {
+    return runner.getLmsApiUriPath(
+        "/api/user/v1/profile/visibility", "/v1/user/profile/visibility");
+  }
+
   public static void createUser(
       BaseCitrusTestRunner runner, TestContext testContext, String templateDir, String testName) {
     runner.http(
@@ -70,5 +75,20 @@ public class UserUtil {
       UserUtil.createUser(
           runner, testContext, TEMPLATE_DIR_USER_CREATE, TEMPLATE_DIR_USER_CREATE_TEST_CASE);
     }
+  }
+
+  public static void setProfileVisibilityPrivate(
+      BaseCitrusTestRunner runner, String templateDir, String testName) {
+    runner.http(
+        builder ->
+            TestActionUtil.getPostRequestTestAction(
+                builder,
+                Constant.LMS_ENDPOINT,
+                templateDir,
+                testName,
+                getUserProfileVisibilityUrl(runner),
+                Constant.REQUEST_JSON,
+                MediaType.APPLICATION_JSON.toString(),
+                TestActionUtil.getHeaders(true)));
   }
 }

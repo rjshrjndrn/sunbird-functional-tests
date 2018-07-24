@@ -18,7 +18,7 @@ public class UpdateUserLoginTimeTest extends BaseCitrusTestRunner {
       "testUpdateUserLoginTimeSuccessWithInvalidUserId";
   public static final String TEST_UPDATE_USER_LOGIN_TIME_SUCCESS_WITH_VALID_USER_ID =
       "testUpdateUserLoginTimeSuccessWithvalidUserId";
-  public static final String TEMPLATE_DIR = "templates/user/loginTime";
+  public static final String TEMPLATE_DIR = "templates/user/loginTime/update";
 
   private String getUpdaterUserLoginTimeUrl() {
     return getLmsApiUriPath("/api/user/v1/update/logintime", "/v1/user/update/logintime");
@@ -39,6 +39,7 @@ public class UpdateUserLoginTimeTest extends BaseCitrusTestRunner {
 
     return new Object[][] {
       new Object[] {TEST_UPDATE_USER_LOGIN_TIME_SUCCESS_WITH_VALID_USER_ID, true, HttpStatus.OK},
+      new Object[] {TEST_UPDATE_USER_LOGIN_TIME_SUCCESS_WITH_INVALID_USER_ID, true, HttpStatus.OK},
     };
   }
 
@@ -79,23 +80,8 @@ public class UpdateUserLoginTimeTest extends BaseCitrusTestRunner {
         RESPONSE_JSON);
   }
 
-  @Test()
-  @CitrusTest
-  public void testUpdateUserLoginTimeSuccess() {
-    getAuthToken(this, true);
-    performPatchTest(
-        this,
-        TEMPLATE_DIR,
-        TEST_UPDATE_USER_LOGIN_TIME_SUCCESS_WITH_INVALID_USER_ID,
-        getUpdaterUserLoginTimeUrl(),
-        REQUEST_JSON,
-        MediaType.APPLICATION_JSON,
-        true,
-        HttpStatus.OK,
-        RESPONSE_JSON);
-  }
-
   private void beforeTest() {
     UserUtil.getUserId(this, testContext);
+    variable("userId", testContext.getVariable("userId"));
   }
 }

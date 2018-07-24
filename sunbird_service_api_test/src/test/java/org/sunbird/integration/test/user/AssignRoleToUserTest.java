@@ -103,7 +103,7 @@ public class AssignRoleToUserTest extends BaseCitrusTestRunner {
   }
 
   private void createOrg() {
-    variable("rootChannel", OrgUtil.getRootChannel());
+    variable("rootOrgChannel", OrgUtil.getRootOrgChannel());
     OrgUtil.getRootOrgId(this, testContext);
     variable("organisationId", testContext.getVariable("organisationId"));
   }

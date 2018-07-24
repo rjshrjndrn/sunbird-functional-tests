@@ -20,6 +20,15 @@ public class UserProfileVisibilityTest extends BaseCitrusTestRunner {
       "testUserProfileVisibilitySuccessWithValidUserId";
   public static final String TEST_USER_PROFILE_VISIBILITY_FAILURE_WITH_INVALID_COLUMN =
       "testUserProfileVisibilityFailureWithInvalidColumn";
+  public static final String
+      TEST_USER_PROFILE_VISIBILITY_FAILURE_WITH_DUPLICATE_COLUMN_IN_PRIVATE_AND_PUBLIC_ARRAY =
+          "testUserProfileVisibilityFailureWithDuplicateColumnInPrivateAndPublicArray";
+  public static final String
+      TEST_USER_PROFILE_VISIBILITY_SUCCESS_WITH_ALREADY_PUBLIC_COLUMN_IN_PUBLIC_ARRAY =
+          "testUserProfileVisibilitySuccessWithAlreadyPublicColumnInPublicArray";
+  public static final String
+      TEST_USER_PROFILE_VISIBILITY_SUCCESS_WITH_ALREADY_PRIVATE_COLUMN_IN_PRIVATE_ARRAY =
+          "testUserProfileVisibilitySuccessWithAlreadyPrivateColumnInPrivateArray";
 
   public static final String TEMPLATE_DIR = "templates/user/profileVisibility";
 
@@ -40,6 +49,11 @@ public class UserProfileVisibilityTest extends BaseCitrusTestRunner {
       new Object[] {
         TEST_USER_PROFILE_VISIBILITY_FAILURE_WITH_INVALID_COLUMN, true, HttpStatus.BAD_REQUEST
       },
+      new Object[] {
+        TEST_USER_PROFILE_VISIBILITY_FAILURE_WITH_DUPLICATE_COLUMN_IN_PRIVATE_AND_PUBLIC_ARRAY,
+        true,
+        HttpStatus.BAD_REQUEST
+      },
     };
   }
 
@@ -47,6 +61,16 @@ public class UserProfileVisibilityTest extends BaseCitrusTestRunner {
   public Object[][] profileVisibilityUserSuccessDataProvider() {
     return new Object[][] {
       new Object[] {TEST_USER_PROFILE_VISIBILITY_SUCCESS_WITH_VALID_USERID, true, HttpStatus.OK},
+      new Object[] {
+        TEST_USER_PROFILE_VISIBILITY_SUCCESS_WITH_ALREADY_PUBLIC_COLUMN_IN_PUBLIC_ARRAY,
+        true,
+        HttpStatus.OK
+      },
+      new Object[] {
+        TEST_USER_PROFILE_VISIBILITY_SUCCESS_WITH_ALREADY_PRIVATE_COLUMN_IN_PRIVATE_ARRAY,
+        true,
+        HttpStatus.OK
+      },
     };
   }
 
@@ -73,7 +97,7 @@ public class UserProfileVisibilityTest extends BaseCitrusTestRunner {
   @Test(dataProvider = "profileVisibilityUserSuccessDataProvider")
   @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
   @CitrusTest
-  public void testProfileVisibilityUserLoginTimeSuccess(
+  public void testProfileVisibilitySuccess(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
     getAuthToken(this, isAuthRequired);
     beforeTest();

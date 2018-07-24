@@ -15,7 +15,7 @@ public class ReadUserRoleTest extends BaseCitrusTestRunner {
   public static final String TEST_READ_USER_ROLE_SUCCESS_WITH_ACCESS_TOKEN =
       "testReadUserRoleSuccessWithAccessToken";
 
-  public static final String TEMPLATE_DIR = "templates/user/readRole";
+  public static final String TEMPLATE_DIR = "templates/user/read/role";
 
   private String getReadUserRoleUrl() {
     return getLmsApiUriPath("/api/user/v1/role/read", "/v1/role/read");
