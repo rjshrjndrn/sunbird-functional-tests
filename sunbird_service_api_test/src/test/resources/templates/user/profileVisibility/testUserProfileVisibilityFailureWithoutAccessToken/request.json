@@ -1,0 +1,9 @@
+{
+
+    "request":{
+    "userId":"${userId}",
+
+    "private":["gender","location","address","unknown_column"],
+    "public":[]
+}
+}
