@@ -3,7 +3,6 @@ package org.sunbird.integration.test.user;
 import com.consol.citrus.annotations.CitrusTest;
 import com.consol.citrus.testng.CitrusParameters;
 import javax.ws.rs.core.MediaType;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.sunbird.common.action.OrgUtil;
 import org.sunbird.common.action.UserUtil;
@@ -65,10 +64,9 @@ public class AssignRoleToUserTest extends BaseCitrusTestRunner {
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
     getAuthToken(this, isAuthRequired);
     createUser();
-    variable("userId", testContext.getVariable("userId"));
-    if(isAuthRequired) {
+
+    if (isAuthRequired) {
       createOrg();
-      variable("organisationId", testContext.getVariable("organisationId"));
     }
     performPostTest(
         this,
@@ -101,18 +99,13 @@ public class AssignRoleToUserTest extends BaseCitrusTestRunner {
 
   private void createUser() {
     UserUtil.getUserId(this, testContext);
+    variable("userId", testContext.getVariable("userId"));
   }
 
   private void createOrg() {
-    if (StringUtils.isBlank((String) testContext.getVariables().get("organisationId"))) {
-      variable("rootChannel", OrgUtil.getRootChannel());
-      OrgUtil.createOrg(
-          this,
-          testContext,
-          BT_CREATE_ORG_TEMPLATE_DIR,
-          BT_TEST_NAME_CREATE_ROOT_ORG_SUCCESS,
-          HttpStatus.OK);
-    }
+    variable("rootChannel", OrgUtil.getRootChannel());
+    OrgUtil.getRootOrgId(this, testContext);
+    variable("organisationId", testContext.getVariable("organisationId"));
   }
 
   private void addUserToOrg() {
