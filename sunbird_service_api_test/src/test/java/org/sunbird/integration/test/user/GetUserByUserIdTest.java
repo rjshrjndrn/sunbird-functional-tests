@@ -16,9 +16,6 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
   public static final String TEMPLATE_DIR_BLOCK = "templates/user/block";
   public static final String TEST_BA_BLOCK_USER_SUCCESS_WITH_VALID_USERID =
       "testBlockUserSuccessWithValidUserId";
-  public static final String TEMPLATE_DIR_PROFILE_VISIBILITY = "templates/user/profileVisibility";
-  public static final String TEST_USER_PROFILE_VISIBILITY_SUCCESS_WITH_VALID_USERID =
-      "testUserProfileVisibilitySuccessWithValidUserId";
 
   @DataProvider(name = "getUserByUserIdFailure")
   public Object[][] getUserByUserIdFailure() {
@@ -91,25 +88,6 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
         RESPONSE_JSON);
   }
 
-  @Test()
-  @CitrusTest
-  public void testGetUserByUserIdVerifyPrivateFieldsAfterSettingProfileVisibilitySuccess() {
-    getAuthToken(this, true);
-    beforeTest();
-    setProfileVisibility();
-    performGetTest(
-        this,
-        TEMPLATE_DIR,
-        "testGetUserByUserIdFailureWithBlockedUser",
-        getLmsApiUriPath(
-            GET_USER_BY_ID_SERVER_URI,
-            GET_USER_BY_ID_LOCAL_URI,
-            TestActionUtil.getVariable(testContext, "userId")),
-        true,
-        HttpStatus.OK,
-        RESPONSE_JSON);
-  }
-
   private void blockUser() {
     UserUtil.blockUser(this, TEMPLATE_DIR_BLOCK, TEST_BA_BLOCK_USER_SUCCESS_WITH_VALID_USERID);
   }
@@ -117,13 +95,6 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
   private void beforeTest() {
     UserUtil.getUserId(this, testContext);
     variable("userId", testContext.getVariable("userId"));
-  }
-
-  private void setProfileVisibility() {
-    UserUtil.setProfileVisibilityPrivate(
-        this,
-        TEMPLATE_DIR_PROFILE_VISIBILITY,
-        TEST_USER_PROFILE_VISIBILITY_SUCCESS_WITH_VALID_USERID);
   }
 
   private void afterTest() {}

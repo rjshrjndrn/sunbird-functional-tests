@@ -17,8 +17,8 @@ public class UpdateUserLoginTimeTest extends BaseCitrusTestRunner {
   public static final String TEST_UPDATE_USER_LOGIN_TIME_SUCCESS_WITH_INVALID_USER_ID =
       "testUpdateUserLoginTimeSuccessWithInvalidUserId";
   public static final String TEST_UPDATE_USER_LOGIN_TIME_SUCCESS_WITH_VALID_USER_ID =
-      "testUpdateUserLoginTimeSuccessWithvalidUserId";
-  public static final String TEMPLATE_DIR = "templates/user/loginTime/update";
+      "testUpdateUserLoginTimeSuccessWithValidUserId";
+  public static final String TEMPLATE_DIR = "templates/user/logintime/update";
 
   private String getUpdaterUserLoginTimeUrl() {
     return getLmsApiUriPath("/api/user/v1/update/logintime", "/v1/user/update/logintime");
