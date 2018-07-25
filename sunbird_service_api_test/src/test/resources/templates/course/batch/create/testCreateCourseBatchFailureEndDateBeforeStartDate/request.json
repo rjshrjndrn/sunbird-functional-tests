@@ -1,0 +1,9 @@
+{
+  "request": {
+  	"name":"testCourseBatch",
+  	"courseId": "testcourseId",
+  	"enrollmentType":"invite-only",
+	"startDate":"${startDate}",
+	"endDate":"2000-01-01"
+  }
+}

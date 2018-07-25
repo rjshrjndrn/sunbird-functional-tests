@@ -1,0 +1,14 @@
+{
+  "id": "api.course.batch.create",
+  "ver": "v1",
+  "ts": "@ignore@",
+  "params": {
+    "resmsgid": null,
+    "msgid": "@ignore@",
+    "err": "INVALID_ORG_ID",
+    "status": "INVALID_ORG_ID",
+    "errmsg": "INVALID_ORG_ID"
+  },
+  "responseCode": "CLIENT_ERROR",
+  "result": {}
+}

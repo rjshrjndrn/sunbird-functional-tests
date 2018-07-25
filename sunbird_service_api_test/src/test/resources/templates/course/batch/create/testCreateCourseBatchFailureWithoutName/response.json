@@ -1,0 +1,14 @@
+{
+    "id": "api.course.batch.create",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "COURSE_NAME_REQUIRED_ERROR",
+        "status": "COURSE_NAME_REQUIRED_ERROR",
+        "errmsg": "Please provide the course name."
+    },
+    "responseCode": "CLIENT_ERROR",
+    "result": {}
+}
