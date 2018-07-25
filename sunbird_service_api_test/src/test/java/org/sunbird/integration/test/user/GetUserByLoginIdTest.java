@@ -47,7 +47,7 @@ public class GetUserByLoginIdTest extends BaseCitrusTestRunner {
 
   @Test()
   @CitrusTest
-  public void testGetUserByLoginIdFailureForBlockUser() {
+  public void testGetUserByLoginIdFailureForBlockedUser() {
     getAuthToken(this, true);
     beforeTest();
     variable(
