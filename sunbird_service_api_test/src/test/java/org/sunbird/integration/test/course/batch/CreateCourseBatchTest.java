@@ -36,6 +36,15 @@ public class CreateCourseBatchTest extends BaseCitrusTestRunner {
   public static final String TEST_NAME_CREATE_COURSE_BATCH_FAILURE_WITH_INVALID_MENTOR =
       "testCreateCourseBatchFailureInviteOnlyWithInvalidMentor";
 
+  public static final String TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY =
+      "testCreateCourseBatchSuccessInviteOnly";
+  public static final String TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY_WITH_CREATED_FOR =
+      "testCreateCourseBatchSuccessInviteOnlyWithCreatedFor";
+  public static final String TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY_WITH_MENTORS =
+      "testCreateCourseBatchSuccessInviteOnlyWithMentors";
+  public static final String TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_OPEN =
+      "testCreateCourseBatchSuccessOpen";
+
   public static final String TEMPLATE_DIR = "templates/course/batch/create";
   private static final String TODAY_DATE = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
@@ -48,78 +57,52 @@ public class CreateCourseBatchTest extends BaseCitrusTestRunner {
 
     return new Object[][] {
       new Object[] {
-        TEST_NAME_CREATE_COURSE_BATCH_FAILURE_WITHOUT_NAME, true, false, HttpStatus.BAD_REQUEST
+        TEST_NAME_CREATE_COURSE_BATCH_FAILURE_WITHOUT_NAME, false, HttpStatus.BAD_REQUEST
       },
       new Object[] {
-        TEST_NAME_CREATE_COURSE_BATCH_FAILURE_WITHOUT_COURSE_ID, true, false, HttpStatus.BAD_REQUEST
+        TEST_NAME_CREATE_COURSE_BATCH_FAILURE_WITHOUT_COURSE_ID, false, HttpStatus.BAD_REQUEST
       },
       new Object[] {
-        TEST_NAME_CREATE_COURSE_BATCH_FAILURE_WITHOUT_ENROLLMENTTYPE,
-        true,
-        false,
-        HttpStatus.BAD_REQUEST
+        TEST_NAME_CREATE_COURSE_BATCH_FAILURE_WITHOUT_ENROLLMENTTYPE, false, HttpStatus.BAD_REQUEST
       },
       new Object[] {
         TEST_NAME_CREATE_COURSE_BATCH_FAILURE_WITH_INVALID_ENROLLMENTTYPE,
-        true,
         false,
         HttpStatus.BAD_REQUEST
       },
       new Object[] {
-        TEST_NAME_CREATE_COURSE_BATCH_FAILURE_WITHOUT_START_DATE,
-        true,
-        false,
-        HttpStatus.BAD_REQUEST
+        TEST_NAME_CREATE_COURSE_BATCH_FAILURE_WITHOUT_START_DATE, false, HttpStatus.BAD_REQUEST
       },
       new Object[] {
-        TEST_NAME_CREATE_COURSE_BATCH_FAILURE_WITH_PAST_START_DATE,
-        true,
-        false,
-        HttpStatus.BAD_REQUEST
+        TEST_NAME_CREATE_COURSE_BATCH_FAILURE_WITH_PAST_START_DATE, false, HttpStatus.BAD_REQUEST
       },
       new Object[] {
-        TEST_NAME_CREATE_COURSE_BATCH_FAILURE_WITH_INVALID_COURSE_ID,
-        true,
-        false,
-        HttpStatus.BAD_REQUEST
+        TEST_NAME_CREATE_COURSE_BATCH_FAILURE_WITH_INVALID_COURSE_ID, false, HttpStatus.BAD_REQUEST
       },
       new Object[] {
-        TEST_NAME_CREATE_COURSE_BATCH_FAILURE_WITH_PAST_END_DATE,
-        true,
-        false,
-        HttpStatus.BAD_REQUEST
+        TEST_NAME_CREATE_COURSE_BATCH_FAILURE_WITH_PAST_END_DATE, false, HttpStatus.BAD_REQUEST
       },
       new Object[] {
         TEST_NAME_CREATE_COURSE_BATCH_FAILURE_WITH_END_DATE_BEFORE_START_DATE,
-        true,
         false,
         HttpStatus.BAD_REQUEST
       },
       new Object[] {
-        TEST_NAME_CREATE_COURSE_BATCH_FAILURE_WITH_INVALID_CREATED_FOR,
-        true,
-        true,
-        HttpStatus.BAD_REQUEST
+        TEST_NAME_CREATE_COURSE_BATCH_FAILURE_WITH_INVALID_CREATED_FOR, true, HttpStatus.BAD_REQUEST
       },
       new Object[] {
-        TEST_NAME_CREATE_COURSE_BATCH_FAILURE_WITH_INVALID_MENTOR,
-        true,
-        true,
-        HttpStatus.BAD_REQUEST
+        TEST_NAME_CREATE_COURSE_BATCH_FAILURE_WITH_INVALID_MENTOR, true, HttpStatus.BAD_REQUEST
       }
     };
   }
 
   @Test(dataProvider = "createCourseBatchFailureDataProvider")
-  @CitrusParameters({"testName", "isAuthRequired", "isCourseIdRequired", "httpStatusCode"})
+  @CitrusParameters({"testName", "isCourseIdRequired", "httpStatusCode"})
   @CitrusTest
-  public void testCreateOrganisationFailure(
-      String testName,
-      boolean isAuthRequired,
-      boolean isCourseIdRequired,
-      HttpStatus httpStatusCode) {
+  public void testCreateCourseBatchFailure(
+      String testName, boolean isCourseIdRequired, HttpStatus httpStatusCode) {
     beforeTest(isCourseIdRequired);
-    getAuthToken(this, isAuthRequired);
+    getAuthToken(this, true);
     variable("startDate", TODAY_DATE);
     performPostTest(
         this,
@@ -128,7 +111,34 @@ public class CreateCourseBatchTest extends BaseCitrusTestRunner {
         getCreateCourseBatchUrl(),
         REQUEST_JSON,
         MediaType.APPLICATION_JSON,
-        isAuthRequired,
+        true,
+        httpStatusCode,
+        RESPONSE_JSON);
+  }
+
+  @DataProvider(name = "createCourseBatchSuccessDataProvider")
+  public Object[][] createCourseBatchSuccessDataProvider() {
+    return new Object[][] {
+      /*new Object[] {
+              TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY, HttpStatus.OK
+      }*/ };
+  }
+
+  @Test(dataProvider = "createCourseBatchSuccessDataProvider")
+  @CitrusParameters({"testName", "httpStatusCode"})
+  @CitrusTest
+  public void testCreateCourseBatchSuccess(String testName, HttpStatus httpStatusCode) {
+    beforeTest(true);
+    getAuthToken(this, true);
+    variable("startDate", TODAY_DATE);
+    performPostTest(
+        this,
+        TEMPLATE_DIR,
+        testName,
+        getCreateCourseBatchUrl(),
+        REQUEST_JSON,
+        MediaType.APPLICATION_JSON,
+        true,
         httpStatusCode,
         RESPONSE_JSON);
   }

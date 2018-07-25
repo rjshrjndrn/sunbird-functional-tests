@@ -28,6 +28,16 @@ public class CourseUtil {
   }
 
   private static void createCourseInEkstep(BaseCitrusTestRunner runner, TestContext testContext) {
+    createCourse(runner, testContext);
+
+    updateCourseHireracy(runner, testContext);
+
+    publishCourse(runner, testContext);
+
+    runner.sleep(Constant.ES_SYNC_WAIT_TIME);
+  }
+
+  private static void createCourse(BaseCitrusTestRunner runner, TestContext testContext) {
     runner.http(
         builder ->
             TestActionUtil.getPostRequestTestAction(
@@ -49,14 +59,16 @@ public class CourseUtil {
                 "$.result.node_id",
                 "courseId"));
     courseId = testContext.getVariable("courseId");
+  }
 
+  private static void updateCourseHireracy(BaseCitrusTestRunner runner, TestContext testContext) {
     runner.http(
         builder ->
             TestActionUtil.getPatchRequestTestAction(
                 builder,
                 Constant.EKSTEP_ENDPOINT,
                 TEMPLATE_DIR,
-                "testUpdateCourseSuccess",
+                "testUpdateCourseHierarchySuccess",
                 EKSTEP_CONTENT_UPDATE_HIERARCHY_URL,
                 Constant.REQUEST_JSON,
                 MediaType.APPLICATION_JSON.toString(),
@@ -65,7 +77,9 @@ public class CourseUtil {
         builder ->
             TestActionUtil.getResponseTestAction(
                 builder, Constant.EKSTEP_ENDPOINT, "testUpdateCourseSuccess", HttpStatus.OK));
+  }
 
+  private static void publishCourse(BaseCitrusTestRunner runner, TestContext testContext) {
     runner.http(
         builder ->
             TestActionUtil.getPostRequestTestAction(
@@ -81,6 +95,5 @@ public class CourseUtil {
         builder ->
             TestActionUtil.getResponseTestAction(
                 builder, Constant.EKSTEP_ENDPOINT, "testPublishCourseSuccess", HttpStatus.OK));
-    runner.sleep(Constant.ES_SYNC_WAIT_TIME);
   }
 }
