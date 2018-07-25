@@ -119,9 +119,9 @@ public class CreateCourseBatchTest extends BaseCitrusTestRunner {
   @DataProvider(name = "createCourseBatchSuccessDataProvider")
   public Object[][] createCourseBatchSuccessDataProvider() {
     return new Object[][] {
-      /*new Object[] {
-              TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY, HttpStatus.OK
-      }*/ };
+      new Object[] {TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY, HttpStatus.OK},
+      new Object[] {TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_OPEN, HttpStatus.OK}
+    };
   }
 
   @Test(dataProvider = "createCourseBatchSuccessDataProvider")
