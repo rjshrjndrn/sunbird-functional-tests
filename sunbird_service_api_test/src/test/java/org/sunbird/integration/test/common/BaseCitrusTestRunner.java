@@ -153,6 +153,17 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
     }
   }
 
+  public void getAuthToken(
+      TestNGCitrusTestRunner runner, Boolean isAuthRequired, String userName, String password) {
+    if (isAuthRequired) {
+      runner.http(
+          builder ->
+              TestActionUtil.getTokenRequestTestAction(
+                  builder, KEYCLOAK_ENDPOINT, userName, password));
+      runner.http(builder -> TestActionUtil.getTokenResponseTestAction(builder, KEYCLOAK_ENDPOINT));
+    }
+  }
+
   public void performGetTest(
       TestNGCitrusTestRunner runner,
       String templateDir,

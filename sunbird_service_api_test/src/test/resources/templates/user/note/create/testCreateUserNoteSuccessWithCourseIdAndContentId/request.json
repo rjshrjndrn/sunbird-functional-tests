@@ -1,0 +1,13 @@
+{
+    "request": {
+        "userId":"${userId}",
+        "title": "citrus:randomString(10, MIXED)",
+        "note": "This is a test Note",
+        "courseId": "do_1125542362277396481270",
+        "contentId": "do_1125535199417548801180",
+        "tags":[
+            "notes",
+            "user"
+        ]
+    }
+}
