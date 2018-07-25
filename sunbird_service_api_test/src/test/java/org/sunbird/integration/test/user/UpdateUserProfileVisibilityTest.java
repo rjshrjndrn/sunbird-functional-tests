@@ -23,8 +23,9 @@ public class UpdateUserProfileVisibilityTest extends BaseCitrusTestRunner {
   public static final String
       TEST_UPDATE_USER_PROFILE_VISIBILITY_FAILURE_WITH_SAME_COLUMN_IN_PRIVATE_AND_PUBLIC_ARRAY =
           "testUpdateUserProfileVisibilityFailureWithSameColumnInPrivateAndPublic";
-  public static final String TEST_UPDATE_USER_PROFILE_VISIBILITY_SUCCESS_WITH_ALREADY_PUBLIC_COLUMN =
-      "testUpdateUserProfileVisibilitySuccessWithAlreadyPublicColumn";
+  public static final String
+      TEST_UPDATE_USER_PROFILE_VISIBILITY_SUCCESS_WITH_ALREADY_PUBLIC_COLUMN =
+          "testUpdateUserProfileVisibilitySuccessWithAlreadyPublicColumn";
   public static final String
       TEST_UPDATE_USER_PROFILE_VISIBILITY_SUCCESS_WITH_ALREADY_PRIVATE_COLUMN =
           "testUpdateUserProfileVisibilitySuccessWithAlreadyPrivateColumn";
@@ -69,7 +70,7 @@ public class UpdateUserProfileVisibilityTest extends BaseCitrusTestRunner {
         TEST_UPDATE_USER_PROFILE_VISIBILITY_SUCCESS_WITH_VALID_USERID, true, HttpStatus.OK
       },
       new Object[] {
-              TEST_UPDATE_USER_PROFILE_VISIBILITY_SUCCESS_WITH_ALREADY_PUBLIC_COLUMN, true, HttpStatus.OK
+        TEST_UPDATE_USER_PROFILE_VISIBILITY_SUCCESS_WITH_ALREADY_PUBLIC_COLUMN, true, HttpStatus.OK
       },
       new Object[] {
         TEST_UPDATE_USER_PROFILE_VISIBILITY_SUCCESS_WITH_ALREADY_PRIVATE_COLUMN, true, HttpStatus.OK
