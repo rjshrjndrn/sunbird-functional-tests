@@ -28,6 +28,11 @@ public class EndpointConfig {
   }
 
   @Bean
+  public HttpClient ekstepTestClient() {
+    return CitrusEndpoints.http().client().requestUrl(System.getenv("ekstep_api_base_url")).build();
+  }
+
+  @Bean
   public TestGlobalProperty initGlobalValues() {
     TestGlobalProperty property = new TestGlobalProperty();
     property.setApiKey(System.getenv("sunbird_api_key"));
