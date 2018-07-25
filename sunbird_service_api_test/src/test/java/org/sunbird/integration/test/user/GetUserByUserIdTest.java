@@ -93,7 +93,8 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
   }
 
   private void beforeTest() {
-    UserUtil.createUser(this, testContext, TEMPLATE_DIR, "testGetUserByUserIdSuccess");
+    UserUtil.getUserId(this, testContext);
+    variable("userId", testContext.getVariable("userId"));
   }
 
   private void afterTest() {}

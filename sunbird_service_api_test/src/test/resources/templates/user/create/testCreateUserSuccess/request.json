@@ -6,6 +6,7 @@
         "password": "password",
         "email": "citrus:randomString(10, MIXED, true)@gmail.com",
         "userName":"${username}",
+        "gender": "male",
         "externalIds": [
             {
                 "idType": "citrus:concat('ft_provider_type',citrus:randomString(5, MIXED, true))",
