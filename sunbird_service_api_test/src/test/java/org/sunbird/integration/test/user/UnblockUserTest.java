@@ -19,8 +19,8 @@ public class UnblockUserTest extends BaseCitrusTestRunner {
   public static final String TEST_UNBLOCK_USER_SUCCESS_WITH_VALID_USERID =
       "testUnblockUserSuccessWithValidUserId";
 
-  public static final String TEST_UNBLOCK_USER_UNBLOCK_FAILURE_WITH_VALID_USERID =
-      "testUnblockUserUnblockFailureWithValidUserId";
+  public static final String TEST_UNBLOCK_UNBLOCKED_USER_FAILURE_WITH_VALID_USERID =
+      "testUnblockUnblockedUserFailureWithValidUserId";
 
   public static final String TEST_UNBLOCK_USER_GET_SUCCESS_WITH_VALID_USERID =
       "testUnblockUserGetSuccessWithValidUserId";
@@ -100,7 +100,7 @@ public class UnblockUserTest extends BaseCitrusTestRunner {
     performPostTest(
         this,
         TEMPLATE_DIR,
-        TEST_UNBLOCK_USER_UNBLOCK_FAILURE_WITH_VALID_USERID,
+        TEST_UNBLOCK_UNBLOCKED_USER_FAILURE_WITH_VALID_USERID,
         getUnblockUserUrl(),
         REQUEST_JSON,
         MediaType.APPLICATION_JSON,
