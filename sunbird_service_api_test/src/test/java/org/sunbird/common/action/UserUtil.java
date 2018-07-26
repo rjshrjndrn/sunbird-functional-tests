@@ -27,6 +27,11 @@ public class UserUtil {
         "/api/user/v1/profile/visibility", "/v1/user/profile/visibility");
   }
 
+  private static String getCreateNoteUrl(BaseCitrusTestRunner runner) {
+
+    return runner.getLmsApiUriPath("/api/note/v1/create", "/v1/note/create");
+  }
+
   public static void createUser(
       BaseCitrusTestRunner runner, TestContext testContext, String templateDir, String testName) {
     runner.http(
@@ -91,5 +96,31 @@ public class UserUtil {
                 Constant.REQUEST_JSON,
                 MediaType.APPLICATION_JSON.toString(),
                 TestActionUtil.getHeaders(true)));
+  }
+
+  public static void createUserNote(
+      BaseCitrusTestRunner runner, TestContext testContext, String templateDir, String testName) {
+    runner.http(
+        builder ->
+            TestActionUtil.getPostRequestTestAction(
+                builder,
+                Constant.LMS_ENDPOINT,
+                templateDir,
+                testName,
+                getCreateNoteUrl(runner),
+                Constant.REQUEST_JSON,
+                MediaType.APPLICATION_JSON.toString(),
+                TestActionUtil.getHeaders(true)));
+    runner.http(
+        builder ->
+            TestActionUtil.getExtractFromResponseTestAction(
+                testContext,
+                builder,
+                Constant.LMS_ENDPOINT,
+                HttpStatus.OK,
+                "$.result.id",
+                "noteId"));
+
+    runner.sleep(Constant.ES_SYNC_WAIT_TIME);
   }
 }

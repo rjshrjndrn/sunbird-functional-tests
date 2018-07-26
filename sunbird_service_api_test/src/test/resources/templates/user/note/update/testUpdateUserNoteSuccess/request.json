@@ -1,0 +1,6 @@
+{
+    "request": {
+        "title": "citrus:randomString(10, MIXED)",
+        "note": "This is a test Note"
+    }
+}
