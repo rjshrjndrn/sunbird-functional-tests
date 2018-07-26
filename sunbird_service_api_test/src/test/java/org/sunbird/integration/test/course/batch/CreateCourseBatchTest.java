@@ -103,6 +103,7 @@ public class CreateCourseBatchTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testCreateCourseBatchFailure(
       String testName, boolean isCourseIdRequired, HttpStatus httpStatusCode) {
+    getTestCase().setName(testName);
     beforeTest(isCourseIdRequired);
     getAuthToken(this, true);
     variable("startDate", TODAY_DATE);
@@ -134,6 +135,7 @@ public class CreateCourseBatchTest extends BaseCitrusTestRunner {
   @CitrusParameters({"testName", "httpStatusCode"})
   @CitrusTest
   public void testCreateCourseBatchSuccess(String testName, HttpStatus httpStatusCode) {
+    getTestCase().setName(testName);
     getAuthToken(this, true);
     beforeTest(true);
     variable("startDate", TODAY_DATE);
