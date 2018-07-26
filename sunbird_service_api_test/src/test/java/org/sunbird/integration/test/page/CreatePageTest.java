@@ -34,7 +34,7 @@ public class CreatePageTest extends BaseCitrusTestRunner {
       "testCreatePageSuccessWithAppMap";
 
   public static final String TEMPLATE_DIR = "templates/page/create";
-  public static final String ORG_CREATE_ORG_TEMPLATE_DIR = "templates/organisation/create";
+  public static final String BT_CREATE_ROOT_ORG_TEMPLATE_DIR = "templates/organisation/create";
 
   private String getCreatePageUrl() {
     return getLmsApiUriPath("/api/data/v1/page/create", "/v1/page/create");
@@ -117,7 +117,7 @@ public class CreatePageTest extends BaseCitrusTestRunner {
       OrgUtil.createOrg(
           this,
           testContext,
-          ORG_CREATE_ORG_TEMPLATE_DIR,
+          BT_CREATE_ROOT_ORG_TEMPLATE_DIR,
           BT_TEST_NAME_CREATE_ROOT_ORG_SUCCESS,
           HttpStatus.OK);
     }
