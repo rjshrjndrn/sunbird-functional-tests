@@ -38,26 +38,25 @@ public class AssemblePageTest extends BaseCitrusTestRunner {
   public Object[][] assemblePageFailureDataProvider() {
 
     return new Object[][] {
-      new Object[] {TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITHOUT_SOURCE, HttpStatus.BAD_REQUEST},
-      new Object[] {TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITHOUT_NAME, HttpStatus.BAD_REQUEST},
-      new Object[] {TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_INVALID_PAGE, HttpStatus.NOT_FOUND},
-      new Object[] {TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_INVALID_SOURCE, HttpStatus.BAD_REQUEST},
+      new Object[] {TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITHOUT_SOURCE, HttpStatus.BAD_REQUEST, false},
+      new Object[] {TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITHOUT_NAME, HttpStatus.BAD_REQUEST, false},
+      new Object[] {TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_INVALID_PAGE, HttpStatus.NOT_FOUND, false},
       new Object[] {
-        TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_VALID_PAGE, HttpStatus.INTERNAL_SERVER_ERROR
+        TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_INVALID_SOURCE, HttpStatus.BAD_REQUEST, false
+      },
+      new Object[] {
+        TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_VALID_PAGE, HttpStatus.INTERNAL_SERVER_ERROR, true
       },
     };
   }
 
   @Test(dataProvider = "assemblePageFailureDataProvider")
-  @CitrusParameters({"testName", "httpStatusCode"})
+  @CitrusParameters({"testName", "httpStatusCode", "canCreatePage"})
   @CitrusTest
-  public void testAssemblePageFailure(String testName, HttpStatus httpStatusCode) {
+  public void testAssemblePageFailure(
+      String testName, HttpStatus httpStatusCode, boolean canCreatePage) {
 
-    if (testName.equalsIgnoreCase(TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_VALID_PAGE)) {
-      variable("pageName", PAGE_NAME);
-      beforeTestAssemblePage();
-    }
-
+    beforeTestAssemblePage(canCreatePage);
     performPostTest(
         this,
         TEMPLATE_DIR,
@@ -70,13 +69,16 @@ public class AssemblePageTest extends BaseCitrusTestRunner {
         RESPONSE_JSON);
   }
 
-  private void beforeTestAssemblePage() {
-    getAuthToken(this, true);
-    PageUtil.createPage(
-        this,
-        testContext,
-        PAGE_CREATE_TEMPLATE_DIR,
-        BT_TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME,
-        HttpStatus.OK);
+  private void beforeTestAssemblePage(boolean canCreatePage) {
+    if (canCreatePage) {
+      variable("pageName", PAGE_NAME);
+      getAuthToken(this, true);
+      PageUtil.createPage(
+          this,
+          testContext,
+          PAGE_CREATE_TEMPLATE_DIR,
+          BT_TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME,
+          HttpStatus.OK);
+    }
   }
 }
