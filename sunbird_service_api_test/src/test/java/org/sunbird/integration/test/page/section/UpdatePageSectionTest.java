@@ -15,13 +15,13 @@ public class UpdatePageSectionTest extends BaseCitrusTestRunner {
 
   public static final String TEMPLATE_DIR = "templates/page/section/update";
 
-  private String getUpdatePageUrl() {
+  private String getUpdatePageSectionUrl() {
 
     return getLmsApiUriPath("/api/data/v1/page/section/update", "/v1/page/section/update");
   }
 
-  @DataProvider(name = "updatePageFailureDataProvider")
-  public Object[][] updatePageFailureDataProvider() {
+  @DataProvider(name = "updatePageSectionFailureDataProvider")
+  public Object[][] updatePageSectionFailureDataProvider() {
 
     return new Object[][] {
       new Object[] {
@@ -30,17 +30,17 @@ public class UpdatePageSectionTest extends BaseCitrusTestRunner {
     };
   }
 
-  @Test(dataProvider = "updatePageFailureDataProvider")
+  @Test(dataProvider = "updatePageSectionFailureDataProvider")
   @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
   @CitrusTest
-  public void testUpdatePageFailure(
+  public void testUpdatePageSectionFailure(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
     getAuthToken(this, isAuthRequired);
     performPatchTest(
         this,
         TEMPLATE_DIR,
         testName,
-        getUpdatePageUrl(),
+        getUpdatePageSectionUrl(),
         REQUEST_JSON,
         MediaType.APPLICATION_JSON,
         isAuthRequired,

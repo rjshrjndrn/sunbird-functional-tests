@@ -13,7 +13,7 @@ public class UpdatePageTest extends BaseCitrusTestRunner {
 
   private static final String PAGE_NAME =
       "FT_Page_Name-" + String.valueOf(System.currentTimeMillis());
-  public static final String TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME =
+  public static final String BT_TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME =
       "testCreatePageSuccessWithName";
 
   public static final String TEST_NAME_UPDATE_PAGE_FAILURE_WITHOUT_ACCESS_TOKEN =
@@ -68,26 +68,22 @@ public class UpdatePageTest extends BaseCitrusTestRunner {
   public Object[][] updatePageSuccessDataProvider() {
 
     return new Object[][] {
-      new Object[] {TEST_NAME_UPDATE_PAGE_SUCCESS_WITH_EXISTING_PAGE_ID, true, HttpStatus.OK},
-      new Object[] {TEST_NAME_UPDATE_PAGE_SUCCESS_WITH_PORTAL_MAP, true, HttpStatus.OK},
-      new Object[] {TEST_NAME_UPDATE_PAGE_SUCCESS_WITH_APP_MAP, true, HttpStatus.OK},
+      new Object[] {TEST_NAME_UPDATE_PAGE_SUCCESS_WITH_EXISTING_PAGE_ID, true, HttpStatus.OK, true},
+      new Object[] {TEST_NAME_UPDATE_PAGE_SUCCESS_WITH_PORTAL_MAP, true, HttpStatus.OK, true},
+      new Object[] {TEST_NAME_UPDATE_PAGE_SUCCESS_WITH_APP_MAP, true, HttpStatus.OK, true},
     };
   }
 
   @Test(dataProvider = "updatePageSuccessDataProvider")
-  @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
+  @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode", "canCreatePage"})
   @CitrusTest
   public void testUpdatePageSuccess(
-      String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+      String testName, boolean isAuthRequired, HttpStatus httpStatusCode, boolean canCreatePage) {
 
     getAuthToken(this, isAuthRequired);
 
-    if (testName.equalsIgnoreCase(TEST_NAME_UPDATE_PAGE_SUCCESS_WITH_EXISTING_PAGE_ID)
-        || testName.equalsIgnoreCase(TEST_NAME_UPDATE_PAGE_SUCCESS_WITH_PORTAL_MAP)
-        || testName.equalsIgnoreCase(TEST_NAME_UPDATE_PAGE_SUCCESS_WITH_APP_MAP)) {
-      variable("pageName", PAGE_NAME);
-      beforeTestUpdatePage();
-    }
+    beforeTestUpdatePage(canCreatePage);
+
     performPatchTest(
         this,
         TEMPLATE_DIR,
@@ -100,12 +96,15 @@ public class UpdatePageTest extends BaseCitrusTestRunner {
         RESPONSE_JSON);
   }
 
-  private void beforeTestUpdatePage() {
-    PageUtil.createPage(
-        this,
-        testContext,
-        PAGE_CREATE_TEMPLATE_DIR,
-        TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME,
-        HttpStatus.OK);
+  private void beforeTestUpdatePage(boolean canCreatePage) {
+    if (canCreatePage) {
+      variable("pageName", PAGE_NAME);
+      PageUtil.createPage(
+          this,
+          testContext,
+          PAGE_CREATE_TEMPLATE_DIR,
+          BT_TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME,
+          HttpStatus.OK);
+    }
   }
 }

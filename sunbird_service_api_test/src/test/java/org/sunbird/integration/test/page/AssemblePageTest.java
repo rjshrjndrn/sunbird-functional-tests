@@ -13,8 +13,7 @@ public class AssemblePageTest extends BaseCitrusTestRunner {
 
   private static final String PAGE_NAME =
       "FT_Page_Name-" + String.valueOf(System.currentTimeMillis());
-  public static final String TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME =
-      "testCreatePageSuccessWithName";
+  public static final String BT_TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME = "testCreatePageSuccess";
 
   public static final String TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITHOUT_SOURCE =
       "testAssemblePageFailureWithoutSource";
@@ -24,6 +23,8 @@ public class AssemblePageTest extends BaseCitrusTestRunner {
       "testAssemblePageFailureWithInvalidPage";
   public static final String TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_INVALID_SOURCE =
       "testAssemblePageFailureWithInvalidSource";
+  public static final String TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_VALID_PAGE =
+      "testAssemblePageFailureWithValidPage";
 
   public static final String TEMPLATE_DIR = "templates/page/assemble";
   public static final String PAGE_CREATE_TEMPLATE_DIR = "templates/page/create";
@@ -41,6 +42,9 @@ public class AssemblePageTest extends BaseCitrusTestRunner {
       new Object[] {TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITHOUT_NAME, HttpStatus.BAD_REQUEST},
       new Object[] {TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_INVALID_PAGE, HttpStatus.NOT_FOUND},
       new Object[] {TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_INVALID_SOURCE, HttpStatus.BAD_REQUEST},
+      new Object[] {
+        TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_VALID_PAGE, HttpStatus.INTERNAL_SERVER_ERROR
+      },
     };
   }
 
@@ -48,6 +52,11 @@ public class AssemblePageTest extends BaseCitrusTestRunner {
   @CitrusParameters({"testName", "httpStatusCode"})
   @CitrusTest
   public void testAssemblePageFailure(String testName, HttpStatus httpStatusCode) {
+
+    if (testName.equalsIgnoreCase(TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_VALID_PAGE)) {
+      variable("pageName", PAGE_NAME);
+      beforeTestAssemblePage();
+    }
 
     performPostTest(
         this,
@@ -67,7 +76,7 @@ public class AssemblePageTest extends BaseCitrusTestRunner {
         this,
         testContext,
         PAGE_CREATE_TEMPLATE_DIR,
-        TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME,
+        BT_TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME,
         HttpStatus.OK);
   }
 }

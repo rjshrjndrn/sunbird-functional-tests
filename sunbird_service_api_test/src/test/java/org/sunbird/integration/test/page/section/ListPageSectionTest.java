@@ -9,37 +9,35 @@ import org.testng.annotations.Test;
 
 public class ListPageSectionTest extends BaseCitrusTestRunner {
 
-  public static final String TEST_NAME_LIST_ALL_PAGE_SECTIONS_FAILURE_WITHOUT_ACCESS_TOKEN =
-      "testListAllPageSectionsFailureWithoutAccessToken";
+  public static final String TEST_NAME_LIST_ALL_PAGE_SECTION_FAILURE_WITHOUT_ACCESS_TOKEN =
+      "testListAllPageSectionFailureWithoutAccessToken";
 
-  public static final String TEST_NAME_LIST_ALL_PAGE_SECTIONS_SUCCESS =
-      "testListAllPageSectionsSuccess";
+  public static final String TEST_NAME_LIST_ALL_PAGE_SECTION_SUCCESS =
+      "testListAllPageSectionSuccess";
 
   public static final String TEMPLATE_DIR = "templates/page/read";
 
-  private String getReadPageSectionUrl() {
+  private String getListPageSectionUrl() {
     return getLmsApiUriPath("/api/data/v1/page/section/list", "/v1/page/section/list");
   }
 
-  @DataProvider(name = "readPageSectionFailureDataProvider")
-  public Object[][] readPageSectionFailureDataProvider() {
+  @DataProvider(name = "listPageSectionFailureDataProvider")
+  public Object[][] listPageSectionFailureDataProvider() {
 
     return new Object[][] {
       new Object[] {
-        TEST_NAME_LIST_ALL_PAGE_SECTIONS_FAILURE_WITHOUT_ACCESS_TOKEN,
-        false,
-        HttpStatus.UNAUTHORIZED,
+        TEST_NAME_LIST_ALL_PAGE_SECTION_FAILURE_WITHOUT_ACCESS_TOKEN, false, HttpStatus.UNAUTHORIZED
       },
       new Object[] {
-        TEST_NAME_LIST_ALL_PAGE_SECTIONS_SUCCESS, true, HttpStatus.OK,
+        TEST_NAME_LIST_ALL_PAGE_SECTION_SUCCESS, true, HttpStatus.OK,
       },
     };
   }
 
-  @Test(dataProvider = "readPageSectionFailureDataProvider")
+  @Test(dataProvider = "listPageSectionFailureDataProvider")
   @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
   @CitrusTest
-  public void testReadPageSectionFailure(
+  public void testListPageSectionFailure(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
     getAuthToken(this, isAuthRequired);
 
@@ -47,7 +45,7 @@ public class ListPageSectionTest extends BaseCitrusTestRunner {
         this,
         TEMPLATE_DIR,
         testName,
-        getReadPageSectionUrl(),
+        getListPageSectionUrl(),
         isAuthRequired,
         httpStatusCode,
         RESPONSE_JSON);

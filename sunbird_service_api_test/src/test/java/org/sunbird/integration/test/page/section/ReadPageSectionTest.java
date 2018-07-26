@@ -18,7 +18,7 @@ public class ReadPageSectionTest extends BaseCitrusTestRunner {
   public static final String TEMPLATE_DIR = "templates/page/read";
 
   private String getReadPageSectionUrl(String param) {
-    return getLmsApiUriPath("/api/data/v1/page/section/read/"+param , "/v1/page/section/read/" + param);
+    return getLmsApiUriPath("/api/data/v1/page/section/read", "/v1/page/section/read", param);
   }
 
   @DataProvider(name = "readPageSectionFailureDataProvider")
@@ -26,28 +26,31 @@ public class ReadPageSectionTest extends BaseCitrusTestRunner {
 
     return new Object[][] {
       new Object[] {
-        TEST_NAME_READ_PAGE_SECTIONS_FAILURE_WITHOUT_ACCESS_TOKEN, false, HttpStatus.UNAUTHORIZED,
+        TEST_NAME_READ_PAGE_SECTIONS_FAILURE_WITHOUT_ACCESS_TOKEN,
+        false,
+        HttpStatus.UNAUTHORIZED,
+        "/invalid"
       },
       new Object[] {
-        TEST_NAME_READ_PAGE_SECTIONS_FAILURE_WITH_INVALID_ID, true, HttpStatus.NOT_FOUND,
+        TEST_NAME_READ_PAGE_SECTIONS_FAILURE_WITH_INVALID_ID, true, HttpStatus.NOT_FOUND, "/invalid"
       },
     };
   }
 
   @Test(dataProvider = "readPageSectionFailureDataProvider")
-  @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
+  @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode", "param"})
   @CitrusTest
   public void testReadPageSectionFailure(
-      String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+      String testName, boolean isAuthRequired, HttpStatus httpStatusCode, String param) {
     getAuthToken(this, isAuthRequired);
 
-    String param = "";
-    if(testName.equalsIgnoreCase(TEST_NAME_READ_PAGE_SECTIONS_FAILURE_WITHOUT_ACCESS_TOKEN) || testName.equalsIgnoreCase(TEST_NAME_READ_PAGE_SECTIONS_FAILURE_WITH_INVALID_ID)) {
-    	param = "invalid";
-    }
-   
-
     performGetTest(
-        this, TEMPLATE_DIR, testName, getReadPageSectionUrl(param), isAuthRequired, httpStatusCode, RESPONSE_JSON);
+        this,
+        TEMPLATE_DIR,
+        testName,
+        getReadPageSectionUrl(param),
+        isAuthRequired,
+        httpStatusCode,
+        RESPONSE_JSON);
   }
 }

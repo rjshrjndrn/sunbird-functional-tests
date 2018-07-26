@@ -86,7 +86,11 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
                 requestJson,
                 contentType,
                 TestActionUtil.getHeaders(isAuthRequired)));
-    if (!responseCode.equals(HttpStatus.BAD_REQUEST)) {
+    if (responseJson == null) {
+      runner.http(
+          builder ->
+              TestActionUtil.getResponseTestAction(builder, LMS_ENDPOINT, testName, responseCode));
+    } else {
       runner.http(
           builder ->
               TestActionUtil.getResponseTestAction(
@@ -180,6 +184,11 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
   }
 
   public String getLmsApiUriPath(String apiGatewayUriPath, String localUriPath, String pathParam) {
+    System.out.println(
+        " PATH ::::::::::::: "
+            + (config.getLmsUrl().contains("localhost")
+                ? localUriPath + pathParam
+                : apiGatewayUriPath + pathParam));
     return config.getLmsUrl().contains("localhost")
         ? localUriPath + pathParam
         : apiGatewayUriPath + pathParam;

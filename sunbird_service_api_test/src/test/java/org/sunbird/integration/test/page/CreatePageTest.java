@@ -12,127 +12,124 @@ import org.testng.annotations.Test;
 
 public class CreatePageTest extends BaseCitrusTestRunner {
 
-	public static final String BT_TEST_NAME_CREATE_ROOT_ORG_SUCCESS = "testCreateRootOrgSuccess";
+  public static final String BT_TEST_NAME_CREATE_ROOT_ORG_SUCCESS = "testCreateRootOrgSuccess";
 
-	private static final String PAGE_NAME =
-			"FT_Page_Name-" + String.valueOf(System.currentTimeMillis());
+  private static final String PAGE_NAME =
+      "FT_Page_Name-" + String.valueOf(System.currentTimeMillis());
 
-	public static final String TEST_NAME_CREATE_PAGE_FAILURE_WITHOUT_ACCESS_TOKEN =
-			"testCreatePageFailureWithoutAccessToken";
-	public static final String TEST_NAME_CREATE_PAGE_FAILURE_WITHOUT_NAME =
-			"testCreatePageFailureWithoutName";
-	public static final String TEST_NAME_CREATE_PAGE_FAILURE_WITH_EXISTING_NAME =
-			"testCreatePageFailureWithExistingName";
+  public static final String TEST_NAME_CREATE_PAGE_FAILURE_WITHOUT_ACCESS_TOKEN =
+      "testCreatePageFailureWithoutAccessToken";
+  public static final String TEST_NAME_CREATE_PAGE_FAILURE_WITHOUT_NAME =
+      "testCreatePageFailureWithoutName";
+  public static final String TEST_NAME_CREATE_PAGE_FAILURE_WITH_EXISTING_NAME =
+      "testCreatePageFailureWithExistingName";
 
-	public static final String TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME =
-			"testCreatePageSuccessWithName";
-	public static final String TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME_AND_ORG_ID =
-			"testCreatePageSuccessWithNameAndOrgId";
-	public static final String TEST_NAME_CREATE_PAGE_SUCCESS_WITH_PORTAL_MAP =
-			"testCreatePageSuccessWithPortalMap";
-	public static final String TEST_NAME_CREATE_PAGE_SUCCESS_WITH_APP_MAP =
-			"testCreatePageSuccessWithAppMap";
+  public static final String TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME =
+      "testCreatePageSuccessWithName";
+  public static final String TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME_AND_ORG_ID =
+      "testCreatePageSuccessWithNameAndOrgId";
+  public static final String TEST_NAME_CREATE_PAGE_SUCCESS_WITH_PORTAL_MAP =
+      "testCreatePageSuccessWithPortalMap";
+  public static final String TEST_NAME_CREATE_PAGE_SUCCESS_WITH_APP_MAP =
+      "testCreatePageSuccessWithAppMap";
 
-	public static final String TEMPLATE_DIR = "templates/page/create";
-	public static final String ORG_CREATE_ORG_TEMPLATE_DIR = "templates/organisation/create";
+  public static final String TEMPLATE_DIR = "templates/page/create";
+  public static final String ORG_CREATE_ORG_TEMPLATE_DIR = "templates/organisation/create";
 
-	private String getCreatePageUrl() {
+  private String getCreatePageUrl() {
+    return getLmsApiUriPath("/api/data/v1/page/create", "/v1/page/create");
+  }
 
-		return getLmsApiUriPath("/api/data/v1/page/create", "/v1/page/create");
-	}
+  @DataProvider(name = "createPageFailureDataProvider")
+  public Object[][] createPageFailureDataProvider() {
 
-	@DataProvider(name = "createPageFailureDataProvider")
-	public Object[][] createPageFailureDataProvider() {
+    return new Object[][] {
+      new Object[] {
+        TEST_NAME_CREATE_PAGE_FAILURE_WITHOUT_ACCESS_TOKEN, false, HttpStatus.UNAUTHORIZED, false
+      },
+      new Object[] {
+        TEST_NAME_CREATE_PAGE_FAILURE_WITHOUT_NAME, true, HttpStatus.BAD_REQUEST, false
+      },
+      new Object[] {
+        TEST_NAME_CREATE_PAGE_FAILURE_WITH_EXISTING_NAME, true, HttpStatus.BAD_REQUEST, true
+      },
+    };
+  }
 
-		return new Object[][] {
-			new Object[] {
-					TEST_NAME_CREATE_PAGE_FAILURE_WITHOUT_ACCESS_TOKEN, false, HttpStatus.UNAUTHORIZED
-			},
-			new Object[] {TEST_NAME_CREATE_PAGE_FAILURE_WITHOUT_NAME, true, HttpStatus.BAD_REQUEST},
-			new Object[] {TEST_NAME_CREATE_PAGE_FAILURE_WITH_EXISTING_NAME, true, HttpStatus.BAD_REQUEST},
-		};
-	}
+  @Test(dataProvider = "createPageFailureDataProvider")
+  @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode", "canCreatePage"})
+  @CitrusTest
+  public void testCreatePageFailure(
+      String testName, boolean isAuthRequired, HttpStatus httpStatusCode, boolean canCreatePage) {
+    getAuthToken(this, isAuthRequired);
+    beforeTestCreatePage(testName, false, canCreatePage);
 
-	@Test(dataProvider = "createPageFailureDataProvider")
-	@CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
-	@CitrusTest
-	public void testCreatePageFailure(
-			String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
-		getAuthToken(this, isAuthRequired);
+    performPostTest(
+        this,
+        TEMPLATE_DIR,
+        testName,
+        getCreatePageUrl(),
+        REQUEST_JSON,
+        MediaType.APPLICATION_JSON,
+        isAuthRequired,
+        httpStatusCode,
+        RESPONSE_JSON);
+  }
 
-		if (testName.equalsIgnoreCase(TEST_NAME_CREATE_PAGE_FAILURE_WITH_EXISTING_NAME)) {
-			variable("pageName", PAGE_NAME);
-			beforeTestCreatePage(testName);
-		}
+  @DataProvider(name = "createPageSuccessDataProvider")
+  public Object[][] createPageSuccessDataProvider() {
 
-		performPostTest(
-				this,
-				TEMPLATE_DIR,
-				testName,
-				getCreatePageUrl(),
-				REQUEST_JSON,
-				MediaType.APPLICATION_JSON,
-				isAuthRequired,
-				httpStatusCode,
-				RESPONSE_JSON);
-	}
+    return new Object[][] {
+      new Object[] {TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME, true, HttpStatus.OK, false},
+      new Object[] {TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME_AND_ORG_ID, true, HttpStatus.OK, true},
+      new Object[] {TEST_NAME_CREATE_PAGE_SUCCESS_WITH_PORTAL_MAP, true, HttpStatus.OK, false},
+      new Object[] {TEST_NAME_CREATE_PAGE_SUCCESS_WITH_APP_MAP, true, HttpStatus.OK, false},
+    };
+  }
 
-	@DataProvider(name = "createPageSuccessDataProvider")
-	public Object[][] createPageSuccessDataProvider() {
+  @Test(dataProvider = "createPageSuccessDataProvider")
+  @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode", "canCreateOrg"})
+  @CitrusTest
+  public void testCreatePageSuccess(
+      String testName, boolean isAuthRequired, HttpStatus httpStatusCode, boolean canCreateOrg) {
 
-		return new Object[][] {
-			new Object[] {TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME, true, HttpStatus.OK},
-			new Object[] {TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME_AND_ORG_ID, true, HttpStatus.OK},
-			new Object[] {TEST_NAME_CREATE_PAGE_SUCCESS_WITH_PORTAL_MAP, true, HttpStatus.OK},
-			new Object[] {TEST_NAME_CREATE_PAGE_SUCCESS_WITH_APP_MAP, true, HttpStatus.OK},
-		};
-	}
+    getAuthToken(this, true);
 
-	@Test(dataProvider = "createPageSuccessDataProvider")
-	@CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
-	@CitrusTest
-	public void testCreatePageSuccess(
-			String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+    beforeTestCreatePage(testName, canCreateOrg, false);
 
-		getAuthToken(this, true);
+    performPostTest(
+        this,
+        TEMPLATE_DIR,
+        testName,
+        getCreatePageUrl(),
+        REQUEST_JSON,
+        MediaType.APPLICATION_JSON,
+        isAuthRequired,
+        httpStatusCode,
+        RESPONSE_JSON);
+  }
 
-		beforeTestCreatePage(testName);
+  private void beforeTestCreatePage(String testName, boolean canCreateOrg, boolean canCreatePage) {
 
+    if (canCreateOrg) {
+      variable("rootChannel", OrgUtil.getRootChannel());
+      variable("rootExternalId", OrgUtil.getRootExternalId());
+      OrgUtil.createOrg(
+          this,
+          testContext,
+          ORG_CREATE_ORG_TEMPLATE_DIR,
+          BT_TEST_NAME_CREATE_ROOT_ORG_SUCCESS,
+          HttpStatus.OK);
+    }
 
-		performPostTest(
-				this,
-				TEMPLATE_DIR,
-				testName,
-				getCreatePageUrl(),
-				REQUEST_JSON,
-				MediaType.APPLICATION_JSON,
-				isAuthRequired,
-				httpStatusCode,
-				RESPONSE_JSON);
-	}
-
-	private void beforeTestCreatePage(String testName) {
-
-		if (testName.equalsIgnoreCase(TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME_AND_ORG_ID)) {
-			variable("rootChannel", OrgUtil.getRootChannel());
-			variable("rootExternalId", OrgUtil.getRootExternalId());
-			OrgUtil.createOrg(
-					this,
-					testContext,
-					ORG_CREATE_ORG_TEMPLATE_DIR,
-					BT_TEST_NAME_CREATE_ROOT_ORG_SUCCESS,
-					HttpStatus.OK);
-		}
-
-		if(testName.equalsIgnoreCase(TEST_NAME_CREATE_PAGE_FAILURE_WITH_EXISTING_NAME)) {
-			PageUtil.createPage(
-					this,
-					testContext,
-					TEMPLATE_DIR,
-					TEST_NAME_CREATE_PAGE_FAILURE_WITH_EXISTING_NAME,
-					HttpStatus.OK);
-		}
-	}
-
-
+    if (canCreatePage) {
+      variable("pageName", PAGE_NAME);
+      PageUtil.createPage(
+          this,
+          testContext,
+          TEMPLATE_DIR,
+          TEST_NAME_CREATE_PAGE_FAILURE_WITH_EXISTING_NAME,
+          HttpStatus.OK);
+    }
+  }
 }
