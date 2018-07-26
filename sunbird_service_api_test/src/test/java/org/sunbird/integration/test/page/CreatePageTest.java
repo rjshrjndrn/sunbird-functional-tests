@@ -113,7 +113,7 @@ public class CreatePageTest extends BaseCitrusTestRunner {
 
     if (canCreateOrg) {
       variable("rootOrgChannel", OrgUtil.getRootOrgChannel());
-      variable("rootExternalId", OrgUtil.getRootOrgExternalId());
+      variable("rootOrgExternalId", OrgUtil.getRootOrgExternalId());
       OrgUtil.createOrg(
           this,
           testContext,
