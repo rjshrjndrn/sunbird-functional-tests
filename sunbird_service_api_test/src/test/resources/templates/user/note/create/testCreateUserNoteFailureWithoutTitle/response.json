@@ -1,0 +1,14 @@
+{
+    "id": "api.note.create",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "TITLE_REQUIRED",
+        "status": "TITLE_REQUIRED",
+        "errmsg": "Title is required"
+    },
+    "responseCode": "CLIENT_ERROR",
+    "result": {}
+}
