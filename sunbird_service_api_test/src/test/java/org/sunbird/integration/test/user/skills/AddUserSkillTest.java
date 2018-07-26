@@ -24,7 +24,7 @@ public class AddUserSkillTest extends BaseCitrusTestRunner {
       "testAddUserSkillSuccessWithValidUserId";
 
   public static final String TEMPLATE_DIR = "templates/user/skill/add";
-  public static final String CREATE_USER_TEMPLATE_DIR = "templates/user/create";
+  public static final String BT_CREATE_USER_TEMPLATE_DIR = "templates/user/create";
 
   private String getAddUserSkillUrl() {
     return getLmsApiUriPath("/api/user/v1/skill/add", "/v1/user/skill/add");
@@ -43,10 +43,7 @@ public class AddUserSkillTest extends BaseCitrusTestRunner {
       },
       new Object[] {
         TEST_NAME_ADD_USER_SKILL_FAILURE_WITH_INVALID_USER_ID, true, HttpStatus.BAD_REQUEST
-      },
-      new Object[] {
-        TEST_NAME_ADD_USER_SKILL_FAILURE_WITHOUT_ENDORSED_USER_ID, true, HttpStatus.BAD_REQUEST
-      },
+      }
     };
   }
 
@@ -68,36 +65,4 @@ public class AddUserSkillTest extends BaseCitrusTestRunner {
         RESPONSE_JSON);
   }
 
-  @DataProvider(name = "addUserSkillSuccessDataProvider")
-  public Object[][] addUserSkillSuccessDataProvider() {
-
-    return new Object[][] {
-      new Object[] {TEST_NAME_ADD_USER_SKILL_SUCCESS_WITH_VALID_USER_ID, true, HttpStatus.OK},
-    };
-  }
-
-  @Test(dataProvider = "addUserSkillSuccessDataProvider")
-  @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
-  @CitrusTest
-  public void testAddUserSkillSuccess(
-      String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
-    getAuthToken(this, isAuthRequired);
-
-    beforeTestAddSkills();
-    performPostTest(
-        this,
-        TEMPLATE_DIR,
-        testName,
-        getAddUserSkillUrl(),
-        REQUEST_JSON,
-        MediaType.APPLICATION_JSON,
-        isAuthRequired,
-        httpStatusCode,
-        RESPONSE_JSON);
-  }
-
-  private void beforeTestAddSkills() {
-    UserUtil.createUser(
-        this, testContext, CREATE_USER_TEMPLATE_DIR, BT_TEST_NAME_CREATE_USER_SUCCESS);
-  }
-}
+ }

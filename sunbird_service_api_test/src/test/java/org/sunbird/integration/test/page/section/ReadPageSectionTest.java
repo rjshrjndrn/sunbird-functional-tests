@@ -17,8 +17,8 @@ public class ReadPageSectionTest extends BaseCitrusTestRunner {
 
   public static final String TEMPLATE_DIR = "templates/page/read";
 
-  private String getReadPageSectionUrl(String param) {
-    return getLmsApiUriPath("/api/data/v1/page/section/read", "/v1/page/section/read", param);
+  private String getReadPageSectionUrl(String pathParam) {
+    return getLmsApiUriPath("/api/data/v1/page/section/read", "/v1/page/section/read", pathParam);
   }
 
   @DataProvider(name = "readPageSectionFailureDataProvider")
@@ -38,17 +38,17 @@ public class ReadPageSectionTest extends BaseCitrusTestRunner {
   }
 
   @Test(dataProvider = "readPageSectionFailureDataProvider")
-  @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode", "param"})
+  @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode", "pathParam"})
   @CitrusTest
   public void testReadPageSectionFailure(
-      String testName, boolean isAuthRequired, HttpStatus httpStatusCode, String param) {
+      String testName, boolean isAuthRequired, HttpStatus httpStatusCode, String pathParam) {
     getAuthToken(this, isAuthRequired);
 
     performGetTest(
         this,
         TEMPLATE_DIR,
         testName,
-        getReadPageSectionUrl(param),
+        getReadPageSectionUrl(pathParam),
         isAuthRequired,
         httpStatusCode,
         RESPONSE_JSON);

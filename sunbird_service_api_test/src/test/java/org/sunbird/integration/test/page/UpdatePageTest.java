@@ -29,7 +29,7 @@ public class UpdatePageTest extends BaseCitrusTestRunner {
       "testUpdatePageSuccessWithAppMap";
 
   public static final String TEMPLATE_DIR = "templates/page/update";
-  public static final String PAGE_CREATE_TEMPLATE_DIR = "templates/page/create";
+  public static final String BT_CREATE_PAGE_TEMPLATE_DIR = "templates/page/create";
 
   private String getUpdatePageUrl() {
     return getLmsApiUriPath("/api/data/v1/page/update", "/v1/page/update");
@@ -102,7 +102,7 @@ public class UpdatePageTest extends BaseCitrusTestRunner {
       PageUtil.createPage(
           this,
           testContext,
-          PAGE_CREATE_TEMPLATE_DIR,
+          BT_CREATE_PAGE_TEMPLATE_DIR,
           BT_TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME,
           HttpStatus.OK);
     }

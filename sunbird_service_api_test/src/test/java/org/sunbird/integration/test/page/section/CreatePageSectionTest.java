@@ -21,7 +21,6 @@ public class CreatePageSectionTest extends BaseCitrusTestRunner {
       "testCreatePageSectionSuccessWithNameDataType";
 
   public static final String TEMPLATE_DIR = "templates/page/section/create";
-  public static final String ORG_CREATE_ORG_TEMPLATE_DIR = "templates/organisation/create";
 
   private String getCreatePageSectionUrl() {
 

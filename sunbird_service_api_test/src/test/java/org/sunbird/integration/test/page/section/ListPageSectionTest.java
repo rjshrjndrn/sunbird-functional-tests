@@ -9,11 +9,11 @@ import org.testng.annotations.Test;
 
 public class ListPageSectionTest extends BaseCitrusTestRunner {
 
-  public static final String TEST_NAME_LIST_ALL_PAGE_SECTION_FAILURE_WITHOUT_ACCESS_TOKEN =
-      "testListAllPageSectionFailureWithoutAccessToken";
+  public static final String TEST_NAME_LIST_PAGE_SECTION_FAILURE_WITHOUT_ACCESS_TOKEN =
+      "testListPageSectionFailureWithoutAccessToken";
 
-  public static final String TEST_NAME_LIST_ALL_PAGE_SECTION_SUCCESS =
-      "testListAllPageSectionSuccess";
+  public static final String TEST_NAME_LIST_PAGE_SECTION_SUCCESS =
+      "testListPageSectionSuccess";
 
   public static final String TEMPLATE_DIR = "templates/page/read";
 
@@ -26,10 +26,10 @@ public class ListPageSectionTest extends BaseCitrusTestRunner {
 
     return new Object[][] {
       new Object[] {
-        TEST_NAME_LIST_ALL_PAGE_SECTION_FAILURE_WITHOUT_ACCESS_TOKEN, false, HttpStatus.UNAUTHORIZED
+    		  TEST_NAME_LIST_PAGE_SECTION_FAILURE_WITHOUT_ACCESS_TOKEN, false, HttpStatus.UNAUTHORIZED
       },
       new Object[] {
-        TEST_NAME_LIST_ALL_PAGE_SECTION_SUCCESS, true, HttpStatus.OK,
+    		  TEST_NAME_LIST_PAGE_SECTION_SUCCESS, true, HttpStatus.OK,
       },
     };
   }
