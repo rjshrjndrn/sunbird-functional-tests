@@ -7,6 +7,8 @@ import java.util.Date;
 import javax.ws.rs.core.MediaType;
 import org.springframework.http.HttpStatus;
 import org.sunbird.common.action.CourseUtil;
+import org.sunbird.common.action.OrgUtil;
+import org.sunbird.common.action.UserUtil;
 import org.sunbird.integration.test.common.BaseCitrusTestRunner;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -119,8 +121,10 @@ public class CreateCourseBatchTest extends BaseCitrusTestRunner {
   @DataProvider(name = "createCourseBatchSuccessDataProvider")
   public Object[][] createCourseBatchSuccessDataProvider() {
     return new Object[][] {
-      new Object[] {TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY, HttpStatus.OK},
-      new Object[] {TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_OPEN, HttpStatus.OK}
+      new Object[] {TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY,  HttpStatus.OK},
+      new Object[] {TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_OPEN,  HttpStatus.OK},
+      new Object[] {TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY_WITH_CREATED_FOR, HttpStatus.OK},
+      new Object[] {TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY_WITH_MENTORS, HttpStatus.OK}
     };
   }
 
@@ -128,9 +132,15 @@ public class CreateCourseBatchTest extends BaseCitrusTestRunner {
   @CitrusParameters({"testName", "httpStatusCode"})
   @CitrusTest
   public void testCreateCourseBatchSuccess(String testName, HttpStatus httpStatusCode) {
-    beforeTest(true);
     getAuthToken(this, true);
+    beforeTest(true);
     variable("startDate", TODAY_DATE);
+
+    if(testName.equalsIgnoreCase(TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY_WITH_CREATED_FOR))
+      createOrg();
+    if(testName.equalsIgnoreCase(TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY_WITH_MENTORS))
+      createUser();
+
     performPostTest(
         this,
         TEMPLATE_DIR,
@@ -150,5 +160,15 @@ public class CreateCourseBatchTest extends BaseCitrusTestRunner {
       String courseId = CourseUtil.getCourseId(this, testContext);
       variable("courseId", courseId);
     }
+  }
+
+  private void createOrg(){
+    variable("rootOrgChannel", OrgUtil.getRootOrgChannel());
+    OrgUtil.getRootOrgId(this,testContext);
+  }
+
+  private void createUser(){
+    UserUtil.getUserId(this, testContext);
+    variable("userId", testContext.getVariable("userId"));
   }
 }
