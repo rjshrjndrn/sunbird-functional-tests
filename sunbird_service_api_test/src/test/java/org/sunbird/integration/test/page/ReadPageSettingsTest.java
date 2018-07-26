@@ -12,7 +12,7 @@ public class ReadPageSettingsTest extends BaseCitrusTestRunner {
 
   private static final String PAGE_NAME =
       "FT_Page_Name-" + String.valueOf(System.currentTimeMillis());
-  public static final String FT_TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME =
+  public static final String BT_TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME =
       "testCreatePageSuccessWithName";
 
   public static final String TEST_NAME_READ_PAGE_SETTINGS_FAILURE_WITHOUT_ACCESS_TOKEN =
@@ -87,7 +87,7 @@ public class ReadPageSettingsTest extends BaseCitrusTestRunner {
           this,
           testContext,
           PAGE_CREATE_TEMPLATE_DIR,
-          FT_TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME,
+          BT_TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME,
           HttpStatus.OK);
     }
   }
