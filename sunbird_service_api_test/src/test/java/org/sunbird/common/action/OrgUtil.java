@@ -12,19 +12,23 @@ public class OrgUtil {
 
   private static String rootOrgId = null;
 
-  private static final String rootChannel = "FT_Org_Channel_" + (new Random()).nextInt(100);
-  private static final String rootExternalId = "FT_Org_External_" + (new Random()).nextInt(100);
+  private static final String rootOrgChannel = "FT_Org_Channel_" + (new Random()).nextInt(100);
+  private static final String rootOrgExternalId = "FT_Org_External_" + (new Random()).nextInt(100);
 
-  public static String getRootChannel() {
-    return rootChannel;
+  public static String getRootOrgChannel() {
+    return rootOrgChannel;
   }
 
-  public static String getRootExternalId() {
-    return rootExternalId;
+  public static String getRootOrgExternalId() {
+    return rootOrgExternalId;
   }
 
   public static String getCreateOrgUrl(BaseCitrusTestRunner runner) {
     return runner.getLmsApiUriPath("/api/org/v1/create", "/v1/org/create");
+  }
+
+  public static String getAddUserToOrgUrl(BaseCitrusTestRunner runner) {
+    return runner.getLmsApiUriPath("/api/org/v1/member/add", "/v1/org/member/add");
   }
 
   public static void createOrg(
@@ -54,6 +58,21 @@ public class OrgUtil {
                 "$.result.organisationId",
                 "organisationId"));
     runner.sleep(Constant.ES_SYNC_WAIT_TIME);
+  }
+
+  public static void addUserToOrg(
+      BaseCitrusTestRunner runner, String templateDir, String testName) {
+    runner.http(
+        builder ->
+            TestActionUtil.getPostRequestTestAction(
+                builder,
+                Constant.LMS_ENDPOINT,
+                templateDir,
+                testName,
+                getAddUserToOrgUrl(runner),
+                Constant.REQUEST_JSON,
+                MediaType.APPLICATION_JSON.toString(),
+                TestActionUtil.getHeaders(true)));
   }
 
   public static void getRootOrgId(BaseCitrusTestRunner runner, TestContext testContext) {

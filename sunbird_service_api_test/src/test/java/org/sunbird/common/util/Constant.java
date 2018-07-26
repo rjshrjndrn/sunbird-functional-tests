@@ -23,7 +23,7 @@ public class Constant {
   public static final String EQUAL_SIGN = "=";
   public static final String USER_TEMPLATE_LOCATION = "templates/user/create/";
   public static final String MALFORMED_TEMPLATE_LOCATION = "templates/malformed/";
-  public static final String USER_NAME_PREFIX = "ft_testinstance";
+  public static final String USER_NAME_PREFIX = "FT_testinstance";
   public static final String X_AUTHENTICATED_USER_TOKEN = "x-authenticated-user-token";
   public static final String PARENT_CODE = "parentCode";
   public static final String CODE = "code";

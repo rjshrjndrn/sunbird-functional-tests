@@ -1,0 +1,14 @@
+{
+    "id": "api.user.profile.visibility",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "UNAUTHORIZED_USER",
+        "status": "SERVER_ERROR",
+        "errmsg": "You are not authorized."
+    },
+    "responseCode": "CLIENT_ERROR",
+    "result": {}
+}

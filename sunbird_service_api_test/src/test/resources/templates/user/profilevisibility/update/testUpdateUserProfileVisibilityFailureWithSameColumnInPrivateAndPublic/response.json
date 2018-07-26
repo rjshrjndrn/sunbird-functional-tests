@@ -1,0 +1,14 @@
+{
+    "id": "api.user.profile.visibility",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "INVALID_VISIBILITY_REQUEST",
+        "status": "INVALID_VISIBILITY_REQUEST",
+        "errmsg": "Private and Public fields cannot be same."
+    },
+    "responseCode": "CLIENT_ERROR",
+    "result": {}
+}

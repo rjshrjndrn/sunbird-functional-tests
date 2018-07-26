@@ -36,6 +36,7 @@ public class TestActionUtil {
       HttpActionBuilder builder, String endpointName, String userName, String password) {
     String urlPath =
         "/realms/" + System.getenv("sunbird_sso_realm") + "/protocol/openid-connect/token";
+
     return builder
         .client(endpointName)
         .send()

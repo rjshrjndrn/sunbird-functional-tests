@@ -1,0 +1,6 @@
+{
+    "params": { },
+    "request":{
+        "userId":"${userId}@invalid"
+    }
+}

@@ -1,0 +1,13 @@
+{
+	"request": {
+		"firstName": "citrus:concat('ft_user_fname_',${uniqueId})",
+		"lastName":  "citrus:concat('ft_user_lname_',${uniqueId})",
+		"channel" :  "${rootOrgChannel}",
+		"password": "password",
+		"userName":  "citrus:concat('ft_user_name_',${uniqueId})",
+		"email":  "citrus:concat('ft_user_name_',citrus:concat(${uniqueId},'@gmail.com'))",
+		"phone": "${uniqueId}",
+		"phoneVerified": true
+	}
+}
+    

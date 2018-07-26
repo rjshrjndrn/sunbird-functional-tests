@@ -1,0 +1,7 @@
+{
+  "request": {
+    "userId": "${userId}",
+    "roles": ["CONTENT_CURATION","CONTENT_CREATION","CONTENT_REVIEW"],
+    "organisationId": "${organisationId}"
+  }
+}

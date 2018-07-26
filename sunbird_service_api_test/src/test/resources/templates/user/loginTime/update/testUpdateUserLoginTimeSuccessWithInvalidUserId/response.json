@@ -1,0 +1,16 @@
+{
+    "id": "api.user.update.logintime",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": null,
+        "status": "success",
+        "errmsg": null
+    },
+    "responseCode": "OK",
+    "result": {
+        "response": "SUCCESS"
+    }
+}

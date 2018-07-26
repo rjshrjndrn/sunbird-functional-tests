@@ -1,0 +1,9 @@
+{
+
+    "request":{
+        "userId":"152193e4-c916-4d14-bec9-f9280c295c0f",
+        "organisationId":"0124862991342714881",
+        "roles": ["CONTENT_CURATION","CONTENT_CREATION","CONTENT_REVIEW"]
+
+    }
+}

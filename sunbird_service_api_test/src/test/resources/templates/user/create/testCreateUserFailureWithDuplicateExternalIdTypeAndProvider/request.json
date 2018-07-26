@@ -1,0 +1,23 @@
+{
+    "params": { },
+    "request":{
+        "firstName": "Amit",
+        "lastName": "Kumar",
+        "password": "password",
+        "email": "citrus:randomString(10, MIXED, true)@gmail.com",
+        "userName":"citrus:concat('ft_username',citrus:randomString(10, MIXED, true))",
+        "externalIds": [
+            {
+                "idType": "idtype42",
+                "provider": "provider42",
+                "id": "citrus:concat('ft_external_id',citrus:randomString(5, MIXED, true))",
+                "operation":"add"
+            },
+            {
+                "idType": "idtype42",
+                "provider": "provider42",
+                "id": "citrus:concat('ft_external_id',citrus:randomString(5, MIXED, true))"
+            }
+        ]
+    }
+}

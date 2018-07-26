@@ -1,0 +1,53 @@
+{
+    "id": "api.org.read",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": null,
+        "status": "success",
+        "errmsg": null
+    },
+    "responseCode": "OK",
+    "result": {
+        "response": {
+            "dateTime": null,
+            "preferredLanguage": null,
+            "approvedBy": null,
+            "channel": "@ignore@",
+            "description": null,
+            "updatedDate": null,
+            "addressId": null,
+            "orgType": null,
+            "provider": "ft_provider",
+            "locationId": null,
+            "orgCode": null,
+            "theme": null,
+            "id": "@ignore@",
+            "communityId": null,
+            "isApproved": null,
+            "slug": "@ignore@",
+            "identifier": "@ignore@",
+            "thumbnail": null,
+            "orgName": "@ignore@",
+            "updatedBy": null,
+            "locationIds": [],
+            "externalId": "@ignore@",
+            "isRootOrg": true,
+            "rootOrgId": "@ignore@",
+            "approvedDate": null,
+            "imgUrl": null,
+            "homeUrl": null,
+            "orgTypeId": null,
+            "isDefault": null,
+            "contactDetail": [],
+            "createdDate": "@ignore@",
+            "createdBy": "@ignore@",
+            "parentOrgId": null,
+            "hashTagId": "@ignore@",
+            "noOfMembers": null,
+            "status": 1
+        }
+    }
+}
