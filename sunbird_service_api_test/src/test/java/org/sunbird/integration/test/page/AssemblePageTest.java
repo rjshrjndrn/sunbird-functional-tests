@@ -11,103 +11,63 @@ import org.testng.annotations.Test;
 
 public class AssemblePageTest extends BaseCitrusTestRunner {
 
-	private static final String PAGE_NAME =
-			"FT_Page_Name-" + String.valueOf(System.currentTimeMillis());
-	public static final String TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME =
-			"testCreatePageSuccessWithName";
+  private static final String PAGE_NAME =
+      "FT_Page_Name-" + String.valueOf(System.currentTimeMillis());
+  public static final String TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME =
+      "testCreatePageSuccessWithName";
 
-	public static final String TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITHOUT_SOURCE =
-			"testAssemblePageFailureWithoutSource";
-	public static final String TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITHOUT_NAME =
-			"testAssemblePageFailureWithoutName";
-	public static final String TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_INVALID_PAGE =
-			"testAssemblePageFailureWithInvalidPage";
-	public static final String TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_INVALID_SOURCE =
-			"testAssemblePageFailureWithInvalidSource";
+  public static final String TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITHOUT_SOURCE =
+      "testAssemblePageFailureWithoutSource";
+  public static final String TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITHOUT_NAME =
+      "testAssemblePageFailureWithoutName";
+  public static final String TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_INVALID_PAGE =
+      "testAssemblePageFailureWithInvalidPage";
+  public static final String TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_INVALID_SOURCE =
+      "testAssemblePageFailureWithInvalidSource";
 
+  public static final String TEMPLATE_DIR = "templates/page/assemble";
+  public static final String PAGE_CREATE_TEMPLATE_DIR = "templates/page/create";
 
-	public static final String TEST_NAME_ASSEMBLE_PAGE_SUCCESS_WITH_VALID_PAGE =
-			"testAssemblePageSuccessWithValidSource";
-	
-	/*public static final String TEST_NAME_ASSEMBLE_PAGE_SUCCESS_WITH_VALID_PAGE =
-	      "testAssemblePageSuccessWithValidPage";
-	  public static final String TEST_NAME_ASSEMBLE_PAGE_SUCCESS_WITH_VALID_SOURCE =
-	      "testAssemblePageSuccessWithValidSource";*/
+  private String getAssemblePageUrl() {
 
-	public static final String TEMPLATE_DIR = "templates/page/assemble";
-	public static final String PAGE_CREATE_TEMPLATE_DIR = "templates/page/create";
+    return getLmsApiUriPath("/api/data/v1/page/assemble", "/v1/page/assemble");
+  }
 
-	private String getAssemblePageUrl() {
+  @DataProvider(name = "assemblePageFailureDataProvider")
+  public Object[][] assemblePageFailureDataProvider() {
 
-		return getLmsApiUriPath("/api/data/v1/page/assemble", "/v1/page/assemble");
-	}
+    return new Object[][] {
+      new Object[] {TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITHOUT_SOURCE, HttpStatus.BAD_REQUEST},
+      new Object[] {TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITHOUT_NAME, HttpStatus.BAD_REQUEST},
+      new Object[] {TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_INVALID_PAGE, HttpStatus.NOT_FOUND},
+      new Object[] {TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_INVALID_SOURCE, HttpStatus.BAD_REQUEST},
+    };
+  }
 
-	@DataProvider(name = "assemblePageFailureDataProvider")
-	public Object[][] assemblePageFailureDataProvider() {
+  @Test(dataProvider = "assemblePageFailureDataProvider")
+  @CitrusParameters({"testName", "httpStatusCode"})
+  @CitrusTest
+  public void testAssemblePageFailure(String testName, HttpStatus httpStatusCode) {
 
-		return new Object[][] {
-			new Object[] {TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITHOUT_SOURCE, HttpStatus.BAD_REQUEST},
-			new Object[] {TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITHOUT_NAME, HttpStatus.BAD_REQUEST},
-			new Object[] {TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_INVALID_PAGE, HttpStatus.NOT_FOUND},
-			new Object[] {TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_INVALID_SOURCE, HttpStatus.BAD_REQUEST},
-		};
-	}
+    performPostTest(
+        this,
+        TEMPLATE_DIR,
+        testName,
+        getAssemblePageUrl(),
+        REQUEST_JSON,
+        MediaType.APPLICATION_JSON,
+        false,
+        httpStatusCode,
+        RESPONSE_JSON);
+  }
 
-	@Test(dataProvider = "assemblePageFailureDataProvider")
-	@CitrusParameters({"testName", "httpStatusCode"})
-	@CitrusTest
-	public void testAssemblePageFailure(String testName, HttpStatus httpStatusCode) {
-
-		performPostTest(
-				this,
-				TEMPLATE_DIR,
-				testName,
-				getAssemblePageUrl(),
-				REQUEST_JSON,
-				MediaType.APPLICATION_JSON,
-				false,
-				httpStatusCode,
-				RESPONSE_JSON);
-	}
-
-	@DataProvider(name = "assemblePageSuccessDataProvider")
-	public Object[][] assemblePageSuccessDataProvider() {
-
-		return new Object[][] {
-			//new Object[] {TEST_NAME_ASSEMBLE_PAGE_SUCCESS_WITH_VALID_PAGE, HttpStatus.OK},
-			
-
-		};
-	}
-
-	@Test(dataProvider = "assemblePageSuccessDataProvider")
-	@CitrusParameters({"testName", "httpStatusCode"})
-	@CitrusTest
-	public void testAssemblePageSuccess(String testName, HttpStatus httpStatusCode) {
-
-		if (testName.equalsIgnoreCase(TEST_NAME_ASSEMBLE_PAGE_SUCCESS_WITH_VALID_PAGE)) {
-			variable("pageName", PAGE_NAME);
-			beforeTestAssemblePage();
-		}
-
-		performPostTest(
-				this,
-				TEMPLATE_DIR,
-				testName,
-				getAssemblePageUrl(),
-				REQUEST_JSON,
-				MediaType.APPLICATION_JSON,
-				false,
-				httpStatusCode,
-				RESPONSE_JSON);
-	}
-	private void beforeTestAssemblePage() {
-		getAuthToken(this, true);
-		PageUtil.createPage(
-				this,
-				testContext,
-				PAGE_CREATE_TEMPLATE_DIR,
-				TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME,
-				HttpStatus.OK);
-	}
+  private void beforeTestAssemblePage() {
+    getAuthToken(this, true);
+    PageUtil.createPage(
+        this,
+        testContext,
+        PAGE_CREATE_TEMPLATE_DIR,
+        TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME,
+        HttpStatus.OK);
+  }
 }
