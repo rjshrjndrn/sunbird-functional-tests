@@ -27,7 +27,7 @@ public class AssemblePageTest extends BaseCitrusTestRunner {
       "testAssemblePageFailureWithValidPage";
 
   public static final String TEMPLATE_DIR = "templates/page/assemble";
-  public static final String PAGE_CREATE_TEMPLATE_DIR = "templates/page/create";
+  public static final String BT_PAGE_CREATE_TEMPLATE_DIR = "templates/page/create";
 
   private String getAssemblePageUrl() {
 
@@ -76,7 +76,7 @@ public class AssemblePageTest extends BaseCitrusTestRunner {
       PageUtil.createPage(
           this,
           testContext,
-          PAGE_CREATE_TEMPLATE_DIR,
+          BT_PAGE_CREATE_TEMPLATE_DIR,
           BT_TEST_NAME_CREATE_PAGE_SUCCESS_WITH_NAME,
           HttpStatus.OK);
     }
