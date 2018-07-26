@@ -86,6 +86,7 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
                 requestJson,
                 contentType,
                 TestActionUtil.getHeaders(isAuthRequired)));
+
     runner.http(
         builder ->
             TestActionUtil.getResponseTestAction(
@@ -147,6 +148,7 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
   }
 
   public void getAuthToken(TestNGCitrusTestRunner runner, Boolean isAuthRequired) {
+
     if (isAuthRequired) {
       runner.http(builder -> TestActionUtil.getTokenRequestTestAction(builder, KEYCLOAK_ENDPOINT));
       runner.http(builder -> TestActionUtil.getTokenResponseTestAction(builder, KEYCLOAK_ENDPOINT));
@@ -188,6 +190,7 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
   }
 
   public String getLmsApiUriPath(String apiGatewayUriPath, String localUriPath, String pathParam) {
+
     return config.getLmsUrl().contains("localhost")
         ? localUriPath + pathParam
         : apiGatewayUriPath + pathParam;

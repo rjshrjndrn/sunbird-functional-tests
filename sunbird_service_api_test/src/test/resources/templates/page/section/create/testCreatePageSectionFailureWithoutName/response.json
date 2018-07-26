@@ -1,0 +1,14 @@
+{
+    "id": "api.page.section.create",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "SECTION_NAME_MISSING",
+        "status": "SECTION_NAME_MISSING",
+        "errmsg": "Section name is required."
+    },
+    "responseCode": "CLIENT_ERROR",
+    "result": {}
+}

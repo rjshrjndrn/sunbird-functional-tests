@@ -1,0 +1,7 @@
+{
+  "request": {
+    "filters": {
+     "firstName" : "citrus:concat('ft_user_fname_',${uniqueId})"
+    }
+  }
+}

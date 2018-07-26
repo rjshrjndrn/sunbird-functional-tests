@@ -1,6 +1,5 @@
 {
-
-    "id": "api.user.create",
+    "id": "api.page.section.create",
     "ver": "v1",
     "ts": "@ignore@",
     "params": {
@@ -13,8 +12,6 @@
     "responseCode": "OK",
     "result": {
         "response": "SUCCESS",
-        "accessToken": null,
-        "userId": "@ignore@"
+        "sectionId": "@ignore@"
     }
-
 }

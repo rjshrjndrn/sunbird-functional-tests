@@ -1,6 +1,5 @@
 {
-
-    "id": "api.user.create",
+    "id": "api.page.update",
     "ver": "v1",
     "ts": "@ignore@",
     "params": {
@@ -12,9 +11,6 @@
     },
     "responseCode": "OK",
     "result": {
-        "response": "SUCCESS",
-        "accessToken": null,
-        "userId": "@ignore@"
+        "response": "SUCCESS"
     }
-
 }

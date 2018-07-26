@@ -1,0 +1,63 @@
+{
+    "id": "api.user.search",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": null,
+        "status": "success",
+        "errmsg": null
+    },
+    "responseCode": "OK",
+    "result": {
+        "response": {
+            "count": 1,
+            "content": [
+                {
+                    "lastName": "citrus:concat('ft_user_lname_','${uniqueId}')",
+                    "webPages": [],
+                    "tcStatus": null,
+                    "education": [],
+                    "gender": null,
+                    "subject": [],
+                    "roles": [
+                        "PUBLIC"
+                    ],
+                    "channel": "${rootOrgChannel}",
+                    "language": [],
+                    "updatedDate": null,
+                    "skills": [],
+                    "badgeAssertions": [],
+                    "isDeleted": false,
+                    "organisations": [],
+                    "countryCode": null,
+                    "id": "@ignore@",
+                    "tempPassword": null,
+                    "email": "",
+                    "phoneverified": null,
+                    "identifier": "@ignore@",
+                    "thumbnail": null,
+                    "updatedBy": null,
+                    "address": [],
+                    "jobProfile": [],
+                    "profileSummary": null,
+                    "tcUpdatedDate": null,
+                    "avatar": null,
+                    "rootOrgId": "@ignore@",
+                    "emailVerified": false,
+                    "firstName": "citrus:concat('ft_user_fname_','${uniqueId}')",
+                    "lastLoginTime": null,
+                    "createdDate": "@ignore@",
+                    "createdBy": "@ignore@",
+                    "phone": "",
+                    "dob": null,
+                    "grade": [],
+                    "currentLoginTime": null,
+                    "location": null,
+                    "status": 1
+                }
+            ]
+        }
+    }
+}

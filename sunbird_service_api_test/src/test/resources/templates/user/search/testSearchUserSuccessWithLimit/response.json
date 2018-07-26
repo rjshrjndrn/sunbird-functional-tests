@@ -1,6 +1,5 @@
 {
-
-    "id": "api.user.create",
+    "id": "api.user.search",
     "ver": "v1",
     "ts": "@ignore@",
     "params": {
@@ -12,9 +11,9 @@
     },
     "responseCode": "OK",
     "result": {
-        "response": "SUCCESS",
-        "accessToken": null,
-        "userId": "@ignore@"
+        "response": {
+            "count": "@ignore@",
+            "content": "@ignore@"
+        }
     }
-
 }
