@@ -80,8 +80,11 @@ public class TestActionUtil {
     }
 
     requestActionBuilder = addHeaders(requestActionBuilder, headers);
-
-    return requestActionBuilder.payload(new ClassPathResource(requestFilePath));
+    if (StringUtils.isNotBlank(requestFile)) {
+      return requestActionBuilder.payload(new ClassPathResource(requestFilePath));
+    } else {
+      return requestActionBuilder;
+    }
   }
 
   public static TestAction getPatchRequestTestAction(

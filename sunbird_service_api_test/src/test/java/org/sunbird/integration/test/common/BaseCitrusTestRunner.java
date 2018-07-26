@@ -86,16 +86,10 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
                 requestJson,
                 contentType,
                 TestActionUtil.getHeaders(isAuthRequired)));
-    if (responseJson == null) {
-      runner.http(
-          builder ->
-              TestActionUtil.getResponseTestAction(builder, LMS_ENDPOINT, testName, responseCode));
-    } else {
-      runner.http(
-          builder ->
-              TestActionUtil.getResponseTestAction(
-                  builder, LMS_ENDPOINT, templateDir, testName, responseCode, responseJson));
-    }
+
+    runner.http(
+        builder ->
+            TestActionUtil.getResponseTestAction(builder, LMS_ENDPOINT, testName, responseCode));
   }
 
   public void performPatchTest(
