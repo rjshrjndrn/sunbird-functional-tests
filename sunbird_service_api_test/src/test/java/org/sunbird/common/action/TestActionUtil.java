@@ -80,11 +80,8 @@ public class TestActionUtil {
     }
 
     requestActionBuilder = addHeaders(requestActionBuilder, headers);
-    if (StringUtils.isNotBlank(requestFile)) {
-      return requestActionBuilder.payload(new ClassPathResource(requestFilePath));
-    } else {
-      return requestActionBuilder;
-    }
+
+    return requestActionBuilder.payload(new ClassPathResource(requestFilePath));
   }
 
   public static TestAction getPatchRequestTestAction(
@@ -193,6 +190,10 @@ public class TestActionUtil {
       String testName,
       HttpStatus responseCode,
       String responseFile) {
+    if (StringUtils.isBlank(responseFile)) {
+      return getResponseTestAction(builder, endpointName, testName, responseCode);
+    }
+
     String responseFilePath =
         MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, responseFile);
 

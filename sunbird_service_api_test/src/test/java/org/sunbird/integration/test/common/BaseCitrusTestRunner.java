@@ -89,7 +89,8 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
 
     runner.http(
         builder ->
-            TestActionUtil.getResponseTestAction(builder, LMS_ENDPOINT, testName, responseCode));
+            TestActionUtil.getResponseTestAction(
+                builder, LMS_ENDPOINT, templateDir, testName, responseCode, responseJson));
   }
 
   public void performPatchTest(
