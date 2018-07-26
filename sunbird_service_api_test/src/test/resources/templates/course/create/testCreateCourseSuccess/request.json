@@ -8,7 +8,7 @@
       "name": "citrus:concat('Course TestCourse test', citrus:randomNumber(10))",
       "language":["English"],
       "contentType": "Course",
-      "code": "citrus:concat('SB_FT_', citrus:randomNumber(10))",
+      "code": "citrus:concat('SB_FT_COURSE_', citrus:currentDate('yyyyMMddhhmmss'))",
       "tags":["QA_Content"],
        "mimeType": "application/vnd.ekstep.content-collection",
        "children":[

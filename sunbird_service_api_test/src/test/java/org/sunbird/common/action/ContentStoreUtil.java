@@ -34,7 +34,7 @@ public class ContentStoreUtil {
   private static void createLiveCourse(BaseCitrusTestRunner runner, TestContext testContext) {
     createCourse(runner, testContext);
 
-    updateCourseHireracy(runner, testContext);
+    updateCourseHierarchy(runner, testContext);
 
     publishCourse(runner, testContext);
 
@@ -46,7 +46,7 @@ public class ContentStoreUtil {
         builder ->
             TestActionUtil.getPostRequestTestAction(
                 builder,
-                Constant.EKSTEP_ENDPOINT,
+                Constant.CONTENT_STORE_ENDPOINT,
                 TEMPLATE_DIR,
                 "testCreateCourseSuccess",
                 CONTENT_STORE_CREATE_URL,
@@ -58,19 +58,19 @@ public class ContentStoreUtil {
             TestActionUtil.getExtractFromResponseTestAction(
                 testContext,
                 builder,
-                Constant.EKSTEP_ENDPOINT,
+                Constant.CONTENT_STORE_ENDPOINT,
                 HttpStatus.OK,
                 "$.result.node_id",
                 "courseId"));
     courseId = testContext.getVariable("courseId");
   }
 
-  private static void updateCourseHireracy(BaseCitrusTestRunner runner, TestContext testContext) {
+  private static void updateCourseHierarchy(BaseCitrusTestRunner runner, TestContext testContext) {
     runner.http(
         builder ->
             TestActionUtil.getPatchRequestTestAction(
                 builder,
-                Constant.EKSTEP_ENDPOINT,
+                Constant.CONTENT_STORE_ENDPOINT,
                 TEMPLATE_DIR,
                 "testUpdateCourseHierarchySuccess",
                 CONTENT_STORE_UPDATE_HIERARCHY_URL,
@@ -80,7 +80,10 @@ public class ContentStoreUtil {
     runner.http(
         builder ->
             TestActionUtil.getResponseTestAction(
-                builder, Constant.EKSTEP_ENDPOINT, "testUpdateCourseSuccess", HttpStatus.OK));
+                builder,
+                Constant.CONTENT_STORE_ENDPOINT,
+                "testUpdateCourseSuccess",
+                HttpStatus.OK));
   }
 
   private static void publishCourse(BaseCitrusTestRunner runner, TestContext testContext) {
@@ -88,7 +91,7 @@ public class ContentStoreUtil {
         builder ->
             TestActionUtil.getPostRequestTestAction(
                 builder,
-                Constant.EKSTEP_ENDPOINT,
+                Constant.CONTENT_STORE_ENDPOINT,
                 TEMPLATE_DIR,
                 "testPublishCourseSuccess",
                 CONTENT_STORE_CONTENT_PUBLISH_URL + courseId,
@@ -98,6 +101,9 @@ public class ContentStoreUtil {
     runner.http(
         builder ->
             TestActionUtil.getResponseTestAction(
-                builder, Constant.EKSTEP_ENDPOINT, "testPublishCourseSuccess", HttpStatus.OK));
+                builder,
+                Constant.CONTENT_STORE_ENDPOINT,
+                "testPublishCourseSuccess",
+                HttpStatus.OK));
   }
 }

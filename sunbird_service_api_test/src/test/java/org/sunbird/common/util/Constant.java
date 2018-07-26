@@ -47,5 +47,5 @@ public class Constant {
   public static final String STATE_ID = "stateId";
   public static final String DISTRICT_ID = "districtId";
   public static final String BULK_UPLOAD_PROCESS_ID = "bulkUploadProcessId";
-  public static final String EKSTEP_ENDPOINT = "ekstepTestClient";
+  public static final String CONTENT_STORE_ENDPOINT = "csTestClient";
 }

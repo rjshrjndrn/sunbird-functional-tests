@@ -103,10 +103,9 @@ public class CreateCourseBatchTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testCreateCourseBatchFailure(
       String testName, boolean isCourseIdRequired, HttpStatus httpStatusCode) {
-    getTestCase().setName(testName);
-    beforeTest(isCourseIdRequired);
     getAuthToken(this, true);
     variable("startDate", TODAY_DATE);
+    beforeTest(isCourseIdRequired, false, false);
     performPostTest(
         this,
         TEMPLATE_DIR,
@@ -122,28 +121,31 @@ public class CreateCourseBatchTest extends BaseCitrusTestRunner {
   @DataProvider(name = "createCourseBatchSuccessDataProvider")
   public Object[][] createCourseBatchSuccessDataProvider() {
     return new Object[][] {
-      new Object[] {TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY, HttpStatus.OK},
-      new Object[] {TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_OPEN, HttpStatus.OK},
+      new Object[] {TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY, false, false, HttpStatus.OK},
+      new Object[] {TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_OPEN, false, false, HttpStatus.OK},
       new Object[] {
-        TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY_WITH_CREATED_FOR, HttpStatus.OK
+        TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY_WITH_CREATED_FOR,
+        true,
+        false,
+        HttpStatus.OK
       },
-      new Object[] {TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY_WITH_MENTORS, HttpStatus.OK}
+      new Object[] {
+        TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY_WITH_MENTORS, false, true, HttpStatus.OK
+      }
     };
   }
 
   @Test(dataProvider = "createCourseBatchSuccessDataProvider")
-  @CitrusParameters({"testName", "httpStatusCode"})
+  @CitrusParameters({"testName", "isOrgIdRequired", "isUsrIdRequired", "httpStatusCode"})
   @CitrusTest
-  public void testCreateCourseBatchSuccess(String testName, HttpStatus httpStatusCode) {
-    getTestCase().setName(testName);
+  public void testCreateCourseBatchSuccess(
+      String testName,
+      boolean isOrgIdRequired,
+      boolean isUsrIdRequired,
+      HttpStatus httpStatusCode) {
     getAuthToken(this, true);
-    beforeTest(true);
     variable("startDate", TODAY_DATE);
-
-    if (testName.equalsIgnoreCase(
-        TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY_WITH_CREATED_FOR)) createOrg();
-    if (testName.equalsIgnoreCase(TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY_WITH_MENTORS))
-      createUser();
+    beforeTest(true, isOrgIdRequired, isUsrIdRequired);
 
     performPostTest(
         this,
@@ -157,7 +159,8 @@ public class CreateCourseBatchTest extends BaseCitrusTestRunner {
         RESPONSE_JSON);
   }
 
-  public void beforeTest(boolean isCourseIdRequired) {
+  public void beforeTest(
+      boolean isCourseIdRequired, boolean isOrgIdRequired, boolean isUsrIdRequired) {
     if (isCourseIdRequired) {
       // courseUnitId/resourceId is needed to be updated in context for creating course
       variable("courseUnitId", ContentStoreUtil.getCourseUnitId());
@@ -165,15 +168,13 @@ public class CreateCourseBatchTest extends BaseCitrusTestRunner {
       String courseId = ContentStoreUtil.getCourseId(this, testContext);
       variable("courseId", courseId);
     }
-  }
-
-  private void createOrg() {
-    variable("rootOrgChannel", OrgUtil.getRootOrgChannel());
-    OrgUtil.getRootOrgId(this, testContext);
-  }
-
-  private void createUser() {
-    UserUtil.getUserId(this, testContext);
-    variable("userId", testContext.getVariable("userId"));
+    if (isOrgIdRequired) {
+      variable("rootOrgChannel", OrgUtil.getRootOrgChannel());
+      OrgUtil.getRootOrgId(this, testContext);
+    }
+    if (isUsrIdRequired) {
+      UserUtil.getUserId(this, testContext);
+      variable("userId", testContext.getVariable("userId"));
+    }
   }
 }
