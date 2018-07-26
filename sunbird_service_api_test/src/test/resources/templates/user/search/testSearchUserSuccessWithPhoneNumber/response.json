@@ -24,7 +24,7 @@
                     "roles": [
                         "PUBLIC"
                     ],
-                    "channel": "${rootChannel}",
+                    "channel": "${rootOrgChannel}",
                     "language": [],
                     "updatedDate": null,
                     "skills": [],
