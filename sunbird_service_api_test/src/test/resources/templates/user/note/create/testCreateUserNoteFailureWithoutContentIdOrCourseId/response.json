@@ -1,0 +1,14 @@
+{
+    "id": "api.note.create",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "CONTENT_ID_OR_COURSE_ID_REQUIRED",
+        "status": "CONTENT_ID_OR_COURSE_ID_REQUIRED",
+        "errmsg": "Please provide content id or course id"
+    },
+    "responseCode": "CLIENT_ERROR",
+    "result": {}
+}
