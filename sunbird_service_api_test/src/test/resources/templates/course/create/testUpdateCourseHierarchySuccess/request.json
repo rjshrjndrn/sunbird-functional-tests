@@ -16,7 +16,7 @@
       },
       "hierarchy": {
         "${courseId}": {
-          "contentType": "Collection",
+          "contentType": "Course",
           "children": [
             "${courseUnitId}"
           ],
