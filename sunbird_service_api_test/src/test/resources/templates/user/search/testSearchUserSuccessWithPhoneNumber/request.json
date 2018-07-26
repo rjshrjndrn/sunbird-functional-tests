@@ -1,7 +1,7 @@
 {
   "request": {
     "filters": {
-     "phoneNumber" : "some number"
+     "phone" : "${uniqueId}"
     }
   }
 }

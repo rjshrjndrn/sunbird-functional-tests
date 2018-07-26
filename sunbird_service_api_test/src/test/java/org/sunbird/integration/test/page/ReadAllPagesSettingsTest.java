@@ -9,41 +9,41 @@ import org.testng.annotations.Test;
 
 public class ReadAllPagesSettingsTest extends BaseCitrusTestRunner {
 
-  public static final String TEST_NAME_READ_ALL_PAGE_SETTINGS_FAILURE_WITHOUT_ACCESS_TOKEN =
-      "testReadAllPageSettingsFailureWithoutAccessToken";
+	public static final String TEST_NAME_READ_ALL_PAGES_SETTINGS_FAILURE_WITHOUT_ACCESS_TOKEN =
+			"testReadAllPagesSettingsFailureWithoutAccessToken";
 
-  public static final String TEMPLATE_DIR = "templates/page/read";
+	public static final String TEMPLATE_DIR = "templates/page/read";
 
-  private String getReadAllPageSettingsUrl() {
-    return getLmsApiUriPath("/api/data/v1/", "/v1/page/all/settings");
-  }
+	private String getReadAllPagesSettingsUrl() {
+		return getLmsApiUriPath("/api/data/v1/", "/v1/page/all/settings");
+	}
 
-  @DataProvider(name = "readAllPageSettingsFailureDataProvider")
-  public Object[][] readAllPageSettingsFailureDataProvider() {
+	@DataProvider(name = "readAllPageSettingsFailureDataProvider")
+	public Object[][] readAllPageSettingsFailureDataProvider() {
 
-    return new Object[][] {
-      new Object[] {
-        TEST_NAME_READ_ALL_PAGE_SETTINGS_FAILURE_WITHOUT_ACCESS_TOKEN,
-        false,
-        HttpStatus.UNAUTHORIZED,
-      },
-    };
-  }
+		return new Object[][] {
+			new Object[] {
+					TEST_NAME_READ_ALL_PAGES_SETTINGS_FAILURE_WITHOUT_ACCESS_TOKEN,
+					false,
+					HttpStatus.UNAUTHORIZED,
+			},
+		};
+	}
 
-  @Test(dataProvider = "readAllPageSettingsFailureDataProvider")
-  @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
-  @CitrusTest
-  public void testReadAllPageSettingsFailure(
-      String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
-    getAuthToken(this, isAuthRequired);
+	@Test(dataProvider = "readAllPageSettingsFailureDataProvider")
+	@CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
+	@CitrusTest
+	public void testReadAllPageSettingsFailure(
+			String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+		getAuthToken(this, isAuthRequired);
 
-    performGetTest(
-        this,
-        TEMPLATE_DIR,
-        testName,
-        getReadAllPageSettingsUrl(),
-        isAuthRequired,
-        httpStatusCode,
-        RESPONSE_JSON);
-  }
+		performGetTest(
+				this,
+				TEMPLATE_DIR,
+				testName,
+				getReadAllPagesSettingsUrl(),
+				isAuthRequired,
+				httpStatusCode,
+				RESPONSE_JSON);
+	}
 }

@@ -5,10 +5,10 @@
     "params": {
         "resmsgid": null,
         "msgid": "@ignore@",
-        "err": "SOURCE_MISSING",
-        "status": "SOURCE_MISSING",
-        "errmsg": "Source is required."
+        "err": "PAGE_NOT_EXIST",
+        "status": "PAGE_NOT_EXIST",
+        "errmsg": "Requested page does not exist."
     },
-    "responseCode": "CLIENT_ERROR",
+    "responseCode": "RESOURCE_NOT_FOUND",
     "result": {}
 }
