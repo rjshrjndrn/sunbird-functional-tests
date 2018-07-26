@@ -25,11 +25,11 @@
         "${courseUnitId}": {
           "contentType": "CourseUnit",
           "children": [
-            "do_1125535199417548801180"
+            "${resourceId}"
           ],
           "root": false
         },
-        "do_1125535199417548801180": {
+        "${resourceId}": {
           "name": "citrus:concat('Test_Story_name_', citrus:randomNumber(10))",
           "contentType": "Story",
           "children": [],

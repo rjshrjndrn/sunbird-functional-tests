@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.ws.rs.core.MediaType;
 import org.springframework.http.HttpStatus;
-import org.sunbird.common.action.CourseUtil;
+import org.sunbird.common.action.ContentStoreUtil;
 import org.sunbird.common.action.OrgUtil;
 import org.sunbird.common.action.UserUtil;
 import org.sunbird.integration.test.common.BaseCitrusTestRunner;
@@ -121,9 +121,11 @@ public class CreateCourseBatchTest extends BaseCitrusTestRunner {
   @DataProvider(name = "createCourseBatchSuccessDataProvider")
   public Object[][] createCourseBatchSuccessDataProvider() {
     return new Object[][] {
-      new Object[] {TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY,  HttpStatus.OK},
-      new Object[] {TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_OPEN,  HttpStatus.OK},
-      new Object[] {TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY_WITH_CREATED_FOR, HttpStatus.OK},
+      new Object[] {TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY, HttpStatus.OK},
+      new Object[] {TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_OPEN, HttpStatus.OK},
+      new Object[] {
+        TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY_WITH_CREATED_FOR, HttpStatus.OK
+      },
       new Object[] {TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY_WITH_MENTORS, HttpStatus.OK}
     };
   }
@@ -136,9 +138,9 @@ public class CreateCourseBatchTest extends BaseCitrusTestRunner {
     beforeTest(true);
     variable("startDate", TODAY_DATE);
 
-    if(testName.equalsIgnoreCase(TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY_WITH_CREATED_FOR))
-      createOrg();
-    if(testName.equalsIgnoreCase(TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY_WITH_MENTORS))
+    if (testName.equalsIgnoreCase(
+        TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY_WITH_CREATED_FOR)) createOrg();
+    if (testName.equalsIgnoreCase(TEST_NAME_CREATE_COURSE_BATCH_SUCCESS_INVITE_ONLY_WITH_MENTORS))
       createUser();
 
     performPostTest(
@@ -155,19 +157,20 @@ public class CreateCourseBatchTest extends BaseCitrusTestRunner {
 
   public void beforeTest(boolean isCourseIdRequired) {
     if (isCourseIdRequired) {
-      // courseUnitId is needed to be updated in context for creating course
-      variable("courseUnitId", CourseUtil.getCourseUnitId());
-      String courseId = CourseUtil.getCourseId(this, testContext);
+      // courseUnitId/resourceId is needed to be updated in context for creating course
+      variable("courseUnitId", ContentStoreUtil.getCourseUnitId());
+      variable("resourceId", ContentStoreUtil.getResourceId());
+      String courseId = ContentStoreUtil.getCourseId(this, testContext);
       variable("courseId", courseId);
     }
   }
 
-  private void createOrg(){
+  private void createOrg() {
     variable("rootOrgChannel", OrgUtil.getRootOrgChannel());
-    OrgUtil.getRootOrgId(this,testContext);
+    OrgUtil.getRootOrgId(this, testContext);
   }
 
-  private void createUser(){
+  private void createUser() {
     UserUtil.getUserId(this, testContext);
     variable("userId", testContext.getVariable("userId"));
   }
