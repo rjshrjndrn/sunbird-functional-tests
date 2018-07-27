@@ -17,7 +17,7 @@ public class BadgeClassUtil {
             TestContext testContext,
             TestGlobalProperty config,
             String templateDir,
-            String testName,
+            String testName, 
             HttpStatus responseCode) {
         runner.http(
                 builder ->
