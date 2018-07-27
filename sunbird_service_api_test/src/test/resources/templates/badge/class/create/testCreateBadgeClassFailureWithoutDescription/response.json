@@ -1,0 +1,14 @@
+{
+  "id": "api.issuer.badge.create",
+  "ver": "v1",
+  "ts": "@ignore@",
+  "params": {
+    "resmsgid": null,
+    "msgid": "@ignore@",
+    "err": "BADGE_DESCRIPTION_REQUIRED",
+    "status": "BADGE_DESCRIPTION_REQUIRED",
+    "errmsg": "Please provide badge class description."
+  },
+  "responseCode": "CLIENT_ERROR",
+  "result": {}
+}

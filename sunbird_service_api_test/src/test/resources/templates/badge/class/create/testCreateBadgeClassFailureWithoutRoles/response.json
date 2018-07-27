@@ -1,0 +1,14 @@
+{
+  "id": "api.issuer.badge.create",
+  "ver": "v1",
+  "ts": "@ignore@",
+  "params": {
+    "resmsgid": null,
+    "msgid": "@ignore@",
+    "err": "BADGE_ROLES_REQUIRED",
+    "status": "BADGE_ROLES_REQUIRED",
+    "errmsg": "Please provide authorised roles for badge class."
+  },
+  "responseCode": "CLIENT_ERROR",
+  "result": {}
+}
