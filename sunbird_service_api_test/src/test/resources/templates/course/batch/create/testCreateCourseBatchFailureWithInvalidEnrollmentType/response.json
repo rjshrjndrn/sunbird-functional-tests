@@ -1,0 +1,14 @@
+{
+    "id": "api.course.batch.create",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "ENROLMENT_TYPE_VALUE_ERROR",
+        "status": "ENROLMENT_TYPE_VALUE_ERROR",
+        "errmsg": "EnrolmentType value must be either open or invite-only."
+    },
+    "responseCode": "CLIENT_ERROR",
+    "result": {}
+}

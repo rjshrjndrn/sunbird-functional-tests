@@ -1,0 +1,41 @@
+{
+  "request": {
+    "data": {
+      "nodesModified": {
+        "${courseUnitId}": {
+          "isNew": true,
+          "root": false,
+          "metadata": {
+            "mimeType": "application/vnd.ekstep.content-collection",
+            "contentType": "CourseUnit",
+            "code": "${courseUnitId}",
+            "name": "citrus:concat('Test_CourseUnit_name_', citrus:randomNumber(10))",
+            "description": "citrus:concat('Test_CourseUnit_desc_', citrus:randomNumber(10))"
+          }
+        }
+      },
+      "hierarchy": {
+        "${courseId}": {
+          "contentType": "Course",
+          "children": [
+            "${courseUnitId}"
+          ],
+          "root": true
+        },
+        "${courseUnitId}": {
+          "contentType": "CourseUnit",
+          "children": [
+            "${resourceId}"
+          ],
+          "root": false
+        },
+        "${resourceId}": {
+          "name": "citrus:concat('Test_Story_name_', citrus:randomNumber(10))",
+          "contentType": "Story",
+          "children": [],
+          "root": false
+        }
+      }
+    }
+  }
+}

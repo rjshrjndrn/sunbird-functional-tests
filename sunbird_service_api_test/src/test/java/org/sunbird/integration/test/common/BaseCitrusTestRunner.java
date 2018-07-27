@@ -46,6 +46,7 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
       Boolean isAuthRequired,
       HttpStatus responseCode,
       String responseJson) {
+    getTestCase().setName(testName);
     runner.http(
         builder ->
             TestActionUtil.getMultipartRequestTestAction(
@@ -75,6 +76,7 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
       boolean isAuthRequired,
       HttpStatus responseCode,
       String responseJson) {
+    getTestCase().setName(testName);
     runner.http(
         builder ->
             TestActionUtil.getPostRequestTestAction(
@@ -103,6 +105,7 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
       boolean isAuthRequired,
       HttpStatus responseCode,
       String responseJson) {
+    getTestCase().setName(testName);
     runner.http(
         builder ->
             TestActionUtil.getPatchRequestTestAction(
@@ -130,6 +133,7 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
       boolean isAuthRequired,
       HttpStatus responseCode,
       String responseJson) {
+    getTestCase().setName(testName);
     runner.http(
         builder ->
             TestActionUtil.getDeleteRequestTestAction(
@@ -174,6 +178,7 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
       Boolean isAuthRequired,
       HttpStatus responseCode,
       String responseJson) {
+    getTestCase().setName(testName);
     getAuthToken(runner, isAuthRequired);
     runner.http(
         builder ->

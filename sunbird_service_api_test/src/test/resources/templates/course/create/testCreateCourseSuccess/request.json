@@ -1,0 +1,18 @@
+{
+"request": {
+  "content": {
+      "osId": "org.ekstep.quiz.app",
+      "mediaType": "content",
+      "visibility": "Default",
+      "description": "Course Test",
+      "name": "citrus:concat('Course TestCourse test', citrus:randomNumber(10))",
+      "language":["English"],
+      "contentType": "Course",
+      "code": "citrus:concat('SB_FT_COURSE_', citrus:currentDate('yyyyMMddhhmmss'))",
+      "tags":["QA_Content"],
+       "mimeType": "application/vnd.ekstep.content-collection",
+       "children":[
+       ]
+  }
+}
+}
