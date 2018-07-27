@@ -45,6 +45,7 @@ public class AddUserSkillTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testAddUserSkillFailure(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+    getTestCase().setName(testName);
     getAuthToken(this, isAuthRequired);
     performPostTest(
         this,

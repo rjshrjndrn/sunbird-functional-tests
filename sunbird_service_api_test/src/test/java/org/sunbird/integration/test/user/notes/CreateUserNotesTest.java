@@ -79,6 +79,7 @@ public class CreateUserNotesTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testCreateUserNoteFailure(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+    getTestCase().setName(testName);
     beforeTest(isAuthRequired);
     performPostTest(
         this,
@@ -97,6 +98,7 @@ public class CreateUserNotesTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testCreateUserNoteSuccess(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+    getTestCase().setName(testName);
     beforeTest(isAuthRequired);
     performPostTest(
         this,

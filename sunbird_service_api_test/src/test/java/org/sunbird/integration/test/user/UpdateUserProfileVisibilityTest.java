@@ -83,7 +83,7 @@ public class UpdateUserProfileVisibilityTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testUpdateUserProfileVisibilityFailure(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
-
+    getTestCase().setName(testName);
     beforeTest(isAuthRequired);
     performPostTest(
         this,
@@ -102,6 +102,7 @@ public class UpdateUserProfileVisibilityTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testUpdateUserProfileVisibilitySuccess(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+    getTestCase().setName(testName);
     beforeTest(isAuthRequired);
     performPostTest(
         this,

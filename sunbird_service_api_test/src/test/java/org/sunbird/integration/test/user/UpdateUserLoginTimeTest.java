@@ -18,7 +18,7 @@ public class UpdateUserLoginTimeTest extends BaseCitrusTestRunner {
       "testUpdateUserLoginTimeSuccessWithInvalidUserId";
   public static final String TEST_UPDATE_USER_LOGIN_TIME_SUCCESS_WITH_VALID_USER_ID =
       "testUpdateUserLoginTimeSuccessWithValidUserId";
-  public static final String TEMPLATE_DIR = "templates/user/logintime/update";
+  public static final String TEMPLATE_DIR = "templates/user/loginTime/update";
 
   private String getUpdaterUserLoginTimeUrl() {
     return getLmsApiUriPath("/api/user/v1/update/logintime", "/v1/user/update/logintime");
@@ -48,6 +48,7 @@ public class UpdateUserLoginTimeTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testUserUpdateLoginTimeFailure(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+    getTestCase().setName(testName);
     getAuthToken(this, isAuthRequired);
     performPatchTest(
         this,
@@ -66,6 +67,7 @@ public class UpdateUserLoginTimeTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testUpdateUserLoginTimeSuccess(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+    getTestCase().setName(testName);
     getAuthToken(this, isAuthRequired);
     beforeTest();
     performPatchTest(

@@ -58,6 +58,7 @@ public class ReadUserNoteTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testReadUserNoteSuccess(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+    getTestCase().setName(testName);
     beforeTest(isAuthRequired);
     performGetTest(
         this,
@@ -70,6 +71,7 @@ public class ReadUserNoteTest extends BaseCitrusTestRunner {
   @Test()
   @CitrusTest
   public void testReadUserNoteFailureWithInvalidNoteId() {
+    getTestCase().setName(TEST_READ_USER_NOTE_FAILURE_WITH_INVALID_NOTEID);
     beforeTest(true);
     performGetTest(
         this,

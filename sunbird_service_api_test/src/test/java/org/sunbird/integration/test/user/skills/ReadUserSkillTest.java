@@ -47,7 +47,7 @@ public class ReadUserSkillTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testReadUserSkillFailure(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
-
+    getTestCase().setName(testName);
     getAuthToken(this, isAuthRequired);
     performPostTest(
         this,

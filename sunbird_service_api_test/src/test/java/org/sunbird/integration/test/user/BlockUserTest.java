@@ -49,6 +49,7 @@ public class BlockUserTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testBlockUserFailure(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+    getTestCase().setName(testName);
     getAuthToken(this, isAuthRequired);
     performPostTest(
         this,
@@ -67,6 +68,7 @@ public class BlockUserTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testBlockUserSuccess(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+    getTestCase().setName(testName);
     getAuthToken(this, isAuthRequired);
     beforeTest();
     variable("userId", testContext.getVariable("userId"));

@@ -45,6 +45,7 @@ public class UpdateUserNotesTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testUpdateUserNoteFailure(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+    getTestCase().setName(testName);
     beforeTest(isAuthRequired);
     getAuthToken(this, isAuthRequired);
     performPatchTest(
@@ -64,6 +65,7 @@ public class UpdateUserNotesTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testUpdateUserNoteSuccess(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+    getTestCase().setName(testName);
     beforeTest(isAuthRequired);
     performPatchTest(
         this,
@@ -80,6 +82,7 @@ public class UpdateUserNotesTest extends BaseCitrusTestRunner {
   @Test()
   @CitrusTest
   public void testUpdateUserNoteFailureWithInvalidNoteId() {
+    getTestCase().setName(TEST_UPDATE_USER_NOTE_FAILURE_WITH_INVALID_NOTEID);
     beforeTest(true);
     performPatchTest(
         this,

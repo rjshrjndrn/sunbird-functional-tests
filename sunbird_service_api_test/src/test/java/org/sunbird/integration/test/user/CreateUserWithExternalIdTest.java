@@ -54,6 +54,7 @@ public class CreateUserWithExternalIdTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testCreateUserFailure(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+    getTestCase().setName(testName);
     performPostTest(
         this,
         TEMPLATE_DIR,
@@ -71,6 +72,7 @@ public class CreateUserWithExternalIdTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testCreateUserSuccess(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+    getTestCase().setName(testName);
     performPostTest(
         this,
         TEMPLATE_DIR,

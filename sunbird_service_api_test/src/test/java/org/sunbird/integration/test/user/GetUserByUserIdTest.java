@@ -41,6 +41,7 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testGetUserByUserIdFailure(
       String testName, boolean isAuthRequired, String pathParam, HttpStatus httpStatusCode) {
+    getTestCase().setName("testName");
     performGetTest(
         this,
         TEMPLATE_DIR,
@@ -55,6 +56,7 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testGetUserByUserIdSuccess() {
     beforeTest();
+    getTestCase().setName("testGetUserByUserIdSuccess");
     performGetTest(
         this,
         TEMPLATE_DIR,
@@ -72,6 +74,7 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
   @Test()
   @CitrusTest
   public void testGetBlockUserByUserIdFailure() {
+    getTestCase().setName("testGetUserByUserIdFailureWithBlockedUser");
     getAuthToken(this, true);
     beforeTest();
     blockUser();

@@ -19,6 +19,7 @@ public class ReadUserProfileVisibiltyTest extends BaseCitrusTestRunner {
   @Test()
   @CitrusTest
   public void testGetUserProfileVisibilitySuccess() {
+    getTestCase().setName("testGetUserProfileVisibilitySuccessWithValidUserId");
     beforeTest();
     setProfileVisibility();
     performGetTest(

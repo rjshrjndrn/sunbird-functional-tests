@@ -62,6 +62,7 @@ public class AssignRoleToUserTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testAssignRoleToUserFailure(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+    getTestCase().setName(testName);
     getAuthToken(this, isAuthRequired);
     createUser();
 
@@ -83,6 +84,7 @@ public class AssignRoleToUserTest extends BaseCitrusTestRunner {
   @Test()
   @CitrusTest
   public void testAssignRoleToUserSuccessWithUserAlreadyBelongToOrg() {
+    getTestCase().setName(TEST_ASSIGN_ROLE_USER_SUCCESS_WITH_USER_ALREADY_ADDED_TO_ORG);
     getAuthToken(this, true);
     addUserToOrg();
     performPostTest(

@@ -67,6 +67,7 @@ public class SearchUserTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testSearchUserFailure(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+    getTestCase().setName(testName);
     getAuthToken(this, isAuthRequired);
     performPostTest(
         this,
@@ -85,6 +86,7 @@ public class SearchUserTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testSearchUserSuccess(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+    getTestCase().setName(testName);
     getAuthToken(this, isAuthRequired);
     performPostTest(
         this,

@@ -77,6 +77,7 @@ public class UnblockUserTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testUnblockUserSuccess(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+    getTestCase().setName(testName);
     getAuthToken(this, isAuthRequired);
     beforeTest();
     variable("userId", testContext.getVariable("userId"));
@@ -95,6 +96,7 @@ public class UnblockUserTest extends BaseCitrusTestRunner {
   @Test(dependsOnMethods = {"testUnblockUserSuccess"})
   @CitrusTest
   public void testUnblockUnblockUserByUserIdFailure() {
+    getTestCase().setName(TEST_UNBLOCK_UNBLOCKED_USER_FAILURE_WITH_VALID_USERID);
     getAuthToken(this, true);
     variable("userId", testContext.getVariable("userId"));
     performPostTest(
@@ -112,6 +114,7 @@ public class UnblockUserTest extends BaseCitrusTestRunner {
   @Test(dependsOnMethods = {"testUnblockUserSuccess"})
   @CitrusTest
   public void testGetUnblockUserByUserIdSuccess() {
+    getTestCase().setName(TEST_UNBLOCK_USER_GET_SUCCESS_WITH_VALID_USERID);
     performGetTest(
         this,
         TEMPLATE_DIR,

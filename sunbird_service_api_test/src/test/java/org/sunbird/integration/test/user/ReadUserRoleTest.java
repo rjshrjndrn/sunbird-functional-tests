@@ -43,6 +43,7 @@ public class ReadUserRoleTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testReadUserRoleFailure(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+    getTestCase().setName(testName);
     getAuthToken(this, isAuthRequired);
     performGetTest(
         this,
@@ -59,6 +60,7 @@ public class ReadUserRoleTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testReadUserRoleSuccess(
       String testName, boolean isAuthRequired, HttpStatus httpStatusCode) {
+    getTestCase().setName(testName);
     getAuthToken(this, isAuthRequired);
     performGetTest(
         this,
