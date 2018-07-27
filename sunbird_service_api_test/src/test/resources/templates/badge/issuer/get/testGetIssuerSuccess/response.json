@@ -1,0 +1,23 @@
+{
+  "id": "api.issuer.read",
+  "ver": "v1",
+  "ts": "@ignore@",
+  "params": {
+    "resmsgid": null,
+    "msgid": "@ignore@",
+    "err": null,
+    "status": "success",
+    "errmsg": null
+  },
+  "responseCode": "OK",
+  "result": {
+    "issuerId": "${issuerId}",
+    "image": null,
+    "createdDate": "@ignore@",
+    "issuerUrl": "http://www.example.com",
+    "issuerIdUrl": "@ignore@",
+    "name": "swarn",
+    "description": "something",
+    "email": "someuser@someorg.com"
+  }
+}
