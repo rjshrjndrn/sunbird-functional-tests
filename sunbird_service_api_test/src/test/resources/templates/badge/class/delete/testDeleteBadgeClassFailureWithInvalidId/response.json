@@ -1,5 +1,5 @@
 {
-  "id": "api.issuer.delete.invalid",
+  "id": "api.issuer.badge.delete.invalid",
   "ver": "v1",
   "ts": "@ignore@",
   "params": {
@@ -7,7 +7,7 @@
     "msgid": "@ignore@",
     "err": "RESOURCE_NOT_FOUND",
     "status": "RESOURCE_NOT_FOUND",
-    "errmsg": "Issuer not found."
+    "errmsg": "Badge class not found."
   },
   "responseCode": "RESOURCE_NOT_FOUND",
   "result": {}
