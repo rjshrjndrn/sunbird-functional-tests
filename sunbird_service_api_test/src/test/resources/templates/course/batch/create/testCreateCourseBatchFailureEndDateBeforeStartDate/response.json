@@ -7,7 +7,7 @@
         "msgid": "@ignore@",
         "err": "END_DATE_ERROR",
         "status": "END_DATE_ERROR",
-        "errmsg": "end date should be greater than start date."
+        "errmsg": "End date should be greater than start date."
     },
     "responseCode": "CLIENT_ERROR",
     "result": {}

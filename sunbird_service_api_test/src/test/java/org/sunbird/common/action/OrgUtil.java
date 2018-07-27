@@ -1,7 +1,8 @@
 package org.sunbird.common.action;
 
 import com.consol.citrus.context.TestContext;
-import java.util.Random;
+
+import java.time.Instant;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,8 +13,8 @@ public class OrgUtil {
 
   private static String rootOrgId = null;
 
-  private static final String rootOrgChannel = "FT_Org_Channel_" + (new Random()).nextInt(100);
-  private static final String rootOrgExternalId = "FT_Org_External_" + (new Random()).nextInt(100);
+  private static final String rootOrgChannel = "FT_Org_Channel_" + Instant.now().getEpochSecond();
+  private static final String rootOrgExternalId = "FT_Org_External_" + Instant.now().getEpochSecond();
 
   public static String getRootOrgChannel() {
     return rootOrgChannel;
