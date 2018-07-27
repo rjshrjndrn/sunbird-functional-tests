@@ -8,36 +8,34 @@ import org.sunbird.integration.test.common.BaseCitrusTestRunner;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class SearchIssuerTest extends BaseCitrusTestRunner {
+public class SearchBadgeClassTest extends BaseCitrusTestRunner {
 
-  public static final String TEST_NAME_SEARCH_ISSUER_FAILURE_WITHOUT_FILTER =
-      "testSearchIssuerFailureWithoutFilter";
+  public static final String TEST_NAME_SEARCH_BADGE_CLASS_FAILURE_WITHOUT_FILTER =
+      "testSearchBadgeClassFailureWithoutFilter";
 
-  public static final String TEMPLATE_DIR = "templates/badge/issuer/search";
+  public static final String TEMPLATE_DIR = "templates/badge/class/search";
 
-  private String getSearchIssuerUrl() {
-
+  private String getSearchBadgeClassUrl() {
     return getLmsApiUriPath("/api/badging/v1/issuer/badge/search", "/v1/issuer/badge/search");
   }
 
-  @DataProvider(name = "searchIssuerFailureDataProvider")
-  public Object[][] searchIssuerFailureDataProvider() {
+  @DataProvider(name = "searchBadgeClassFailureDataProvider")
+  public Object[][] searchBadgeClassFailureDataProvider() {
 
     return new Object[][] {
-      new Object[] {TEST_NAME_SEARCH_ISSUER_FAILURE_WITHOUT_FILTER, HttpStatus.BAD_REQUEST},
+      new Object[] {TEST_NAME_SEARCH_BADGE_CLASS_FAILURE_WITHOUT_FILTER, HttpStatus.BAD_REQUEST},
     };
   }
 
-  @Test(dataProvider = "searchIssuerFailureDataProvider")
+  @Test(dataProvider = "searchBadgeClassFailureDataProvider")
   @CitrusParameters({"testName", "httpStatusCode"})
   @CitrusTest
-  public void testSearchIssuerFailure(String testName, HttpStatus httpStatusCode) {
+  public void testSearchBadgeClassFailure(String testName, HttpStatus httpStatusCode) {
 
     performPostTest(
         this,
         TEMPLATE_DIR,
-        testName,
-        getSearchIssuerUrl(),
+        testName, getSearchBadgeClassUrl(),
         REQUEST_JSON,
         MediaType.APPLICATION_JSON,
         false,

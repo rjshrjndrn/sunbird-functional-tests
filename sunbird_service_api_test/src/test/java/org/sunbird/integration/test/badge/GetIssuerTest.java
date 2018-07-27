@@ -44,7 +44,7 @@ public class GetIssuerTest extends BaseCitrusTestRunner {
     @Test(dataProvider = "getIssuerDataProviderSuccess")
     @CitrusParameters({"testName"})
     @CitrusTest
-    public void getIssuerDataProviderSuccess(String testName) {
+    public void testGetIssuerSuccess(String testName) {
         beforeTest();
         performGetTest(
                 this,
@@ -60,7 +60,7 @@ public class GetIssuerTest extends BaseCitrusTestRunner {
     @Test(dataProvider = "getIssuerDataProviderFailure")
     @CitrusParameters({"testName", "issuerId", "responseJson"})
     @CitrusTest
-    public void getIssuerDataProviderFailure(String testName, String issuerId, String responseJson) {
+    public void testGetIssuerFailure(String testName, String issuerId, String responseJson) {
         performGetTest(
                 this,
                 TEMPLATE_DIR,
