@@ -1,0 +1,14 @@
+{
+  "id": "api.issuer.read.invalid",
+  "ver": "v1",
+  "ts": "@ignore@",
+  "params": {
+    "resmsgid": null,
+    "msgid": "@ignore@",
+    "err": "RESOURCE_NOT_FOUND",
+    "status": "RESOURCE_NOT_FOUND",
+    "errmsg": "Issuer not found."
+  },
+  "responseCode": "RESOURCE_NOT_FOUND",
+  "result": {}
+}

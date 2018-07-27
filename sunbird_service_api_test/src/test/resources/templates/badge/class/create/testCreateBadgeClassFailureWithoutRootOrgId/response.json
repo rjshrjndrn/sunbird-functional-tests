@@ -1,0 +1,14 @@
+{
+  "id": "api.issuer.badge.create",
+  "ver": "v1",
+  "ts": "@ignore@",
+  "params": {
+    "resmsgid": null,
+    "msgid": "@ignore@",
+    "err": "BADGE_ROOT_ORG_ID_REQUIRED",
+    "status": "BADGE_ROOT_ORG_ID_REQUIRED",
+    "errmsg": "Please provide root organisation ID."
+  },
+  "responseCode": "CLIENT_ERROR",
+  "result": {}
+}

@@ -1,0 +1,14 @@
+{
+  "id": "api.issuer.badge.create",
+  "ver": "v1",
+  "ts": "@ignore@",
+  "params": {
+    "resmsgid": null,
+    "msgid": "@ignore@",
+    "err": "ISSUER_ID_REQUIRED",
+    "status": "ISSUER_ID_REQUIRED",
+    "errmsg": "Please provide issuer ID."
+  },
+  "responseCode": "CLIENT_ERROR",
+  "result": {}
+}
