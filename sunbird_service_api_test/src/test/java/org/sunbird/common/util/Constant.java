@@ -40,7 +40,7 @@ public class Constant {
   public static final String RESPONSE_JSON = "response.json";
   public static final String LMS_ENDPOINT = "restTestClient";
   public static final String KEYCLOAK_ENDPOINT = "keycloakTestClient";
-  public static final int ES_SYNC_WAIT_TIME = 3000;
+  public static final int ES_SYNC_WAIT_TIME = 5000;
   public static final String LOCATION_TYPE_STATE = "state";
   public static final String LOCATION_TYPE_DISTRICT = "district";
   public static final String LOCATION_TYPE_BLOCK = "block";
@@ -48,4 +48,7 @@ public class Constant {
   public static final String DISTRICT_ID = "districtId";
   public static final String BULK_UPLOAD_PROCESS_ID = "bulkUploadProcessId";
   public static final String CONTENT_STORE_ENDPOINT = "csTestClient";
+  public static final String EXTRACT_VAR_ISSUER_ID = "issuerId";
+  public static final String EXTRACT_VAR_BADGE_ID = "badgeId";
+  public static final String EXTRACT_VAR_ASSERTION_ID = "assertionId";
 }
