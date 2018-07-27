@@ -7,8 +7,9 @@
         "msgid": "@ignore@",
         "err": "COURSE_BATCH_START_DATE_REQUIRED",
         "status": "COURSE_BATCH_START_DATE_REQUIRED",
-        "errmsg": "batch start date is mandatory."
+        "errmsg": "Batch start date is mandatory."
     },
     "responseCode": "CLIENT_ERROR",
     "result": {}
 }
+

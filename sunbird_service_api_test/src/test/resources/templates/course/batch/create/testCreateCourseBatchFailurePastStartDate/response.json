@@ -7,7 +7,7 @@
         "msgid": "@ignore@",
         "err": "COURSE_BATCH_START_DATE_INVALID",
         "status": "COURSE_BATCH_START_DATE_INVALID",
-        "errmsg": "batch start date should be either today or future date."
+        "errmsg": "Batch start date should be either today or future date."
     },
     "responseCode": "CLIENT_ERROR",
     "result": {}
