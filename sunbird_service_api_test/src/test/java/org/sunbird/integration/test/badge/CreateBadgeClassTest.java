@@ -36,7 +36,7 @@ public class CreateBadgeClassTest extends BaseCitrusTestRunner {
   private static final String TEST_NAME_CREATE_BADGE_CLASS_FAILURE_WITH_INVALID_ROOT_ORG_ID =
       "testCreateBadgeClassFailureWithInvalidRootOrgId";
 
-  public static final String TEMPLATE_DIR = "templates/badge/class/create";
+  private static final String TEMPLATE_DIR = "templates/badge/class/create";
 
   private String getCreateBadgeClassUrl() {
     return getLmsApiUriPath("/api/badging/v1/issuer/badge/create", "/v1/issuer/badge/create");

@@ -40,6 +40,6 @@ public class IssuerUtil {
                 Constant.LMS_ENDPOINT,
                 responseCode,
                 "$.result.issuerId",
-                "issuerId"));
+                    Constant.EXTRACT_VAR_ISSUER_ID));
   }
 }
