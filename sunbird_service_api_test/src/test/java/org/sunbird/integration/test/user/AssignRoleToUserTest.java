@@ -11,8 +11,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class AssignRoleToUserTest extends BaseCitrusTestRunner {
-  private static final String TEST_ASSIGN_ROLE_USER_FAILURE_WITHOUT_ACCESS_TOKEN =
-      "testAssignRoleUserFailureWithoutAccessToken";
+  //  private static final String TEST_ASSIGN_ROLE_USER_FAILURE_WITHOUT_ACCESS_TOKEN =
+  //      "testAssignRoleUserFailureWithoutAccessToken";
   private static final String TEST_ASSIGN_ROLE_USER_FAILURE_WITH_INVALID_USER_ID =
       "testAssignRoleUserFailureWithInvalidUserId";
   private static final String TEST_ASSIGN_ROLE_USER_FAILURE_WITH_INVALID_ORG_ID =
@@ -41,9 +41,9 @@ public class AssignRoleToUserTest extends BaseCitrusTestRunner {
   public Object[][] assignRoleToUserFailureDataProvider() {
 
     return new Object[][] {
-      new Object[] {
-        TEST_ASSIGN_ROLE_USER_FAILURE_WITHOUT_ACCESS_TOKEN, false, HttpStatus.UNAUTHORIZED
-      },
+      //      new Object[] {
+      //        TEST_ASSIGN_ROLE_USER_FAILURE_WITHOUT_ACCESS_TOKEN, false, HttpStatus.UNAUTHORIZED
+      //      },
       new Object[] {
         TEST_ASSIGN_ROLE_USER_FAILURE_WITH_USER_NOT_ADDED_TO_ORG, true, HttpStatus.BAD_REQUEST
       },
@@ -65,10 +65,7 @@ public class AssignRoleToUserTest extends BaseCitrusTestRunner {
     getTestCase().setName(testName);
     getAuthToken(this, isAuthRequired);
     createUser();
-
-    if (isAuthRequired) {
-      createOrg();
-    }
+    createOrg();
     performPostTest(
         this,
         TEMPLATE_DIR,

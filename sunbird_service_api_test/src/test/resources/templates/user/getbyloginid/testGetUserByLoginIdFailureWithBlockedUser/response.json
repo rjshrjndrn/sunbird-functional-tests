@@ -5,9 +5,9 @@
 	"params": {
 		"resmsgid": null,
 		"msgid": "@ignore@",
-		"err": "USER_NOT_FOUND",
-		"status": "USER_NOT_FOUND",
-		"errmsg": "user not found."
+		"err": "USER_ACCOUNT_BLOCKED",
+		"status": "USER_ACCOUNT_BLOCKED",
+		"errmsg": "User account has been blocked ."
 	},
 	"responseCode": "CLIENT_ERROR",
 	"result": {}

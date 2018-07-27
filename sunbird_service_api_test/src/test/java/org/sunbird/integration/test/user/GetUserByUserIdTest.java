@@ -72,7 +72,7 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
     afterTest();
   }
 
-  @Test()
+  @Test(dependsOnMethods = {"testGetUserByUserIdSuccess"})
   @CitrusTest
   public void testGetBlockUserByUserIdFailure() {
     getTestCase().setName("testGetUserByUserIdFailureWithBlockedUser");

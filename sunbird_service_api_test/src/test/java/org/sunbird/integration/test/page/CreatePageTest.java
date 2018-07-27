@@ -114,12 +114,7 @@ public class CreatePageTest extends BaseCitrusTestRunner {
     if (canCreateOrg) {
       variable("rootOrgChannel", OrgUtil.getRootOrgChannel());
       variable("rootOrgExternalId", OrgUtil.getRootOrgExternalId());
-      OrgUtil.createOrg(
-          this,
-          testContext,
-          BT_CREATE_ROOT_ORG_TEMPLATE_DIR,
-          BT_TEST_NAME_CREATE_ROOT_ORG_SUCCESS,
-          HttpStatus.OK);
+      OrgUtil.getRootOrgId(this, testContext);
     }
 
     if (canCreatePage) {
