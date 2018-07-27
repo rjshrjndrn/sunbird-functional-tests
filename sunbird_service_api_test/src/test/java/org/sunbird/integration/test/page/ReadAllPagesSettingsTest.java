@@ -30,7 +30,7 @@ public class ReadAllPagesSettingsTest extends BaseCitrusTestRunner {
     };
   }
 
-  @Test(dataProvider = "readAllPagesSettingsFailureDataProvider")
+  @Test(dataProvider = "readAllPagesSettingsFailureDataProvider", enabled = false)
   @CitrusParameters({"testName", "isAuthRequired", "httpStatusCode"})
   @CitrusTest
   public void testReadAllPagesSettingsFailure(
