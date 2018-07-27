@@ -1,7 +1,6 @@
 package org.sunbird.common.action;
 
 import com.consol.citrus.context.TestContext;
-
 import java.util.Map;
 import java.util.UUID;
 import org.apache.commons.lang.StringUtils;
@@ -35,7 +34,7 @@ public class ContentStoreUtil {
 
   private static Map<String, Object> getHeaders() {
     Map<String, Object> headers = TestActionUtil.getHeaders(false);
-    headers.put(Constant.AUTHORIZATION, Constant.BEARER + System.getenv("ekstep_api_key"));
+    headers.put(Constant.AUTHORIZATION, Constant.BEARER + System.getenv("content_store_api_key"));
     return headers;
   }
 

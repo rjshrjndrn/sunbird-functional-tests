@@ -29,7 +29,10 @@ public class EndpointConfig {
 
   @Bean
   public HttpClient csTestClient() {
-    return CitrusEndpoints.http().client().requestUrl(System.getenv("ekstep_api_base_url")).build();
+    return CitrusEndpoints.http()
+        .client()
+        .requestUrl(System.getenv("content_store_api_key"))
+        .build();
   }
 
   @Bean
