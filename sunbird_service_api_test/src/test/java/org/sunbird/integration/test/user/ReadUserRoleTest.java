@@ -18,7 +18,7 @@ public class ReadUserRoleTest extends BaseCitrusTestRunner {
   public static final String TEMPLATE_DIR = "templates/user/read/role";
 
   private String getReadUserRoleUrl() {
-    return getLmsApiUriPath("/api/user/v1/role/read", "/v1/role/read");
+    return getLmsApiUriPath("/api/data/v1/role/read", "/v1/role/read");
   }
 
   @DataProvider(name = "readUserRoleFailureDataProvider")

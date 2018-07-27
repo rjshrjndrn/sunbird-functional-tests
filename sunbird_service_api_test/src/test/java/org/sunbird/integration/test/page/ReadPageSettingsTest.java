@@ -38,7 +38,7 @@ public class ReadPageSettingsTest extends BaseCitrusTestRunner {
         TEST_NAME_READ_PAGE_SETTINGS_FAILURE_WITHOUT_ACCESS_TOKEN, false, HttpStatus.UNAUTHORIZED,
       },
       new Object[] {
-        TEST_NAME_READ_PAGE_SETTINGS_FAILURE_WITH_INVALID_PAGE_ID, false, HttpStatus.NOT_FOUND,
+        TEST_NAME_READ_PAGE_SETTINGS_FAILURE_WITH_INVALID_PAGE_ID, true, HttpStatus.NOT_FOUND,
       },
     };
   }

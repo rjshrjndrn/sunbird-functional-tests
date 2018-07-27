@@ -23,8 +23,6 @@ public class AssemblePageTest extends BaseCitrusTestRunner {
       "testAssemblePageFailureWithInvalidPage";
   public static final String TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_INVALID_SOURCE =
       "testAssemblePageFailureWithInvalidSource";
-  public static final String TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_VALID_PAGE =
-      "testAssemblePageFailureWithValidPage";
 
   public static final String TEMPLATE_DIR = "templates/page/assemble";
   public static final String BT_PAGE_CREATE_TEMPLATE_DIR = "templates/page/create";
@@ -43,9 +41,6 @@ public class AssemblePageTest extends BaseCitrusTestRunner {
       new Object[] {TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_INVALID_PAGE, HttpStatus.NOT_FOUND, false},
       new Object[] {
         TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_INVALID_SOURCE, HttpStatus.BAD_REQUEST, false
-      },
-      new Object[] {
-        TEST_NAME_ASSEMBLE_PAGE_FAILURE_WITH_VALID_PAGE, HttpStatus.INTERNAL_SERVER_ERROR, true
       },
     };
   }
