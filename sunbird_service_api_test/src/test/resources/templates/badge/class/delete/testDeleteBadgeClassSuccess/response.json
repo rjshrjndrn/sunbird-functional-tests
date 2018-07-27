@@ -1,5 +1,5 @@
 {
-  "id": "api.issuer.delete",
+  "id": "api.issuer.badge.delete",
   "ver": "v1",
   "ts": "@ignore@",
   "params": {
@@ -11,6 +11,6 @@
   },
   "responseCode": "OK",
   "result": {
-    "message": "Issuer ${issuerId} has been deleted."
+    "message": "Badge ${badgeId} has been deleted."
   }
 }
