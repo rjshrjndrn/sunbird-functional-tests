@@ -103,8 +103,6 @@ public class CreateCourseBatchTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testCreateCourseBatchFailure(
       String testName, boolean isCourseIdRequired, HttpStatus httpStatusCode) {
-    getAuthToken(this, true);
-    variable("startDate", TODAY_DATE);
     beforeTest(isCourseIdRequired, false, false);
     performPostTest(
         this,
@@ -143,8 +141,6 @@ public class CreateCourseBatchTest extends BaseCitrusTestRunner {
       boolean isOrgIdRequired,
       boolean isUsrIdRequired,
       HttpStatus httpStatusCode) {
-    getAuthToken(this, true);
-    variable("startDate", TODAY_DATE);
     beforeTest(true, isOrgIdRequired, isUsrIdRequired);
 
     performPostTest(
@@ -161,6 +157,8 @@ public class CreateCourseBatchTest extends BaseCitrusTestRunner {
 
   public void beforeTest(
       boolean isCourseIdRequired, boolean isOrgIdRequired, boolean isUsrIdRequired) {
+    getAuthToken(this, true);
+    variable("startDate", TODAY_DATE);
     if (isCourseIdRequired) {
       // courseUnitId/resourceId is needed to be updated in context for creating course
       variable("courseUnitId", ContentStoreUtil.getCourseUnitId());
