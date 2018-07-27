@@ -1,6 +1,8 @@
 package org.sunbird.common.action;
 
 import com.consol.citrus.context.TestContext;
+
+import java.util.Map;
 import java.util.UUID;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -31,6 +33,12 @@ public class ContentStoreUtil {
     return courseId;
   }
 
+  private static Map<String, Object> getHeaders() {
+    Map<String, Object> headers = TestActionUtil.getHeaders(false);
+    headers.put(Constant.AUTHORIZATION, Constant.BEARER + System.getenv("ekstep_api_key"));
+    return headers;
+  }
+
   private static void createLiveCourse(BaseCitrusTestRunner runner, TestContext testContext) {
     createCourse(runner, testContext);
 
@@ -52,7 +60,7 @@ public class ContentStoreUtil {
                 CONTENT_STORE_CREATE_URL,
                 Constant.REQUEST_JSON,
                 MediaType.APPLICATION_JSON.toString(),
-                TestActionUtil.getHeaders(false)));
+                getHeaders()));
     runner.http(
         builder ->
             TestActionUtil.getExtractFromResponseTestAction(
@@ -76,7 +84,7 @@ public class ContentStoreUtil {
                 CONTENT_STORE_UPDATE_HIERARCHY_URL,
                 Constant.REQUEST_JSON,
                 MediaType.APPLICATION_JSON.toString(),
-                TestActionUtil.getHeaders(false)));
+                getHeaders()));
     runner.http(
         builder ->
             TestActionUtil.getResponseTestAction(
@@ -97,7 +105,7 @@ public class ContentStoreUtil {
                 CONTENT_STORE_CONTENT_PUBLISH_URL + courseId,
                 Constant.REQUEST_JSON,
                 MediaType.APPLICATION_JSON.toString(),
-                TestActionUtil.getHeaders(false)));
+                getHeaders()));
     runner.http(
         builder ->
             TestActionUtil.getResponseTestAction(

@@ -1,6 +1,8 @@
 pipeline {
     environment {
         sunbird_api_key = "${sunbird_api_keys}"
+        ekstep_api_key = "${ekstep_api_keys}",
+        ekstep_api_base_url = "https://dev.ekstep.in/api"
         sunbird_cassandra_host = "10.10.4.4"
         sunbird_cassandra_port = "9042"
         sunbird_cassandra_username = "cassandra"
