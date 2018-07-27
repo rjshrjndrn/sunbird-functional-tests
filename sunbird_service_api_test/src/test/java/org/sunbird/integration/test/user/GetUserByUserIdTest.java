@@ -56,6 +56,7 @@ public class GetUserByUserIdTest extends BaseCitrusTestRunner {
   @CitrusTest
   public void testGetUserByUserIdSuccess() {
     beforeTest();
+    getAuthToken(this, true);
     getTestCase().setName("testGetUserByUserIdSuccess");
     performGetTest(
         this,
