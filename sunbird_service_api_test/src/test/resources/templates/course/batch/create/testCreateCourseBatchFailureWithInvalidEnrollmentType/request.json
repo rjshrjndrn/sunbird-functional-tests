@@ -1,0 +1,7 @@
+{
+  "request": {
+  	"name":"testCourseBatch",
+  	"courseId": "testCourseId",
+  	"enrollmentType":"invalid"
+  }
+}

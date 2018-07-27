@@ -1,0 +1,14 @@
+{
+    "id": "api.course.batch.create",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "ENROLMENT_TYPE_REQUIRED",
+        "status": "ENROLMENT_TYPE_REQUIRED",
+        "errmsg": "Enrolment type is mandatory."
+    },
+    "responseCode": "CLIENT_ERROR",
+    "result": {}
+}

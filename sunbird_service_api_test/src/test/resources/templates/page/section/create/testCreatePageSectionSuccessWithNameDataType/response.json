@@ -1,0 +1,17 @@
+{
+    "id": "api.page.section.create",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": null,
+        "status": "success",
+        "errmsg": null
+    },
+    "responseCode": "OK",
+    "result": {
+        "response": "SUCCESS",
+        "sectionId": "@ignore@"
+    }
+}

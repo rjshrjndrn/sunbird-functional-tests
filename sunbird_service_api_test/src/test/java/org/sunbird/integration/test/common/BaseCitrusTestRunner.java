@@ -46,6 +46,7 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
       Boolean isAuthRequired,
       HttpStatus responseCode,
       String responseJson) {
+    getTestCase().setName(testName);
     runner.http(
         builder ->
             TestActionUtil.getMultipartRequestTestAction(
@@ -75,6 +76,7 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
       boolean isAuthRequired,
       HttpStatus responseCode,
       String responseJson) {
+    getTestCase().setName(testName);
     runner.http(
         builder ->
             TestActionUtil.getPostRequestTestAction(
@@ -86,6 +88,7 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
                 requestJson,
                 contentType,
                 TestActionUtil.getHeaders(isAuthRequired)));
+
     runner.http(
         builder ->
             TestActionUtil.getResponseTestAction(
@@ -102,6 +105,7 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
       boolean isAuthRequired,
       HttpStatus responseCode,
       String responseJson) {
+    getTestCase().setName(testName);
     runner.http(
         builder ->
             TestActionUtil.getPatchRequestTestAction(
@@ -129,6 +133,7 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
       boolean isAuthRequired,
       HttpStatus responseCode,
       String responseJson) {
+    getTestCase().setName(testName);
     runner.http(
         builder ->
             TestActionUtil.getDeleteRequestTestAction(
@@ -147,6 +152,7 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
   }
 
   public void getAuthToken(TestNGCitrusTestRunner runner, Boolean isAuthRequired) {
+
     if (isAuthRequired) {
       runner.http(builder -> TestActionUtil.getTokenRequestTestAction(builder, KEYCLOAK_ENDPOINT));
       runner.http(builder -> TestActionUtil.getTokenResponseTestAction(builder, KEYCLOAK_ENDPOINT));
@@ -172,6 +178,7 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
       Boolean isAuthRequired,
       HttpStatus responseCode,
       String responseJson) {
+    getTestCase().setName(testName);
     getAuthToken(runner, isAuthRequired);
     runner.http(
         builder ->
@@ -208,6 +215,7 @@ public class BaseCitrusTestRunner extends TestNGCitrusTestRunner {
   }
 
   public String getLmsApiUriPath(String apiGatewayUriPath, String localUriPath, String pathParam) {
+
     return config.getLmsUrl().contains("localhost")
         ? localUriPath + pathParam
         : apiGatewayUriPath + pathParam;

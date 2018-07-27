@@ -1,0 +1,14 @@
+{
+    "id": "api.page.assemble",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "SOURCE_MISSING",
+        "status": "SOURCE_MISSING",
+        "errmsg": "Source is required."
+    },
+    "responseCode": "CLIENT_ERROR",
+    "result": {}
+}

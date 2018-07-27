@@ -1,0 +1,14 @@
+{
+    "id": "api.course.batch.create",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid": "@ignore@",
+        "err": "COURSE_BATCH_START_DATE_INVALID",
+        "status": "COURSE_BATCH_START_DATE_INVALID",
+        "errmsg": "batch start date should be either today or future date."
+    },
+    "responseCode": "CLIENT_ERROR",
+    "result": {}
+}

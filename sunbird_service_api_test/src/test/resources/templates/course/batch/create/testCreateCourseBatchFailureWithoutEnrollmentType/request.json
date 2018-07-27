@@ -1,0 +1,6 @@
+{
+  "request": {
+  	"name":"testCourseBatch",
+  	"courseId": "testCourseId" 
+  }
+}

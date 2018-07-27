@@ -24,6 +24,7 @@ import org.sunbird.common.util.Constant;
 import org.sunbird.integration.test.user.EndpointConfig.TestGlobalProperty;
 
 public class TestActionUtil {
+
   public static TestAction getTokenRequestTestAction(
       HttpActionBuilder builder, String endpointName) {
     String userName = System.getenv("sunbird_username");
@@ -190,6 +191,10 @@ public class TestActionUtil {
       String testName,
       HttpStatus responseCode,
       String responseFile) {
+    if (StringUtils.isBlank(responseFile)) {
+      return getResponseTestAction(builder, endpointName, testName, responseCode);
+    }
+
     String responseFilePath =
         MessageFormat.format("{0}/{1}/{2}", testTemplateDir, testName, responseFile);
 

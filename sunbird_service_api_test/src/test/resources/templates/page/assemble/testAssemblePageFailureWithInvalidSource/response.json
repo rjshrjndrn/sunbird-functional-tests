@@ -1,0 +1,14 @@
+{
+    "id": "api.page.assemble",
+    "ver": "v1",
+    "ts": "@ignore@",
+    "params": {
+        "resmsgid": null,
+        "msgid":  "@ignore@",
+        "err": "INVALID_PAGE_SOURCE",
+        "status": "INVALID_PAGE_SOURCE",
+        "errmsg": "Invalid page source."
+    },
+    "responseCode": "CLIENT_ERROR",
+    "result": {}
+}
